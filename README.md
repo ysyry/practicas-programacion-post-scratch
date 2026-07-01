@@ -25,6 +25,7 @@ que avanzan los cursos (mismo link para todos).
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
 | 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
 | 🏁 Repaso final | **Repaso general** | Un poco de todo, en orden de dificultad |
+| 🎈 Jr | Nivel ScratchJr (accesible) | Llevar al personaje al objetivo con flechas grandes, sin texto |
 | 🎨 Estudio de dibujo | Modo libre | Perillas (repetición/largo/giro) → la tortuga dibuja en vivo |
 | 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
 
@@ -34,6 +35,14 @@ momento (la explicación conceptual queda a la vista). Puntaje, racha y medallas
 
 Se refuerza la idea de que **lo que se escribe es un programa** que la computadora
 ejecuta línea por línea (se ve en el escenario animado).
+
+## Modo Jr (accesibilidad / DUA) 🎈
+
+Nivel ScratchJr para estudiantes que necesitan una entrada más simple (p. ej. una
+alumna con síndrome de Down). Sin texto para leer: se arma una secuencia de **flechas
+grandes** (⬆️➡️⬇️⬅️) para llevar un personaje hasta su objetivo en una grilla. Botones
+grandes, refuerzo positivo ("¡Muy bien! 🌟"), sin puntaje ni presión de tiempo, y el
+personaje nunca se cae del tablero. 4 misiones de dificultad creciente.
 
 ## Escenario animado 🎬
 

@@ -95,6 +95,16 @@
   .rbtn{background:linear-gradient(90deg,var(--accent),var(--b1));color:#0f172a;font-weight:800;border:none;
     border-radius:10px;padding:9px 14px;font-size:.9rem;cursor:pointer;font-family:inherit}
   .rbtn.ghost{background:var(--card2);color:var(--txt);border:1px solid #3a4a63}
+  .cbhdr{font-size:.78rem;font-weight:800;color:var(--b2);margin:2px 0 6px;letter-spacing:.2px}
+  /* diagramas de flujo */
+  .flow{background:#0b1220;border:1px solid #334155;border-radius:12px;padding:12px;margin:12px 0;text-align:center}
+  .flowsvg{width:100%;max-width:330px;height:auto}
+  .flowsvg text{fill:#e2e8f0;font:600 12px system-ui,sans-serif;text-anchor:middle;dominant-baseline:middle}
+  .flowsvg .lbl{fill:#94a3b8;font:700 11px system-ui,sans-serif}
+  .flowsvg .sh,.flowsvg .io{fill:#273449;stroke:#38bdf8;stroke-width:2}
+  .flowsvg .dec{fill:#2b2350;stroke:#a78bfa;stroke-width:2}
+  .flowsvg .se{fill:#123a34;stroke:#34d399;stroke-width:2}
+  .flowsvg .ln{stroke:#64748b;stroke-width:2;fill:none;marker-end:url(#ar)}
   /* botones grandes */
   .btn{background:linear-gradient(90deg,var(--accent),var(--b1));color:#0f172a;font-weight:800;border:none;
     border-radius:12px;padding:14px;font-size:1.02rem;cursor:pointer;width:100%;margin-top:14px;font-family:inherit}
@@ -145,8 +155,56 @@ function paint(code){
 }
 
 /* ============================================================
+   DIAGRAMAS DE FLUJO (SVG) — helpers y figuras
+   ============================================================ */
+function _svgWrap(w,h,inner){
+  return `<svg viewBox="0 0 ${w} ${h}" class="flowsvg" xmlns="http://www.w3.org/2000/svg">`+
+    `<defs><marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">`+
+    `<path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>${inner}</svg>`;
+}
+function _fTxt(x,y,t){ return t?`<text x="${x}" y="${y+1}">${escapeHtml(t)}</text>`:''; }
+function _fRect(cx,cy,w,h,txt,cls){ return `<rect class="${cls||'sh'}" x="${cx-w/2}" y="${cy-h/2}" width="${w}" height="${h}" rx="7"/>`+_fTxt(cx,cy,txt); }
+function _fPill(cx,cy,w,h,txt){ return `<rect class="se" x="${cx-w/2}" y="${cy-h/2}" width="${w}" height="${h}" rx="${h/2}"/>`+_fTxt(cx,cy,txt); }
+function _fDia(cx,cy,w,h,txt){ return `<polygon class="dec" points="${cx},${cy-h/2} ${cx+w/2},${cy} ${cx},${cy+h/2} ${cx-w/2},${cy}"/>`+_fTxt(cx,cy,txt); }
+function _fLn(x1,y1,x2,y2){ return `<path class="ln" d="M${x1},${y1} L${x2},${y2}"/>`; }
+function _fPoly(d){ return `<path class="ln" d="M${d}"/>`; }
+function _fLbl(x,y,t){ return `<text class="lbl" x="${x}" y="${y}">${t}</text>`; }
+function flowLinear(items){
+  const W=300,bw=190,bh=34,gap=26,x=W/2; let y=14, parts=[];
+  items.forEach((it,i)=>{ const cy=y+bh/2;
+    if(i>0) parts.push(_fLn(x,y-gap,x,y));
+    parts.push(it.f==='pill'?_fPill(x,cy,150,bh,it.txt):_fRect(x,cy,bw,bh,it.txt,it.f==='io'?'io':'sh'));
+    y+=bh+gap; });
+  return _svgWrap(W,y-gap+10,parts.join(''));
+}
+const FLOW_SHAPES = _svgWrap(330,92,
+  _fPill(48,32,72,26,'')+_fLbl(48,74,'óvalo')+
+  _fRect(140,32,74,26,'','sh')+_fLbl(140,74,'rectángulo')+
+  _fDia(232,32,58,36,'')+_fLbl(232,74,'rombo')+
+  _fLn(286,32,322,32)+_fLbl(304,74,'flecha')
+);
+const FLOW_PARIMPAR = (function(){
+  const p=[];
+  p.push(_fPill(130,24,130,30,'Inicio'));
+  p.push(_fLn(130,39,130,66));
+  p.push(_fRect(130,84,150,32,'leer número','io'));
+  p.push(_fLn(130,100,130,120));
+  p.push(_fDia(130,158,140,74,'¿es par?'));
+  p.push(_fLbl(118,214,'Sí'));
+  p.push(_fLn(130,195,130,224));
+  p.push(_fRect(130,242,132,32,'mostrar "es par"'));
+  p.push(_fLn(130,258,130,290));
+  p.push(_fLbl(206,148,'No'));
+  p.push(_fLn(200,158,214,158));
+  p.push(_fRect(266,158,104,32,'mostrar "es impar"'));
+  p.push(_fPoly('266,174 L266,304 L130,304'));
+  p.push(_fPill(130,306,120,30,'Fin'));
+  return _svgWrap(320,328,p.join(''));
+})();
+
+/* ============================================================
    BANCO DE EJERCICIOS
-   type: 'order' | 'mc' | 'fill' | 'bug'
+   type: 'order' | 'mc' | 'fill' | 'bug'  (+ svg opcional: diagrama)
    ============================================================ */
 const SALAS = [
   {
@@ -194,10 +252,42 @@ const SALAS = [
       { type:'mc', consigna:'Un buen algoritmo tiene que tener los pasos…',
         opts:['en orden y sin dejar lugar a dudas','desordenados','lo más largos posible','en otro idioma'], correcta:0,
         explica:'Claridad y orden: cada paso bien definido para que siempre dé el mismo resultado.' },
+      { type:'mc', consigna:'¿Qué es un PROGRAMA?',
+        opts:['Un algoritmo escrito para que la computadora lo ejecute','Un dibujo','Una página de internet','Un archivo de música'], correcta:0,
+        explica:'Un programa es un algoritmo escrito en un lenguaje que la compu entiende. Nosotros lo escribimos (programamos) y la computadora lo ejecuta paso a paso.' },
+      { type:'mc', consigna:'Escribo estas instrucciones y la compu las ejecuta y me muestra 7. ¿Cómo se llama eso?',
+        code:'a = 3\nb = 4\nmostrar a + b',
+        opts:['Un programa','Un algoritmo desordenado','Un error','Una foto'], correcta:0,
+        explica:'¡Es un programa! Vos lo escribís y la computadora lo ejecuta línea por línea: guarda 3, guarda 4 y muestra la suma (7). Eso es programar.' },
     ]
   },
   {
-    id:'ope', emoji:'➗', nom:'Operadores y números', desc:'Cuentas, división, resto — como en mate',
+    id:'flow', emoji:'🔷', nom:'Diagramas de flujo', desc:'Leé algoritmos dibujados con figuras y flechas',
+    concepto:'Diagrama de flujo',
+    ejs:[
+      { type:'mc', consigna:'Un diagrama de flujo dibuja un algoritmo. ¿Qué figura representa una DECISIÓN (una pregunta con Sí/No)?',
+        svg: FLOW_SHAPES,
+        opts:['El rombo','El rectángulo','El óvalo','La flecha'], correcta:0,
+        explica:'El rombo es la decisión: de él salen dos caminos (Sí / No). El rectángulo es una acción, el óvalo el inicio/fin y la flecha marca el orden.' },
+      { type:'mc', consigna:'Este diagrama es el algoritmo para preparar un mate. ¿Qué paso viene justo después de "calentar el agua"?',
+        svg: flowLinear([{f:'pill',txt:'Inicio'},{f:'sh',txt:'calentar el agua'},{f:'sh',txt:'poner la yerba'},{f:'sh',txt:'servir el agua'},{f:'pill',txt:'Fin'}]),
+        opts:['poner la yerba','servir el agua','calentar el agua','Fin'], correcta:0,
+        explica:'Las flechas marcan el orden: después de "calentar el agua" viene "poner la yerba". El diagrama muestra el algoritmo paso a paso.' },
+      { type:'mc', consigna:'Seguí el diagrama con el dedo. Si el número es 7, ¿qué muestra?',
+        svg: FLOW_PARIMPAR,
+        opts:['es impar','es par','7','Inicio'], correcta:0,
+        explica:'7 no es par (7 % 2 = 1), entonces en el rombo tomamos el camino "No" → "es impar". El rombo decide por dónde seguir.' },
+      { type:'mc', consigna:'El MISMO diagrama, pero ahora el número es 10. ¿Qué muestra?',
+        svg: FLOW_PARIMPAR,
+        opts:['es par','es impar','10','Fin'], correcta:0,
+        explica:'10 es par (10 % 2 = 0), tomamos el camino "Sí" → "es par". ¡El mismo diagrama da distinto según el dato de entrada!' },
+      { type:'mc', consigna:'¿Para qué sirve un diagrama de flujo?',
+        opts:['Para representar un algoritmo con figuras y flechas','Para dibujar personajes','Para escuchar música','Para escribir un cuento'], correcta:0,
+        explica:'Es una forma visual de mostrar los pasos de un algoritmo y cómo se decide el camino. Cada figura significa algo distinto.' },
+    ]
+  },
+  {
+    id:'ope', emoji:'➗', nom:'Operadores y números', desc:'Programitas que hacen cuentas — como en mate',
     concepto:'Operadores y matemática',
     ejs:[
       { type:'mc', consigna:'¿Cuánto vale resultado? (ojo el orden de las operaciones)',
@@ -547,6 +637,7 @@ function mountStage(container, lines, opts){
   const frames=simulate(lines);
   const full=frames[frames.length-1].trail;
   container.innerHTML =
+    `<div class="cbhdr">💻 La computadora ejecuta tu programa línea por línea:</div>`+
     `<div class="cblock">${codeLinesHtml(lines)}</div>`+
     (hasMove?'<canvas class="stcanvas" width="320" height="200"></canvas>':'')+
     (hasVar?'<div class="vpanel"></div>':'')+
@@ -602,7 +693,7 @@ function runnableStage(ej){ const l=getRunLines(ej); return l && simulatable(l);
 function menu(){
   cur = null;
   let h = '<div class="card"><h2>Elegí una misión 👇</h2>'+
-    '<p class="muted">Cada sala practica un concepto. Respondé y después mirá el 🎬 escenario para ver qué hace el código.</p>'+
+    '<p class="muted">Cada sala practica un concepto. Lo que leés es un <b>programa</b>: respondé y después mirá el 🎬 escenario, donde la computadora lo ejecuta.</p>'+
     '<div class="salas">';
   SALAS.forEach(s=>{
     const d=done[s.id];
@@ -648,7 +739,8 @@ function render(){
       <div class="concepto big">📚 Concepto: ${ej.concepto}</div>
       <div class="consigna">${ej.consigna}</div>`;
 
-  if(ej.code) h += `<div class="code">${paint(ej.code)}</div>`;
+  if(ej.svg) h += `<div class="flow">${ej.svg}</div>`;
+  if(ej.code) h += `<div class="cbhdr">💻 Este es un programa — la compu lo ejecuta:</div><div class="code">${paint(ej.code)}</div>`;
 
   if(ej.type==='order')    h += renderOrder(ej);
   else if(ej.type==='bug') h += renderBug(ej);
@@ -745,22 +837,27 @@ function checkOrder(){
 
 /* -------------------- FEEDBACK -------------------- */
 function feedback(good, explica){
-  if(good){ cur.puntos++; cur.streak++; } else { cur.streak=0; }
+  if(good){ if(cur.scored!==cur.i){ cur.puntos++; cur.streak++; cur.scored=cur.i; } } else { cur.streak=0; }
   const ej=cur.ejs[cur.i];
   const fb=document.getElementById('fb');
   const racha = cur.streak>=3 ? `<div class="streak">🔥 ¡Racha de ${cur.streak}!</div>` : '';
+  const last = cur.i+1>=cur.ejs.length;
+  const retryBtn = good ? '' : `<button class="btn" onclick="retry()">🔄 Corregir y reintentar</button>`;
+  const nextBtn  = `<button class="btn ${good?'':'ghost'}" onclick="next()">${last?'Ver resultado 🏁':(good?'Siguiente →':'Saltear sin corregir →')}</button>`;
   fb.innerHTML = `<div class="fb ${good?'good':'bad'}">
-      <span class="t">${good?'¡Correcto! 🎉':'Casi… 🤔'}</span>${explica}${racha}
+      <span class="t">${good?'¡Correcto! 🎉':'Todavía no 🤔 — leé esto y volvé a intentar:'}</span>${explica}${racha}
     </div>
     <div id="stageWrap"></div>
-    <button class="btn" onclick="next()">${cur.i+1>=cur.ejs.length?'Ver resultado 🏁':'Siguiente →'}</button>`;
-  if(runnableStage(ej) && ej.type!=='order'){
+    ${retryBtn}${nextBtn}`;
+  // el escenario animado (que revela el resultado) solo al acertar, para no arruinar el reintento
+  if(good && runnableStage(ej) && ej.type!=='order'){
     const sw=document.getElementById('stageWrap');
     sw.innerHTML='<div class="sttitle" style="margin-top:14px">🎬 Mirá cómo corre este código:</div><div class="stage" id="stgFb"></div>';
     mountStage(document.getElementById('stgFb'), getRunLines(ej), {autoplay:true});
   }
   fb.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
+function retry(){ render(); }   // mismo ejercicio, intento nuevo (no reshuffle de opciones en mc)
 function next(){ cur.i++; render(); }
 
 /* -------------------- FIN DE SALA -------------------- */

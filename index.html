@@ -800,14 +800,14 @@ function drawOrder(){
   const ej=cur.ejs[cur.i];
   const bin=document.getElementById('pbin'), build=document.getElementById('pbuild');
   bin.innerHTML = orderState.bin.length ? '' : '<div class="emptyhint">— vacío —</div>';
-  orderState.bin.forEach((o,k)=>{
+  orderState.bin.forEach((o)=>{
     const el=document.createElement('div'); el.className='pline'; el.innerHTML=paint(o.t);
-    el.onclick=()=>{ orderState.build.push(o); orderState.bin.splice(k,1); drawOrder(); }; bin.appendChild(el);
+    el.onclick=()=>{ orderState.bin.splice(orderState.bin.indexOf(o),1); orderState.build.push(o); drawOrder(); }; bin.appendChild(el);
   });
   build.innerHTML = orderState.build.length ? '' : '<div class="emptyhint">Tocá los bloques en orden ↑</div>';
-  orderState.build.forEach((o,k)=>{
+  orderState.build.forEach((o)=>{
     const el=document.createElement('div'); el.className='pline'; el.innerHTML=paint(o.t);
-    el.onclick=()=>{ orderState.bin.push(o); orderState.build.splice(k,1); drawOrder(); }; build.appendChild(el);
+    el.onclick=()=>{ orderState.build.splice(orderState.build.indexOf(o),1); orderState.bin.push(o); drawOrder(); }; build.appendChild(el);
   });
   const full = orderState.bin.length===0 && orderState.build.length>0;
   const btn=document.getElementById('checkBtn'); if(btn) btn.disabled=!full;
@@ -832,7 +832,12 @@ function checkOrder(){
   document.querySelectorAll('#pbin .pline').forEach(el=>el.onclick=null);
   document.getElementById('stageOrder').innerHTML='';
   cur.answered=true;
-  feedback(good, ej.explica);
+  let extra=ej.explica;
+  if(!good){
+    const orden=ej.correcto.map((t,k)=>`${k+1}. ${t}`).join('<br>');
+    extra += `<div style="margin-top:10px;padding:10px;background:#0b1220;border-radius:8px;font-size:.88rem"><b>✅ El orden correcto es:</b><br>${orden}</div>`;
+  }
+  feedback(good, extra);
 }
 
 /* -------------------- FEEDBACK -------------------- */

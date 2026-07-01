@@ -503,6 +503,45 @@ const SALAS = [
         explica:'La condición está al revés: gana con puntos = 0. Debería ser puntos = 10 (o el objetivo del juego).' },
     ]
   },
+  {
+    id:'repaso', emoji:'🏁', nom:'Repaso final', desc:'Un poco de todo lo que aprendimos',
+    concepto:'Repaso general',
+    ejs:[
+      { type:'mc', consigna:'Para empezar: ¿qué es un algoritmo?',
+        opts:['Una serie de pasos ordenados para resolver un problema','Una computadora','Un dibujo','Un juego'], correcta:0,
+        explica:'Un algoritmo son pasos en orden para resolver algo. Cuando lo escribimos para que la compu lo ejecute, es un programa.' },
+      { type:'order', consigna:'Ordená el programa para saludar cuando arranca.',
+        correcto:['al hacer clic en 🟢','decir "Hola"','esperar 2 segundos','decir "Chau"'],
+        explica:'Primero el evento que arranca, después las acciones en orden. La secuencia importa.' },
+      { type:'mc', consigna:'¿Qué muestra este programa?',
+        code:'puntos = 0\nrepetir 4 veces:\n    puntos = puntos + 3\nmostrar puntos',
+        opts:['12','7','4','3'], correcta:0,
+        explica:'Suma 3 cuatro veces: 0 → 3 → 6 → 9 → 12. El bucle repite y la variable acumula.' },
+      { type:'mc', consigna:'Seguí la variable. ¿Qué muestra?',
+        code:'vidas = 3\nvidas = vidas - 1\nvidas = vidas - 1\nmostrar vidas',
+        opts:['1','2','3','0'], correcta:0,
+        explica:'3 → 2 → 1. Cada línea cambia el valor guardado.' },
+      { type:'fill', consigna:'Completá: si no quedan vidas, perdiste.',
+        code:'si ___ entonces:\n    mostrar "¡Perdiste!"',
+        opts:['vidas = 0','vidas > 5','puntos = 10','avanzar 10'], correcta:0,
+        explica:'La condición se cumple cuando las vidas llegan a 0.' },
+      { type:'mc', consigna:'¿Qué tipo de dato es "Villa La Angostura"?',
+        opts:['Texto','Número entero','Booleano','Decimal'], correcta:0,
+        explica:'Va entre comillas: es texto (cadena).' },
+      { type:'mc', consigna:'¿Cuánto da? (con el resto sabemos si un número es par)',
+        code:'r = 10 % 2\nmostrar r',
+        opts:['0','1','5','2'], correcta:0,
+        explica:'10 dividido 2 no deja resto → 0. Como el resto es 0, 10 es par.' },
+      { type:'mc', consigna:'Seguí el diagrama. Si el número es 7, ¿qué muestra?',
+        svg: FLOW_PARIMPAR,
+        opts:['es impar','es par','7','Inicio'], correcta:0,
+        explica:'7 no es par (7 % 2 = 1) → camino "No" → "es impar". El rombo decide por dónde seguir.' },
+      { type:'mc', consigna:'Para cerrar: ¿qué figura dibuja este programa?',
+        code:'repetir 4 veces:\n    avanzar 100\n    girar 90 grados',
+        opts:['Un cuadrado','Un triángulo','Una estrella','Una línea'], correcta:0,
+        explica:'4 lados girando 90° = un cuadrado 🟦. ¡Con código también se dibuja! 🎉' },
+    ]
+  },
 ];
 
 /* ============================================================
@@ -719,7 +758,10 @@ function menu(){
     '<div class="salas">';
   SALAS.forEach(s=>{
     const d=done[s.id];
-    h += `<button class="sala" onclick="startSala('${s.id}')">
+    const destacada = s.id==='repaso';
+    const cls = destacada ? 'sala mezcla' : 'sala';
+    const style = destacada ? ' style="background:linear-gradient(90deg,rgba(52,211,153,.2),rgba(56,189,248,.15));border-color:#3a5a63"' : '';
+    h += `<button class="${cls}"${style} onclick="startSala('${s.id}')">
       <div class="emoji">${s.emoji}</div>
       <div class="nom">${s.nom}</div>
       <div class="desc">${s.desc}</div>

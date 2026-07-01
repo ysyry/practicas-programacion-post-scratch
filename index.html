@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica de programación · Post Scratch</title>
+<style>
+  :root{--bg:#0f172a;--card:#1e293b;--card2:#273449;--txt:#e2e8f0;--muted:#94a3b8;
+    --accent:#38bdf8;--good:#34d399;--bad:#f87171;--warn:#fbbf24;--b1:#a78bfa;--b2:#f472b6}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:linear-gradient(160deg,#0f172a,#1e1b4b);color:var(--txt);min-height:100vh}
+  header{padding:16px;text-align:center;position:relative}
+  header h1{margin:0;font-size:1.5rem;background:linear-gradient(90deg,var(--accent),var(--b1),var(--b2));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  header p{margin:4px 0 0;color:var(--muted);font-size:.85rem}
+  .wrap{max-width:720px;margin:0 auto;padding:8px 16px 60px}
+  .card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);margin-bottom:16px}
+  h2{margin:.1em 0 .5em;font-size:1.25rem}
+  h3{font-size:1.05rem;margin:.2em 0}
+  .muted{color:var(--muted)}
+  /* menu de salas */
+  .salas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:540px){.salas{grid-template-columns:1fr}}
+  .sala{background:var(--card2);border:2px solid transparent;border-radius:14px;padding:16px;cursor:pointer;
+    transition:.15s;text-align:left;color:var(--txt);font-family:inherit}
+  .sala:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .sala .emoji{font-size:1.8rem}
+  .sala .nom{font-weight:700;font-size:1.02rem;margin:6px 0 2px}
+  .sala .desc{font-size:.8rem;color:var(--muted)}
+  .sala .prog{font-size:.74rem;color:var(--good);margin-top:8px;font-weight:700}
+  .concepto{display:inline-block;background:rgba(167,139,250,.18);color:var(--b1);border:1px solid rgba(167,139,250,.4);
+    border-radius:99px;padding:3px 11px;font-size:.72rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin-top:8px}
+  .concepto.big{font-size:.78rem;margin:0 0 12px}
+  .sala.mezcla{grid-column:1/-1;background:linear-gradient(90deg,rgba(56,189,248,.15),rgba(167,139,250,.15));
+    border:1px solid #3a4a63}
+  /* barra superior de ejercicio */
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .backb{background:var(--card2);color:var(--txt);border:1px solid #3a4a63;border-radius:99px;
+    padding:8px 14px;font-size:.85rem;cursor:pointer;font-family:inherit}
+  .backb:hover{border-color:var(--accent)}
+  .progtext{margin-left:auto;font-size:.82rem;color:var(--muted)}
+  .score{font-weight:800;color:var(--warn)}
+  .bar{height:8px;background:#0b1220;border-radius:99px;overflow:hidden;margin-bottom:16px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--b1));transition:.3s;width:0}
+  /* consigna y codigo */
+  .consigna{font-size:1.05rem;font-weight:600;margin-bottom:12px;line-height:1.4}
+  .code{background:#0b1220;border:1px solid #334155;border-radius:12px;padding:14px 16px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95rem;line-height:1.7;
+    color:#e2e8f0;white-space:pre;overflow-x:auto;margin:12px 0}
+  .code .kw{color:var(--b1);font-weight:700}
+  .code .num{color:var(--warn)}
+  .code .str{color:var(--good)}
+  .code .cmt{color:var(--muted)}
+  .blank{color:var(--accent);font-weight:800}
+  /* opciones */
+  .opts{display:grid;gap:10px;margin-top:6px}
+  button.opt{background:var(--card2);color:var(--txt);border:2px solid transparent;border-radius:12px;
+    padding:14px;font-size:1rem;text-align:left;cursor:pointer;transition:.12s;font-family:inherit;line-height:1.4}
+  button.opt:hover:not(:disabled){border-color:var(--accent)}
+  button.opt.ok{border-color:var(--good);background:rgba(52,211,153,.15)}
+  button.opt.no{border-color:var(--bad);background:rgba(248,113,113,.13)}
+  button.opt:disabled{cursor:default;opacity:.9}
+  button.opt.mono{font-family:ui-monospace,Menlo,monospace;font-size:.92rem;white-space:pre}
+  /* ordenar (parsons) */
+  .parsons{display:grid;gap:16px}
+  @media(min-width:640px){.parsons{grid-template-columns:1fr 1fr}}
+  .pcol h4{margin:0 0 8px;font-size:.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .pbin,.pbuild{min-height:60px;background:#0b1220;border:1px dashed #3a4a63;border-radius:12px;padding:8px;
+    display:flex;flex-direction:column;gap:8px}
+  .pbuild{border-style:solid;border-color:#334155}
+  .pline{background:var(--card2);border:1px solid #3a4a63;border-radius:10px;padding:11px 12px;cursor:pointer;
+    font-family:ui-monospace,Menlo,monospace;font-size:.9rem;white-space:pre;transition:.12s}
+  .pline:hover{border-color:var(--accent)}
+  .pline.locked{cursor:default}
+  .pline.okline{border-color:var(--good);background:rgba(52,211,153,.12)}
+  .pline.noline{border-color:var(--bad);background:rgba(248,113,113,.12)}
+  .emptyhint{color:var(--muted);font-size:.82rem;text-align:center;padding:14px 6px}
+  /* botones grandes */
+  .btn{background:linear-gradient(90deg,var(--accent),var(--b1));color:#0f172a;font-weight:800;border:none;
+    border-radius:12px;padding:14px;font-size:1.02rem;cursor:pointer;width:100%;margin-top:14px;font-family:inherit}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.ghost{background:var(--card2);color:var(--txt);border:1px solid #3a4a63}
+  /* feedback */
+  .fb{border-radius:12px;padding:14px;margin-top:14px;font-size:.95rem;line-height:1.5;animation:pop .2s}
+  .fb.good{background:rgba(52,211,153,.13);border-left:4px solid var(--good)}
+  .fb.bad{background:rgba(248,113,113,.13);border-left:4px solid var(--bad)}
+  .fb .t{font-weight:800;display:block;margin-bottom:3px}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:scale(1);opacity:1}}
+  /* fin de sala */
+  .final{text-align:center;padding:10px}
+  .final .big{font-size:3.4rem;margin:6px}
+  .final .med{font-size:1.4rem;font-weight:800;margin:8px 0}
+  .final .sub{color:var(--muted);margin-bottom:16px}
+  .streak{font-size:.8rem;color:var(--b2);font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <h1>🚀 Práctica de programación</h1>
+  <p>Lo que aprendiste en Scratch… ¡ahora leyendo código!</p>
+</header>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============================================================
+   PRÁCTICA DE PROGRAMACIÓN (POST SCRATCH) — Educación Informática
+   Para 1ro y 2do (se le van agregando salas). Un único archivo,
+   sin dependencias. Todo corre en el navegador.
+   Concepto: los pibes leen pseudocódigo en castellano (puente
+   Scratch -> texto) y practican secuencia, bucles, condicionales,
+   variables y debugging. Autocorregido con explicación.
+   ============================================================ */
+
+/* -------- coloreado simple de pseudocódigo -------- */
+const KW = ['repetir','veces','si','entonces','sino','mientras','mostrar','decir','esperar',
+  'avanzar','girar','rebotar','al','hacer','clic','en','por','siempre','segundos','tocar','fin'];
+function paint(code){
+  // escapar html
+  let s = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // strings
+  s = s.replace(/"([^"]*)"/g,'<span class="str">"$1"</span>');
+  // comentarios (# ...)
+  s = s.replace(/(#[^\n]*)/g,'<span class="cmt">$1</span>');
+  // huecos ___
+  s = s.replace(/___/g,'<span class="blank">___</span>');
+  // numeros
+  s = s.replace(/\b(\d+)\b/g,'<span class="num">$1</span>');
+  // palabras clave
+  KW.forEach(k=>{ s = s.replace(new RegExp('(?<![\\w])'+k+'(?![\\w])','g'),'<span class="kw">'+k+'</span>'); });
+  return s;
+}
+
+/* ============================================================
+   BANCO DE EJERCICIOS
+   type: 'order' | 'mc' | 'fill' | 'bug'
+   ============================================================ */
+const SALAS = [
+  {
+    id:'sec', emoji:'🧩', nom:'Ordená el código', desc:'Poné las instrucciones en el orden correcto',
+    concepto:'Secuencia',
+    ejs:[
+      { type:'order',
+        consigna:'El gato tiene que saludar cuando arranca el programa. Ordená las instrucciones.',
+        correcto:['al hacer clic en 🟢','decir "Hola"','esperar 2 segundos','decir "Chau"'],
+        explica:'Primero el evento que arranca todo (al hacer clic), y después las acciones en orden: saluda, espera y se despide.' },
+      { type:'order',
+        consigna:'Querés atrapar la manzana: acercarte y sumar un punto. Ordená los pasos.',
+        correcto:['al hacer clic en 🟢','apuntar hacia la manzana','avanzar 50','mostrar "¡Atrapada!"','puntos = puntos + 1'],
+        explica:'Primero apuntás, después avanzás (si no, avanzás para cualquier lado), atrapás y recién ahí sumás el punto.' },
+      { type:'order',
+        consigna:'El personaje del laberinto tiene que dar un paso y girar. Ordená.',
+        correcto:['avanzar 10','girar 90 grados','avanzar 10','girar 90 grados'],
+        explica:'La secuencia importa: avanzar y girar, avanzar y girar. Si cambiás el orden, el recorrido es otro.' },
+      { type:'order',
+        consigna:'Programa que arranca el juego: poné el marcador en cero y mostrá el mensaje de inicio.',
+        correcto:['al hacer clic en 🟢','puntos = 0','mostrar "¡Empezó el juego!"'],
+        explica:'Siempre conviene poner las variables en su valor inicial (puntos = 0) antes de empezar a jugar.' },
+    ]
+  },
+  {
+    id:'buc', emoji:'🔁', nom:'¿Cuántas veces?', desc:'Contá cuántas veces corre un bucle',
+    concepto:'Bucle (repetición)',
+    ejs:[
+      { type:'mc',
+        consigna:'¿Cuántas veces se dibuja un lado?',
+        code:'repetir 4 veces:\n    avanzar 100\n    girar 90 grados',
+        opts:['1 vez','4 veces','90 veces','100 veces'], correcta:1,
+        explica:'"repetir 4 veces" hace que TODO lo de adentro se ejecute 4 veces. Dibuja un cuadrado 🟦.' },
+      { type:'mc',
+        consigna:'¿Qué número muestra al final?',
+        code:'puntos = 0\nrepetir 3 veces:\n    puntos = puntos + 2\nmostrar puntos',
+        opts:['2','3','6','0'], correcta:2,
+        explica:'Empieza en 0 y suma 2 tres veces: 0 → 2 → 4 → 6. El bucle repite la suma.' },
+      { type:'mc',
+        consigna:'¿Cuántas veces dice "hola"?',
+        code:'repetir 5 veces:\n    decir "hola"',
+        opts:['1','5','10','0'], correcta:1,
+        explica:'El número del "repetir" es la cantidad de vueltas: 5.' },
+      { type:'mc',
+        consigna:'¿Qué muestra al terminar?',
+        code:'estrellas = 10\nrepetir 4 veces:\n    estrellas = estrellas - 1\nmostrar estrellas',
+        opts:['10','6','4','0'], correcta:1,
+        explica:'Resta 1 cuatro veces: 10 → 9 → 8 → 7 → 6. Un bucle también puede restar.' },
+    ]
+  },
+  {
+    id:'con', emoji:'🔀', nom:'Completá el hueco', desc:'Elegí la condición o el bloque que falta',
+    concepto:'Condicional (si… entonces)',
+    ejs:[
+      { type:'fill',
+        consigna:'Si al personaje no le quedan vidas, perdió. Completá el hueco (___).',
+        code:'si ___ entonces:\n    mostrar "¡Perdiste!"',
+        opts:['vidas = 0','vidas > 10','puntos = 100','avanzar 10'], correcta:0,
+        explica:'"Perdiste" tiene que aparecer cuando las vidas llegan a 0. Por eso la condición es vidas = 0.' },
+      { type:'fill',
+        consigna:'Cuando juntás 10 puntos, ganás. Completá el hueco.',
+        code:'si puntos ___ 10 entonces:\n    mostrar "¡Ganaste!"',
+        opts:['=','<','avanzar','decir'], correcta:0,
+        explica:'Ganás justo cuando puntos vale 10, así que usamos = (igual a 10).' },
+      { type:'fill',
+        consigna:'El personaje avanza, pero si toca el borde tiene que rebotar. Completá.',
+        code:'avanzar 10\nsi ___ entonces:\n    rebotar',
+        opts:['tocar borde','puntos = 0','esperar 2','mostrar "fin"'], correcta:0,
+        explica:'El rebote depende de tocar el borde: esa es la condición correcta.' },
+      { type:'fill',
+        consigna:'Completá el bloque que falta para que, si NO tiene llave, no pueda abrir la puerta.',
+        code:'si tiene_llave entonces:\n    abrir puerta\nsino:\n    ___',
+        opts:['mostrar "necesitás la llave"','abrir puerta','puntos = puntos + 1','girar 90'], correcta:0,
+        explica:'El "sino" es lo que pasa cuando la condición es falsa: acá, avisar que falta la llave.' },
+    ]
+  },
+  {
+    id:'var', emoji:'📦', nom:'Seguí la variable', desc:'Hacé la traza: ¿qué valor queda?',
+    concepto:'Variables y traza',
+    ejs:[
+      { type:'mc',
+        consigna:'¿Qué muestra?',
+        code:'vidas = 3\nvidas = vidas - 1\nvidas = vidas - 1\nmostrar vidas',
+        opts:['3','2','1','0'], correcta:2,
+        explica:'Empieza en 3 y resta 1 dos veces: 3 → 2 → 1. Cada línea cambia el valor guardado.' },
+      { type:'mc',
+        consigna:'¿Qué muestra al final?',
+        code:'puntos = 0\npuntos = puntos + 5\npuntos = puntos + 3\nmostrar puntos',
+        opts:['5','3','8','0'], correcta:2,
+        explica:'0 + 5 = 5, y 5 + 3 = 8. La variable va acumulando.' },
+      { type:'mc',
+        consigna:'¿Qué valor tiene "nombre" al final?',
+        code:'nombre = "Ana"\nnombre = "Beto"\nmostrar nombre',
+        opts:['"Ana"','"Beto"','"AnaBeto"','error'], correcta:1,
+        explica:'Cuando le asignás un valor nuevo, se pisa el anterior. Queda "Beto".' },
+      { type:'mc',
+        consigna:'¿Qué muestra?',
+        code:'a = 4\nb = a\na = 10\nmostrar b',
+        opts:['4','10','14','0'], correcta:0,
+        explica:'b copió el valor de a (4) en ese momento. Aunque después a cambie a 10, b sigue valiendo 4.' },
+    ]
+  },
+  {
+    id:'bug', emoji:'🐞', nom:'Cazá el error', desc:'Encontrá la línea equivocada',
+    concepto:'Debugging (depuración)',
+    ejs:[
+      { type:'bug',
+        consigna:'Queremos que sume puntos, pero el marcador baja. ¿En qué línea está el error?',
+        lineas:['puntos = 0','repetir 5 veces:','    puntos = puntos - 1','mostrar puntos'],
+        bug:2,
+        explica:'Dice "puntos - 1" (resta). Para sumar tendría que ser "puntos + 1".' },
+      { type:'bug',
+        consigna:'El gato tiene que saludar y DESPUÉS despedirse, pero lo hace al revés. ¿Cuál está mal ubicada?',
+        lineas:['decir "Chau"','esperar 1 segundos','decir "Hola"'],
+        bug:0,
+        explica:'"Chau" está primero. En una secuencia el orden importa: el saludo va antes que la despedida.' },
+      { type:'bug',
+        consigna:'El personaje nunca rebota aunque toque el borde. ¿Dónde está el error?',
+        lineas:['avanzar 10','si tocar borde entonces:','    avanzar 10','fin'],
+        bug:2,
+        explica:'Adentro del "si" dice "avanzar 10", pero debería decir "rebotar". Está la acción equivocada.' },
+      { type:'bug',
+        consigna:'El juego dice "Ganaste" apenas empieza, sin haber jugado. ¿Qué línea está mal?',
+        lineas:['puntos = 0','si puntos = 0 entonces:','    mostrar "¡Ganaste!"'],
+        bug:1,
+        explica:'La condición está al revés: gana con puntos = 0. Debería ser puntos = 10 (o el objetivo del juego).' },
+    ]
+  },
+];
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+const done = {}; // salaId -> {puntos, total} de la mejor pasada
+let cur = null;   // {sala, ejs[], i, puntos, streak, answered}
+
+const app = document.getElementById('app');
+const shuffle = a => { const r=a.slice(); for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];} return r; };
+
+/* -------------------- MENÚ -------------------- */
+function menu(){
+  cur = null;
+  let h = '<div class="card"><h2>Elegí una misión 👇</h2>'+
+    '<p class="muted">Cada sala tiene ejercicios para practicar un concepto. Al final ganás una medalla.</p>'+
+    '<div class="salas">';
+  SALAS.forEach(s=>{
+    const d = done[s.id];
+    const prog = d ? `✔ Mejor: ${d.puntos}/${d.total}` : '';
+    h += `<button class="sala" onclick="startSala('${s.id}')">
+      <div class="emoji">${s.emoji}</div>
+      <div class="nom">${s.nom}</div>
+      <div class="desc">${s.desc}</div>
+      <div class="concepto">${s.concepto}</div>
+      <div class="prog">${prog}</div></button>`;
+  });
+  h += `<button class="sala mezcla" onclick="startSala('mezcla')">
+      <div class="emoji">🎲</div>
+      <div class="nom">Modo Mezcla — desafío final</div>
+      <div class="desc">Ejercicios de todas las salas, mezclados. ¿Te animás?</div></button>`;
+  h += '</div></div>';
+  app.innerHTML = h;
+}
+
+/* -------------------- ARRANCAR SALA -------------------- */
+function startSala(id){
+  let sala, ejs;
+  if(id==='mezcla'){
+    sala = {id:'mezcla', emoji:'🎲', nom:'Modo Mezcla', concepto:'Todos los conceptos'};
+    ejs = shuffle(SALAS.flatMap(s=>s.ejs.map(e=>({...e, concepto:s.concepto})))).slice(0,8);
+  } else {
+    sala = SALAS.find(s=>s.id===id);
+    ejs = shuffle(sala.ejs.map(e=>({...e, concepto:sala.concepto})));
+  }
+  cur = {sala, ejs, i:0, puntos:0, streak:0, answered:false};
+  render();
+}
+
+/* -------------------- RENDER EJERCICIO -------------------- */
+function render(){
+  if(cur.i >= cur.ejs.length){ return finSala(); }
+  const ej = cur.ejs[cur.i];
+  const n = cur.ejs.length;
+  const pct = Math.round((cur.i)/n*100);
+  let h = `<div class="topbar">
+      <button class="backb" onclick="menu()">← Salas</button>
+      <div class="progtext">${cur.sala.emoji} ${cur.i+1}/${n} · <span class="score">${cur.puntos} pts</span></div>
+    </div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="card">
+      <div class="concepto big">📚 Concepto: ${ej.concepto}</div>
+      <div class="consigna">${ej.consigna}</div>`;
+
+  if(ej.code) h += `<div class="code">${paint(ej.code)}</div>`;
+
+  if(ej.type==='order')       h += renderOrder(ej);
+  else if(ej.type==='bug')    h += renderBug(ej);
+  else                        h += renderChoice(ej); // mc / fill
+
+  h += `<div id="fb"></div></div>`;
+  app.innerHTML = h;
+  cur.answered = false;
+  if(ej.type==='order') mountOrder(ej);
+}
+
+/* ---- opción múltiple (mc / fill) ---- */
+function renderChoice(ej){
+  const mono = ej.type==='fill';
+  const opts = ej._opts || (ej._opts = shuffleOpts(ej.opts, ej.correcta));
+  let h = '<div class="opts">';
+  opts.forEach((o,idx)=>{
+    h += `<button class="opt ${mono?'mono':''}" onclick="answerChoice(${idx})">${escapeHtml(o.txt)}</button>`;
+  });
+  h += '</div>';
+  return h;
+}
+function shuffleOpts(opts, correcta){
+  const arr = opts.map((t,i)=>({txt:t, ok:i===correcta}));
+  return shuffle(arr);
+}
+function answerChoice(idx){
+  if(cur.answered) return;
+  cur.answered = true;
+  const ej = cur.ejs[cur.i];
+  const btns = app.querySelectorAll('.opt');
+  const good = ej._opts[idx].ok;
+  btns.forEach((b,i)=>{ b.disabled=true;
+    if(ej._opts[i].ok) b.classList.add('ok');
+    else if(i===idx) b.classList.add('no');
+  });
+  feedback(good, ej.explica);
+}
+
+/* ---- cazá el error (bug) ---- */
+function renderBug(ej){
+  let h = '<div class="opts">';
+  ej.lineas.forEach((l,idx)=>{
+    h += `<button class="opt mono" onclick="answerBug(${idx})">${escapeHtml(l===''?' ':l)}</button>`;
+  });
+  h += '</div><p class="muted" style="font-size:.82rem;margin-top:8px">Tocá la línea que tiene el error 🐞</p>';
+  return h;
+}
+function answerBug(idx){
+  if(cur.answered) return;
+  cur.answered = true;
+  const ej = cur.ejs[cur.i];
+  const good = idx===ej.bug;
+  const btns = app.querySelectorAll('.opt');
+  btns.forEach((b,i)=>{ b.disabled=true;
+    if(i===ej.bug) b.classList.add('ok');
+    else if(i===idx) b.classList.add('no');
+  });
+  feedback(good, ej.explica);
+}
+
+/* ---- ordená el código (parsons) ---- */
+let orderState;
+function renderOrder(ej){
+  return `<div class="parsons">
+    <div class="pcol"><h4>Bloques disponibles</h4><div class="pbin" id="pbin"></div></div>
+    <div class="pcol"><h4>Tu programa</h4><div class="pbuild" id="pbuild"></div></div>
+  </div>
+  <button class="btn" id="checkBtn" onclick="checkOrder()" disabled>Comprobar ✓</button>`;
+}
+function mountOrder(ej){
+  orderState = { bin: shuffle(ej.correcto.map((t,i)=>({t,i}))), build:[] };
+  drawOrder();
+}
+function drawOrder(){
+  const bin = document.getElementById('pbin');
+  const build = document.getElementById('pbuild');
+  bin.innerHTML = orderState.bin.length ? '' : '<div class="emptyhint">— vacío —</div>';
+  orderState.bin.forEach((o,k)=>{
+    const el = document.createElement('div'); el.className='pline';
+    el.innerHTML = paint(o.t); el.onclick=()=>{ orderState.build.push(o); orderState.bin.splice(k,1); drawOrder(); };
+    bin.appendChild(el);
+  });
+  build.innerHTML = orderState.build.length ? '' : '<div class="emptyhint">Tocá los bloques en orden ↑</div>';
+  orderState.build.forEach((o,k)=>{
+    const el = document.createElement('div'); el.className='pline'; el.innerHTML = paint(o.t);
+    el.onclick=()=>{ orderState.bin.push(o); orderState.build.splice(k,1); drawOrder(); };
+    build.appendChild(el);
+  });
+  const btn = document.getElementById('checkBtn');
+  if(btn) btn.disabled = orderState.bin.length>0 || orderState.build.length===0;
+}
+function checkOrder(){
+  if(cur.answered) return;
+  const ej = cur.ejs[cur.i];
+  let good = true;
+  const build = document.getElementById('pbuild');
+  build.querySelectorAll('.pline').forEach((el,k)=>{
+    el.classList.add('locked'); el.onclick=null;
+    const ok = orderState.build[k].i === k;
+    el.classList.add(ok?'okline':'noline');
+    if(!ok) good=false;
+  });
+  document.getElementById('checkBtn').disabled = true;
+  document.querySelectorAll('#pbin .pline').forEach(el=>el.onclick=null);
+  cur.answered = true;
+  feedback(good, ej.explica);
+}
+
+/* -------------------- FEEDBACK -------------------- */
+function feedback(good, explica){
+  if(good){ cur.puntos++; cur.streak++; } else { cur.streak=0; }
+  const fb = document.getElementById('fb');
+  const rachas = cur.streak>=3 ? `<div class="streak">🔥 ¡Racha de ${cur.streak}!</div>` : '';
+  fb.innerHTML = `<div class="fb ${good?'good':'bad'}">
+      <span class="t">${good?'¡Correcto! 🎉':'Casi… 🤔'}</span>
+      ${explica}${rachas}
+    </div>
+    <button class="btn" onclick="next()">${cur.i+1>=cur.ejs.length?'Ver resultado 🏁':'Siguiente →'}</button>`;
+  fb.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function next(){ cur.i++; render(); }
+
+/* -------------------- FIN DE SALA -------------------- */
+function finSala(){
+  const total = cur.ejs.length, pts = cur.puntos;
+  const ratio = pts/total;
+  let med, emoji, msg;
+  if(ratio===1){ med='🥇 ¡Oro!'; emoji='🏆'; msg='¡Todas bien! Sos un crack del código.'; }
+  else if(ratio>=0.6){ med='🥈 Plata'; emoji='🎉'; msg='¡Muy bien! Ya casi lo dominás.'; }
+  else { med='🥉 Bronce'; emoji='💪'; msg='¡Buen intento! Volvé a probar para mejorar.'; }
+
+  // guardar mejor puntaje (no aplica a mezcla)
+  if(cur.sala.id!=='mezcla'){
+    const prev = done[cur.sala.id];
+    if(!prev || pts>prev.puntos) done[cur.sala.id] = {puntos:pts, total};
+  }
+
+  app.innerHTML = `<div class="card final">
+      <div class="big">${emoji}</div>
+      <div class="med">${med}</div>
+      <div style="font-size:1.3rem;font-weight:700">${pts} / ${total}</div>
+      <div class="sub">${msg}</div>
+      <button class="btn" onclick="startSala('${cur.sala.id}')">Reintentar 🔄</button>
+      <button class="btn ghost" onclick="menu()">← Volver a las salas</button>
+    </div>`;
+}
+
+/* -------------------- utils -------------------- */
+function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+menu();
+</script>
+</body>
+</html>

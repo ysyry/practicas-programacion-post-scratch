@@ -29,11 +29,11 @@
   .sala .nom{font-weight:700;font-size:1.02rem;margin:6px 0 2px}
   .sala .desc{font-size:.8rem;color:var(--muted)}
   .sala .prog{font-size:.74rem;color:var(--good);margin-top:8px;font-weight:700}
+  .sala.mezcla{grid-column:1/-1;background:linear-gradient(90deg,rgba(56,189,248,.15),rgba(167,139,250,.15));
+    border:1px solid #3a4a63}
   .concepto{display:inline-block;background:rgba(167,139,250,.18);color:var(--b1);border:1px solid rgba(167,139,250,.4);
     border-radius:99px;padding:3px 11px;font-size:.72rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin-top:8px}
   .concepto.big{font-size:.78rem;margin:0 0 12px}
-  .sala.mezcla{grid-column:1/-1;background:linear-gradient(90deg,rgba(56,189,248,.15),rgba(167,139,250,.15));
-    border:1px solid #3a4a63}
   /* barra superior de ejercicio */
   .topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
   .backb{background:var(--card2);color:var(--txt);border:1px solid #3a4a63;border-radius:99px;
@@ -45,13 +45,16 @@
   .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--b1));transition:.3s;width:0}
   /* consigna y codigo */
   .consigna{font-size:1.05rem;font-weight:600;margin-bottom:12px;line-height:1.4}
-  .code{background:#0b1220;border:1px solid #334155;border-radius:12px;padding:14px 16px;
+  .code,.cblock{background:#0b1220;border:1px solid #334155;border-radius:12px;padding:14px 16px;
     font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.95rem;line-height:1.7;
-    color:#e2e8f0;white-space:pre;overflow-x:auto;margin:12px 0}
-  .code .kw{color:var(--b1);font-weight:700}
-  .code .num{color:var(--warn)}
-  .code .str{color:var(--good)}
-  .code .cmt{color:var(--muted)}
+    color:#e2e8f0;overflow-x:auto;margin:12px 0}
+  .code{white-space:pre}
+  .cline{white-space:pre;border-radius:6px;padding:0 6px;margin:0 -6px;transition:.15s}
+  .cline.hot{background:rgba(251,191,36,.22);box-shadow:inset 3px 0 0 var(--warn)}
+  .kw{color:var(--b1);font-weight:700}
+  .num{color:var(--warn)}
+  .str{color:var(--good)}
+  .cmt{color:var(--muted)}
   .blank{color:var(--accent);font-weight:800}
   /* opciones */
   .opts{display:grid;gap:10px;margin-top:6px}
@@ -76,6 +79,22 @@
   .pline.okline{border-color:var(--good);background:rgba(52,211,153,.12)}
   .pline.noline{border-color:var(--bad);background:rgba(248,113,113,.12)}
   .emptyhint{color:var(--muted);font-size:.82rem;text-align:center;padding:14px 6px}
+  /* ESCENARIO (animacion) */
+  .stage{background:#0b1220;border:1px solid #334155;border-radius:14px;padding:12px;margin-top:6px}
+  .sttitle{font-size:.85rem;font-weight:800;color:var(--accent);margin:2px 0 8px}
+  .stcanvas{width:100%;max-width:340px;height:auto;display:block;margin:6px auto;background:#0a0f1c;
+    border-radius:10px;border:1px solid #1e293b}
+  .vpanel{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px;min-height:26px}
+  .vchip{background:var(--card2);border:1px solid #3a4a63;border-radius:8px;padding:5px 10px;font-size:.86rem;
+    font-family:ui-monospace,Menlo,monospace;transition:.15s}
+  .vchip.chg{border-color:var(--warn);background:rgba(251,191,36,.15);transform:scale(1.06)}
+  .vchip b{color:var(--warn)}
+  .out{background:#05080f;border:1px solid #1e293b;border-radius:8px;padding:8px 12px;margin:8px 0 4px;
+    font-family:ui-monospace,Menlo,monospace;font-size:.88rem;color:var(--good);min-height:20px}
+  .runctrl{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .rbtn{background:linear-gradient(90deg,var(--accent),var(--b1));color:#0f172a;font-weight:800;border:none;
+    border-radius:10px;padding:9px 14px;font-size:.9rem;cursor:pointer;font-family:inherit}
+  .rbtn.ghost{background:var(--card2);color:var(--txt);border:1px solid #3a4a63}
   /* botones grandes */
   .btn{background:linear-gradient(90deg,var(--accent),var(--b1));color:#0f172a;font-weight:800;border:none;
     border-radius:12px;padding:14px;font-size:1.02rem;cursor:pointer;width:100%;margin-top:14px;font-family:inherit}
@@ -107,26 +126,20 @@
    PRÁCTICA DE PROGRAMACIÓN (POST SCRATCH) — Educación Informática
    Para 1ro y 2do (se le van agregando salas). Un único archivo,
    sin dependencias. Todo corre en el navegador.
-   Concepto: los pibes leen pseudocódigo en castellano (puente
-   Scratch -> texto) y practican secuencia, bucles, condicionales,
-   variables y debugging. Autocorregido con explicación.
+   Los pibes leen pseudocódigo en castellano (puente Scratch->texto)
+   y practican secuencia, bucles, condicionales, variables y debug.
+   Autocorregido + ESCENARIO animado que ejecuta el código.
    ============================================================ */
 
 /* -------- coloreado simple de pseudocódigo -------- */
 const KW = ['repetir','veces','si','entonces','sino','mientras','mostrar','decir','esperar',
-  'avanzar','girar','rebotar','al','hacer','clic','en','por','siempre','segundos','tocar','fin'];
+  'avanzar','girar','rebotar','al','hacer','clic','en','por','siempre','segundos','tocar','fin','grados','y','o','distinto'];
 function paint(code){
-  // escapar html
   let s = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // strings
   s = s.replace(/"([^"]*)"/g,'<span class="str">"$1"</span>');
-  // comentarios (# ...)
   s = s.replace(/(#[^\n]*)/g,'<span class="cmt">$1</span>');
-  // huecos ___
   s = s.replace(/___/g,'<span class="blank">___</span>');
-  // numeros
   s = s.replace(/\b(\d+)\b/g,'<span class="num">$1</span>');
-  // palabras clave
   KW.forEach(k=>{ s = s.replace(new RegExp('(?<![\\w])'+k+'(?![\\w])','g'),'<span class="kw">'+k+'</span>'); });
   return s;
 }
@@ -146,42 +159,117 @@ const SALAS = [
         explica:'Primero el evento que arranca todo (al hacer clic), y después las acciones en orden: saluda, espera y se despide.' },
       { type:'order',
         consigna:'Querés atrapar la manzana: acercarte y sumar un punto. Ordená los pasos.',
-        correcto:['al hacer clic en 🟢','apuntar hacia la manzana','avanzar 50','mostrar "¡Atrapada!"','puntos = puntos + 1'],
-        explica:'Primero apuntás, después avanzás (si no, avanzás para cualquier lado), atrapás y recién ahí sumás el punto.' },
+        correcto:['al hacer clic en 🟢','apuntar hacia la manzana','avanzar 50','decir "¡Atrapada!"','puntos = puntos + 1'],
+        explica:'Primero apuntás, después avanzás (si no, vas para cualquier lado), atrapás y recién ahí sumás el punto.' },
       { type:'order',
-        consigna:'El personaje del laberinto tiene que dar un paso y girar. Ordená.',
-        correcto:['avanzar 10','girar 90 grados','avanzar 10','girar 90 grados'],
+        consigna:'El personaje del laberinto tiene que dar un paso y girar. Ordená. (Probá tu orden con ▶ para ver el recorrido)',
+        correcto:['avanzar 100','girar 90 grados','avanzar 100','girar 90 grados'],
         explica:'La secuencia importa: avanzar y girar, avanzar y girar. Si cambiás el orden, el recorrido es otro.' },
       { type:'order',
         consigna:'Programa que arranca el juego: poné el marcador en cero y mostrá el mensaje de inicio.',
-        correcto:['al hacer clic en 🟢','puntos = 0','mostrar "¡Empezó el juego!"'],
+        correcto:['al hacer clic en 🟢','puntos = 0','decir "¡Empezó el juego!"'],
         explica:'Siempre conviene poner las variables en su valor inicial (puntos = 0) antes de empezar a jugar.' },
+      { type:'order',
+        consigna:'Hacé que el personaje dibuje una escalera: subí, girá, subí, girá, subí. Ordená y probá con ▶.',
+        correcto:['avanzar 100','girar 90 grados','avanzar 100','girar 90 grados','avanzar 100'],
+        explica:'Cada "avanzar/girar" agrega un tramo. Con ▶ ves el recorrido que dibuja tu orden.' },
     ]
   },
   {
-    id:'buc', emoji:'🔁', nom:'¿Cuántas veces?', desc:'Contá cuántas veces corre un bucle',
+    id:'alg', emoji:'🧭', nom:'Algoritmos', desc:'¿Qué es un algoritmo? Ordená pasos para resolver algo',
+    concepto:'Algoritmo',
+    ejs:[
+      { type:'mc', consigna:'¿Qué es un algoritmo?',
+        opts:['Una serie de pasos ordenados para resolver un problema','Un lenguaje de programación','Una parte de la computadora','Un error en el programa'], correcta:0,
+        explica:'Un algoritmo es una secuencia de pasos, en orden y sin ambigüedad, que resuelve un problema. ¡Una receta también es un algoritmo!' },
+      { type:'mc', consigna:'¿Cuál de estas cosas NO es un algoritmo?',
+        opts:['La foto de un paisaje','Una receta de cocina','Los pasos para armar un mueble','Las instrucciones para llegar a la escuela'], correcta:0,
+        explica:'Una foto no describe pasos. Las recetas e instrucciones SÍ son algoritmos: dicen qué hacer y en qué orden.' },
+      { type:'order', consigna:'Ordená el algoritmo para preparar un mate 🧉',
+        correcto:['calentar el agua','poner la yerba en el mate','servir el agua caliente','tomar el mate'],
+        explica:'Un algoritmo tiene los pasos en orden. Si servís el agua antes de poner la yerba… no sale mate.' },
+      { type:'order', consigna:'Ordená el algoritmo para mandar un mensaje 📱',
+        correcto:['desbloquear el teléfono','abrir la app de mensajes','elegir el contacto','escribir el mensaje','tocar enviar'],
+        explica:'Cada paso depende del anterior: no podés escribir el mensaje sin abrir la app primero.' },
+      { type:'mc', consigna:'Un buen algoritmo tiene que tener los pasos…',
+        opts:['en orden y sin dejar lugar a dudas','desordenados','lo más largos posible','en otro idioma'], correcta:0,
+        explica:'Claridad y orden: cada paso bien definido para que siempre dé el mismo resultado.' },
+    ]
+  },
+  {
+    id:'ope', emoji:'➗', nom:'Operadores y números', desc:'Cuentas, división, resto — como en mate',
+    concepto:'Operadores y matemática',
+    ejs:[
+      { type:'mc', consigna:'¿Cuánto vale resultado? (ojo el orden de las operaciones)',
+        code:'resultado = 2 + 3 * 4\nmostrar resultado', opts:['20','14','24','9'], correcta:1,
+        explica:'Primero se multiplica y después se suma: 3*4=12, y 2+12=14. Igual que en matemática.' },
+      { type:'mc', consigna:'Reparto 12 caramelos entre 4 chicos. ¿Cuántos le tocan a cada uno?',
+        code:'caramelos = 12\nchicos = 4\ncada_uno = caramelos / chicos\nmostrar cada_uno', opts:['3','4','8','48'], correcta:0,
+        explica:'La división: 12 / 4 = 3. Cada chico recibe 3 caramelos.' },
+      { type:'mc', consigna:'El operador % (resto) da lo que "sobra" de una división. ¿Cuánto da?',
+        code:'sobra = 17 % 5\nmostrar sobra', opts:['2','3','12','85'], correcta:0,
+        explica:'17 dividido 5 es 3 y sobran 2 (porque 5*3=15, y 17-15=2). El resto es 2.' },
+      { type:'mc', consigna:'Con el resto sabemos si un número es PAR. ¿Qué muestra para el 8?',
+        code:'numero = 8\nresto = numero % 2\nmostrar resto', opts:['0','1','4','8'], correcta:0,
+        explica:'Si un número es par, al dividir por 2 el resto es 0. 8 % 2 = 0 → ¡es par! (los impares dan 1).' },
+      { type:'mc', consigna:'⚡ ¿Cuánto vale total? (mirá los paréntesis)',
+        code:'a = 10\nb = 4\ntotal = (a - b) * 2\nmostrar total', opts:['12','16','2','6'], correcta:0,
+        explica:'Los paréntesis van primero: (10-4)=6, y 6*2=12.' },
+    ]
+  },
+  {
+    id:'tip', emoji:'🏷️', nom:'Tipos de datos', desc:'Entero, decimal, texto, verdadero/falso',
+    concepto:'Tipos de datos',
+    ejs:[
+      { type:'mc', consigna:'¿Qué tipo de dato es el 42?',
+        opts:['Número entero','Número decimal','Texto','Booleano (verdadero/falso)'], correcta:0,
+        explica:'42 es un número entero: sin coma. Los enteros son los que ven en matemática (…, -1, 0, 1, 2…).' },
+      { type:'mc', consigna:'¿Y el 3.5?',
+        opts:['Número decimal','Número entero','Texto','Booleano'], correcta:0,
+        explica:'Tiene coma (parte decimal), así que es un número decimal.' },
+      { type:'mc', consigna:'¿Qué tipo de dato es "Villa La Angostura"?',
+        opts:['Texto (cadena)','Número entero','Booleano','Decimal'], correcta:0,
+        explica:'Va entre comillas: es texto (también se lo llama cadena o "string").' },
+      { type:'mc', consigna:'¿Qué tipo de dato es verdadero?',
+        opts:['Booleano','Texto','Entero','Decimal'], correcta:0,
+        explica:'Verdadero / Falso es un dato booleano: sirve para las condiciones (si… entonces).' },
+      { type:'mc', consigna:'Una comparación devuelve un booleano. ¿Qué muestra?',
+        code:'resultado = 5 > 3\nmostrar resultado', opts:['verdadero','falso','8','2'], correcta:0,
+        explica:'5 es mayor que 3, así que la comparación da verdadero. ¡Los > < = devuelven booleanos!' },
+      { type:'mc', consigna:'¿Cuál de estos valores es un número entero?',
+        opts:['7','7.5','"7"','falso'], correcta:0,
+        explica:'7 es entero. 7.5 es decimal, "7" es texto (tiene comillas) y falso es booleano.' },
+    ]
+  },
+  {
+    id:'buc', emoji:'🔁', nom:'¿Cuántas veces?', desc:'Contá repeticiones y mirá qué dibuja',
     concepto:'Bucle (repetición)',
     ejs:[
       { type:'mc',
         consigna:'¿Cuántas veces se dibuja un lado?',
         code:'repetir 4 veces:\n    avanzar 100\n    girar 90 grados',
         opts:['1 vez','4 veces','90 veces','100 veces'], correcta:1,
-        explica:'"repetir 4 veces" hace que TODO lo de adentro se ejecute 4 veces. Dibuja un cuadrado 🟦.' },
+        explica:'"repetir 4 veces" hace que TODO lo de adentro se ejecute 4 veces. Dibuja un cuadrado 🟦 (mirá el escenario).' },
+      { type:'mc',
+        consigna:'¿Qué figura dibuja este código?',
+        code:'repetir 3 veces:\n    avanzar 100\n    girar 120 grados',
+        opts:['Un triángulo','Un cuadrado','Una línea recta','Un círculo'], correcta:0,
+        explica:'3 lados iguales girando 120° cada vez = un triángulo. ¡Mirá cómo lo dibuja!' },
       { type:'mc',
         consigna:'¿Qué número muestra al final?',
         code:'puntos = 0\nrepetir 3 veces:\n    puntos = puntos + 2\nmostrar puntos',
         opts:['2','3','6','0'], correcta:2,
         explica:'Empieza en 0 y suma 2 tres veces: 0 → 2 → 4 → 6. El bucle repite la suma.' },
       { type:'mc',
-        consigna:'¿Cuántas veces dice "hola"?',
-        code:'repetir 5 veces:\n    decir "hola"',
-        opts:['1','5','10','0'], correcta:1,
-        explica:'El número del "repetir" es la cantidad de vueltas: 5.' },
-      { type:'mc',
         consigna:'¿Qué muestra al terminar?',
         code:'estrellas = 10\nrepetir 4 veces:\n    estrellas = estrellas - 1\nmostrar estrellas',
         opts:['10','6','4','0'], correcta:1,
         explica:'Resta 1 cuatro veces: 10 → 9 → 8 → 7 → 6. Un bucle también puede restar.' },
+      { type:'mc',
+        consigna:'⚡ Difícil: ¿qué muestra? (la variable se suma a sí misma)',
+        code:'n = 1\nrepetir 4 veces:\n    n = n + n\nmostrar n',
+        opts:['4','5','16','8'], correcta:2,
+        explica:'Se duplica cada vuelta: 1 → 2 → 4 → 8 → 16. Seguilo en el panel de variables.' },
     ]
   },
   {
@@ -208,6 +296,37 @@ const SALAS = [
         code:'si tiene_llave entonces:\n    abrir puerta\nsino:\n    ___',
         opts:['mostrar "necesitás la llave"','abrir puerta','puntos = puntos + 1','girar 90'], correcta:0,
         explica:'El "sino" es lo que pasa cuando la condición es falsa: acá, avisar que falta la llave.' },
+      { type:'fill',
+        consigna:'⚡ Difícil: solo abre si tiene la llave Y la puerta está cerrada. Completá.',
+        code:'si tiene_llave ___ puerta_cerrada entonces:\n    abrir puerta',
+        opts:['y','o','+','no'], correcta:0,
+        explica:'Se tienen que cumplir las DOS cosas a la vez → usamos "y" (ambas verdaderas).' },
+    ]
+  },
+  {
+    id:'dec', emoji:'🧠', nom:'Decisiones', desc:'Condicionales anidados y con y / o',
+    concepto:'Condicionales complejos',
+    ejs:[
+      { type:'mc', consigna:'¿Qué mensaje muestra?',
+        code:'puntos = 8\nsi puntos > 10 entonces:\n    mostrar "¡Ganaste!"\nsino:\n    mostrar "Seguí jugando"',
+        opts:['Seguí jugando','¡Ganaste!','8','nada'], correcta:0,
+        explica:'puntos vale 8 y 8 no es mayor que 10, así que se ejecuta el "sino".' },
+      { type:'mc', consigna:'Sistema de notas. Con nota = 7, ¿qué muestra?',
+        code:'nota = 7\nsi nota > 8 entonces:\n    mostrar "Excelente"\nsino:\n    si nota > 5 entonces:\n        mostrar "Aprobado"\n    sino:\n        mostrar "A recuperar"',
+        opts:['Aprobado','Excelente','A recuperar','7'], correcta:0,
+        explica:'7 no es > 8 (no es Excelente), pero sí es > 5 → "Aprobado". Esto es un condicional anidado.' },
+      { type:'mc', consigna:'Entra solo si es mayor de 18 Y tiene entrada. ¿Qué muestra?',
+        code:'edad = 20\ntiene_entrada = falso\nsi edad >= 18 y tiene_entrada entonces:\n    mostrar "Pasá"\nsino:\n    mostrar "No podés pasar"',
+        opts:['No podés pasar','Pasá','verdadero','20'], correcta:0,
+        explica:'Con "y" se tienen que cumplir las DOS. Es mayor (✓) pero no tiene entrada (✗) → no pasa.' },
+      { type:'mc', consigna:'Hay descuento si sos jubilado O estudiante. Con estudiante = verdadero, ¿qué muestra?',
+        code:'jubilado = falso\nestudiante = verdadero\nsi jubilado o estudiante entonces:\n    mostrar "Tenés descuento"\nsino:\n    mostrar "Precio completo"',
+        opts:['Tenés descuento','Precio completo','falso','nada'], correcta:0,
+        explica:'Con "o" alcanza con que UNA sea verdadera. No es jubilado, pero sí estudiante → hay descuento.' },
+      { type:'mc', consigna:'⚡ ¿Qué muestra? Fijate el rango de temperatura.',
+        code:'temp = 25\nsi temp < 10 entonces:\n    mostrar "Frío"\nsino:\n    si temp < 24 entonces:\n        mostrar "Templado"\n    sino:\n        mostrar "Calor"',
+        opts:['Calor','Templado','Frío','25'], correcta:0,
+        explica:'25 no es < 10 ni < 24, así que cae en el último "sino" → "Calor".' },
     ]
   },
   {
@@ -234,6 +353,11 @@ const SALAS = [
         code:'a = 4\nb = a\na = 10\nmostrar b',
         opts:['4','10','14','0'], correcta:0,
         explica:'b copió el valor de a (4) en ese momento. Aunque después a cambie a 10, b sigue valiendo 4.' },
+      { type:'mc',
+        consigna:'⚡ Difícil: se intercambian valores. ¿Qué muestra b?',
+        code:'a = 5\nb = 3\na = a + b\nb = a - b\nmostrar b',
+        opts:['3','5','8','2'], correcta:1,
+        explica:'a = 5+3 = 8. Después b = 8-3 = 5. ¡Terminaron intercambiados! Seguilo en el panel.' },
     ]
   },
   {
@@ -244,7 +368,7 @@ const SALAS = [
         consigna:'Queremos que sume puntos, pero el marcador baja. ¿En qué línea está el error?',
         lineas:['puntos = 0','repetir 5 veces:','    puntos = puntos - 1','mostrar puntos'],
         bug:2,
-        explica:'Dice "puntos - 1" (resta). Para sumar tendría que ser "puntos + 1".' },
+        explica:'Dice "puntos - 1" (resta). Para sumar tendría que ser "puntos + 1". Mirá cómo el marcador se va a negativo.' },
       { type:'bug',
         consigna:'El gato tiene que saludar y DESPUÉS despedirse, pero lo hace al revés. ¿Cuál está mal ubicada?',
         lineas:['decir "Chau"','esperar 1 segundos','decir "Hola"'],
@@ -256,6 +380,11 @@ const SALAS = [
         bug:2,
         explica:'Adentro del "si" dice "avanzar 10", pero debería decir "rebotar". Está la acción equivocada.' },
       { type:'bug',
+        consigna:'El marcador tendría que arrancar en 0, pero empieza inflado. ¿Qué línea está mal?',
+        lineas:['puntos = 10','repetir 3 veces:','    puntos = puntos + 1','mostrar puntos'],
+        bug:0,
+        explica:'Arranca en 10 en vez de 0, entonces termina en 13. La primera línea debería ser "puntos = 0".' },
+      { type:'bug',
         consigna:'El juego dice "Ganaste" apenas empieza, sin haber jugado. ¿Qué línea está mal?',
         lineas:['puntos = 0','si puntos = 0 entonces:','    mostrar "¡Ganaste!"'],
         bug:1,
@@ -265,29 +394,224 @@ const SALAS = [
 ];
 
 /* ============================================================
+   MOTOR: parsear + simular pseudocódigo -> frames de animación
+   ============================================================ */
+function lexExpr(s){
+  const out=[]; const re=/("[^"]*"|>=|<=|==|!=|[()+\-*/%<>=]|[A-Za-zÁÉÍÓÚáéíóúñÑ_]\w*|\d+\.\d+|\d+)/g;
+  let m; while(m=re.exec(s)) out.push(m[0]); return out;
+}
+function truthy(v){ return !(v===false||v===0||v===''||v==null); }
+function showVal(v){ return typeof v==='boolean' ? (v?'verdadero':'falso') : String(v); }
+/* evaluador con precedencia: o < y < comparación < +/- < * / % < unario/paréntesis */
+function evalExpr(expr, vars){
+  const T=lexExpr(String(expr)); let p=0;
+  const peek=()=>T[p], eat=()=>T[p++];
+  const num=v=> typeof v==='number'?v:(typeof v==='boolean'?(v?1:0):(parseFloat(v)||0));
+  function primary(){
+    let t=eat();
+    if(t==='('){ const v=orE(); if(peek()===')') eat(); return v; }
+    if(t==='-') return -num(primary());
+    if(t==='no') return !truthy(primary());
+    if(t==null) return 0;
+    if(t[0]==='"') return t.slice(1,-1);
+    if(/^\d+\.\d+$/.test(t)) return parseFloat(t);
+    if(/^\d+$/.test(t)) return parseInt(t,10);
+    if(t==='verdadero') return true;
+    if(t==='falso') return false;
+    return (t in vars)?vars[t]:0;
+  }
+  function mulE(){ let v=primary(); while(['*','/','%'].includes(peek())){ const o=eat(), r=primary();
+    v = o==='*'?num(v)*num(r): o==='/'?num(v)/num(r): num(v)%num(r); } return v; }
+  function addE(){ let v=mulE(); while(peek()==='+'||peek()==='-'){ const o=eat(), r=mulE();
+    v = o==='+' ? ((typeof v==='string'||typeof r==='string')?String(v)+String(r):num(v)+num(r)) : num(v)-num(r); } return v; }
+  function cmpE(){ let v=addE(); const o=peek();
+    if(['>','<','>=','<=','==','=','!=','distinto'].includes(o)){ eat(); const r=addE();
+      switch(o){ case '>':return num(v)>num(r); case '<':return num(v)<num(r);
+        case '>=':return num(v)>=num(r); case '<=':return num(v)<=num(r);
+        case '==': case '=':return v===r||num(v)===num(r);
+        case '!=': case 'distinto':return !(v===r||num(v)===num(r)); } }
+    return v; }
+  function andE(){ let v=cmpE(); while(peek()==='y'){ eat(); const r=cmpE(); v=truthy(v)&&truthy(r); } return v; }
+  function orE(){ let v=andE(); while(peek()==='o'){ eat(); const r=andE(); v=truthy(v)||truthy(r); } return v; }
+  return orE();
+}
+function parseProg(lines){
+  let i=0;
+  function block(minIndent){
+    const out=[];
+    while(i<lines.length){
+      const raw=lines[i];
+      if(!raw.trim()){ i++; continue; }
+      const ind = raw.length - raw.replace(/^\s+/,'').length;
+      if(ind < minIndent) break;
+      const line=i, t=raw.trim(); let m;
+      if(m=t.match(/^repetir\s+(\d+)\s+veces:?$/i)){ i++; const body=block(ind+1); out.push({op:'repeat',n:+m[1],line,body}); }
+      else if(m=t.match(/^si\s+(.+?)\s+entonces:?$/i)){
+        i++; const body=block(ind+1); let elseBody=null;
+        let j=i; while(j<lines.length && !lines[j].trim()) j++;
+        if(j<lines.length && (lines[j].length-lines[j].replace(/^\s+/,'').length)===ind && /^sino:?$/i.test(lines[j].trim())){
+          i=j+1; elseBody=block(ind+1);
+        }
+        out.push({op:'if',cond:m[1],line,body,elseBody});
+      }
+      else { i++; out.push(parseLeaf(t,line)); }
+    }
+    return out;
+  }
+  return block(-1);
+}
+function parseLeaf(t,line){
+  let m;
+  if(m=t.match(/^avanzar\s+(\d+)/i))        return {op:'move',v:+m[1],line};
+  if(m=t.match(/^girar\s+(\d+)/i))          return {op:'turn',v:+m[1],line};
+  if(/^rebotar/i.test(t))                   return {op:'turn',v:180,line};
+  if(/^apuntar/i.test(t))                   return {op:'point',line};
+  if(m=t.match(/^(?:mostrar|decir)\s+(.+)$/i)) return {op:'show',expr:m[1],line};
+  if(/^esperar/i.test(t))                   return {op:'wait',line};
+  if(m=t.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/)) return {op:'assign',name:m[1],expr:m[2],line};
+  return {op:'nop',line};
+}
+function simulate(lines){
+  const ast=parseProg(lines);
+  const frames=[]; const vars={};
+  const t={x:0,y:0,heading:0}; const trail=[{x:0,y:0}]; const out=[];
+  function snap(line, extra){
+    frames.push(Object.assign({line, vars:Object.assign({},vars),
+      turtle:{x:t.x,y:t.y,heading:t.heading}, trail:trail.map(p=>({x:p.x,y:p.y})), out:out.slice()}, extra||{}));
+  }
+  function run(nodes){
+    for(const n of nodes){
+      if(n.op==='repeat'){ snap(n.line); for(let k=0;k<n.n;k++) run(n.body); }
+      else if(n.op==='if'){ snap(n.line); if(truthy(evalExpr(n.cond,vars))) run(n.body); else if(n.elseBody) run(n.elseBody); }
+      else if(n.op==='move'){ const a=(t.heading-90)*Math.PI/180; t.x+=Math.cos(a)*n.v; t.y+=Math.sin(a)*n.v; trail.push({x:t.x,y:t.y}); snap(n.line); }
+      else if(n.op==='turn'){ t.heading+=n.v; snap(n.line); }
+      else if(n.op==='assign'){ vars[n.name]=evalExpr(n.expr,vars); snap(n.line,{changed:n.name}); }
+      else if(n.op==='show'){ const r=showVal(evalExpr(n.expr,vars)); out.push(r); snap(n.line,{say:r}); }
+      else snap(n.line);
+    }
+  }
+  run(ast);
+  if(!frames.length) snap(-1);
+  return frames;
+}
+
+/* -------- dibujo del escenario -------- */
+function fitTransform(trail,W,H){
+  let a=1e9,b=1e9,c=-1e9,d=-1e9;
+  trail.forEach(p=>{a=Math.min(a,p.x);b=Math.min(b,p.y);c=Math.max(c,p.x);d=Math.max(d,p.y);});
+  if(!isFinite(a)){a=b=c=d=0;}
+  const w=Math.max(c-a,1), h=Math.max(d-b,1), pad=36;
+  const s=Math.min((W-2*pad)/w,(H-2*pad)/h,8);
+  return {s, ox:(W-w*s)/2 - a*s, oy:(H-h*s)/2 - b*s};
+}
+function drawFrame(cv, frame, fullTrail){
+  const ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(148,163,184,.08)'; ctx.lineWidth=1;
+  for(let g=0;g<W;g+=26){ctx.beginPath();ctx.moveTo(g,0);ctx.lineTo(g,H);ctx.stroke();}
+  for(let g=0;g<H;g+=26){ctx.beginPath();ctx.moveTo(0,g);ctx.lineTo(W,g);ctx.stroke();}
+  const tf=fitTransform(fullTrail,W,H);
+  const T=p=>({x:p.x*tf.s+tf.ox, y:p.y*tf.s+tf.oy});
+  const tr=frame.trail;
+  if(tr.length>1){ ctx.strokeStyle='#38bdf8'; ctx.lineWidth=3; ctx.lineJoin='round'; ctx.lineCap='round';
+    ctx.beginPath(); tr.forEach((p,k)=>{const q=T(p); k?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);}); ctx.stroke(); }
+  const pos=T(frame.turtle), ang=(frame.turtle.heading-90)*Math.PI/180;
+  ctx.save(); ctx.translate(pos.x,pos.y); ctx.rotate(ang);
+  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.moveTo(15,0); ctx.lineTo(-9,-10); ctx.lineTo(-9,10); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#0f172a'; ctx.beginPath(); ctx.arc(-1,0,3.2,0,7); ctx.fill();
+  ctx.restore();
+  if(frame.say!=null && frame.say!==''){
+    ctx.font='13px system-ui'; const txt='💬 '+frame.say; const tw=ctx.measureText(txt).width;
+    let bx=pos.x+12, by=pos.y-24; bx=Math.min(bx,W-tw-16); bx=Math.max(bx,6);
+    ctx.fillStyle='rgba(15,23,42,.92)'; ctx.strokeStyle='#334155';
+    ctx.beginPath(); ctx.roundRect(bx-6,by-16,tw+12,24,8); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#e2e8f0'; ctx.fillText(txt,bx,by);
+  }
+}
+
+/* -------- montar escenario interactivo -------- */
+function fmt(v){ if(typeof v==='boolean') return v?'verdadero':'falso'; return typeof v==='string' ? '"'+v+'"' : v; }
+function codeLinesHtml(lines){
+  return lines.map((l,i)=>`<div class="cline" data-l="${i}">${paint(l)||' '}</div>`).join('');
+}
+function simulatable(lines){
+  const j=lines.join('\n');
+  return /\b(avanzar|girar|rebotar|mostrar|decir|repetir|si)\b/i.test(j) || lines.some(l=>/^\s*[a-zA-Z_]\w*\s*=\s*.+/.test(l));
+}
+function mountStage(container, lines, opts){
+  opts=opts||{};
+  const code=lines.join('\n');
+  const hasMove=/\b(avanzar|girar|rebotar)\b/i.test(code);
+  const hasVar=lines.some(l=>/^\s*[a-zA-Z_]\w*\s*=\s*.+/.test(l));
+  const hasShow=/\b(mostrar|decir)\b/i.test(code);
+  const frames=simulate(lines);
+  const full=frames[frames.length-1].trail;
+  container.innerHTML =
+    `<div class="cblock">${codeLinesHtml(lines)}</div>`+
+    (hasMove?'<canvas class="stcanvas" width="320" height="200"></canvas>':'')+
+    (hasVar?'<div class="vpanel"></div>':'')+
+    (hasShow?'<div class="out"></div>':'')+
+    `<div class="runctrl">
+       <button class="rbtn" data-a="play">▶ Ejecutar</button>
+       <button class="rbtn ghost" data-a="step">⏭ Paso</button>
+       <button class="rbtn ghost" data-a="reset">↺</button>
+     </div>`;
+  const codeEl=container.querySelector('.cblock');
+  const cv=container.querySelector('.stcanvas');
+  const vp=container.querySelector('.vpanel');
+  const op=container.querySelector('.out');
+  let idx=-1, timer=null;
+  function paintFrame(i){
+    idx=i;
+    const f = i<0 ? {line:-1,vars:{},turtle:{x:0,y:0,heading:0},trail:[{x:0,y:0}],out:[]} : frames[i];
+    codeEl.querySelectorAll('.cline').forEach(el=>el.classList.toggle('hot',+el.dataset.l===f.line));
+    if(cv) drawFrame(cv,f,full);
+    if(vp) vp.innerHTML = Object.keys(f.vars).length
+      ? Object.keys(f.vars).map(k=>`<span class="vchip ${f.changed===k?'chg':''}">${k} = <b>${fmt(f.vars[k])}</b></span>`).join('')
+      : '<span class="muted" style="font-size:.8rem">(sin variables todavía)</span>';
+    if(op) op.innerHTML = f.out.length ? '🖥️ '+f.out.map(escapeHtml).join('   ')
+      : '<span class="muted" style="font-size:.82rem">🖥️ pantalla</span>';
+  }
+  function stop(){ if(timer){clearInterval(timer);timer=null;} }
+  function play(){ stop(); if(idx>=frames.length-1) idx=-1; timer=setInterval(()=>{
+      if(idx>=frames.length-1){stop();return;} paintFrame(idx+1); }, 700); paintFrame(idx+1); }
+  function step(){ stop(); if(idx>=frames.length-1) idx=-1; paintFrame(idx+1); }
+  container.querySelector('[data-a=play]').onclick=play;
+  container.querySelector('[data-a=step]').onclick=step;
+  container.querySelector('[data-a=reset]').onclick=()=>{stop();paintFrame(-1);};
+  paintFrame(-1);
+  if(opts.autoplay) play();
+}
+
+/* ============================================================
    ESTADO
    ============================================================ */
-const done = {}; // salaId -> {puntos, total} de la mejor pasada
-let cur = null;   // {sala, ejs[], i, puntos, streak, answered}
-
+const done = {};
+let cur = null;
 const app = document.getElementById('app');
 const shuffle = a => { const r=a.slice(); for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];} return r; };
+
+function getRunLines(ej){
+  if(ej.code && !ej.code.includes('___')) return ej.code.split('\n');
+  if(ej.lineas) return ej.lineas.slice();
+  return null;
+}
+function runnableStage(ej){ const l=getRunLines(ej); return l && simulatable(l); }
 
 /* -------------------- MENÚ -------------------- */
 function menu(){
   cur = null;
   let h = '<div class="card"><h2>Elegí una misión 👇</h2>'+
-    '<p class="muted">Cada sala tiene ejercicios para practicar un concepto. Al final ganás una medalla.</p>'+
+    '<p class="muted">Cada sala practica un concepto. Respondé y después mirá el 🎬 escenario para ver qué hace el código.</p>'+
     '<div class="salas">';
   SALAS.forEach(s=>{
-    const d = done[s.id];
-    const prog = d ? `✔ Mejor: ${d.puntos}/${d.total}` : '';
+    const d=done[s.id];
     h += `<button class="sala" onclick="startSala('${s.id}')">
       <div class="emoji">${s.emoji}</div>
       <div class="nom">${s.nom}</div>
       <div class="desc">${s.desc}</div>
       <div class="concepto">${s.concepto}</div>
-      <div class="prog">${prog}</div></button>`;
+      <div class="prog">${d?('✔ Mejor: '+d.puntos+'/'+d.total):''}</div></button>`;
   });
   h += `<button class="sala mezcla" onclick="startSala('mezcla')">
       <div class="emoji">🎲</div>
@@ -302,10 +626,10 @@ function startSala(id){
   let sala, ejs;
   if(id==='mezcla'){
     sala = {id:'mezcla', emoji:'🎲', nom:'Modo Mezcla', concepto:'Todos los conceptos'};
-    ejs = shuffle(SALAS.flatMap(s=>s.ejs.map(e=>({...e, concepto:s.concepto})))).slice(0,8);
+    ejs = shuffle(SALAS.flatMap(s=>s.ejs.map(e=>Object.assign({},e,{concepto:s.concepto})))).slice(0,8);
   } else {
     sala = SALAS.find(s=>s.id===id);
-    ejs = shuffle(sala.ejs.map(e=>({...e, concepto:sala.concepto})));
+    ejs = shuffle(sala.ejs.map(e=>Object.assign({},e,{concepto:sala.concepto})));
   }
   cur = {sala, ejs, i:0, puntos:0, streak:0, answered:false};
   render();
@@ -314,9 +638,7 @@ function startSala(id){
 /* -------------------- RENDER EJERCICIO -------------------- */
 function render(){
   if(cur.i >= cur.ejs.length){ return finSala(); }
-  const ej = cur.ejs[cur.i];
-  const n = cur.ejs.length;
-  const pct = Math.round((cur.i)/n*100);
+  const ej = cur.ejs[cur.i], n=cur.ejs.length, pct=Math.round(cur.i/n*100);
   let h = `<div class="topbar">
       <button class="backb" onclick="menu()">← Salas</button>
       <div class="progtext">${cur.sala.emoji} ${cur.i+1}/${n} · <span class="score">${cur.puntos} pts</span></div>
@@ -328,64 +650,44 @@ function render(){
 
   if(ej.code) h += `<div class="code">${paint(ej.code)}</div>`;
 
-  if(ej.type==='order')       h += renderOrder(ej);
-  else if(ej.type==='bug')    h += renderBug(ej);
-  else                        h += renderChoice(ej); // mc / fill
+  if(ej.type==='order')    h += renderOrder(ej);
+  else if(ej.type==='bug') h += renderBug(ej);
+  else                     h += renderChoice(ej);
 
   h += `<div id="fb"></div></div>`;
   app.innerHTML = h;
-  cur.answered = false;
+  cur.answered=false;
   if(ej.type==='order') mountOrder(ej);
 }
 
 /* ---- opción múltiple (mc / fill) ---- */
 function renderChoice(ej){
   const mono = ej.type==='fill';
-  const opts = ej._opts || (ej._opts = shuffleOpts(ej.opts, ej.correcta));
-  let h = '<div class="opts">';
-  opts.forEach((o,idx)=>{
-    h += `<button class="opt ${mono?'mono':''}" onclick="answerChoice(${idx})">${escapeHtml(o.txt)}</button>`;
-  });
-  h += '</div>';
-  return h;
-}
-function shuffleOpts(opts, correcta){
-  const arr = opts.map((t,i)=>({txt:t, ok:i===correcta}));
-  return shuffle(arr);
+  const opts = ej._opts || (ej._opts = shuffle(ej.opts.map((t,i)=>({txt:t, ok:i===ej.correcta}))));
+  let h='<div class="opts">';
+  opts.forEach((o,idx)=> h+=`<button class="opt ${mono?'mono':''}" onclick="answerChoice(${idx})">${escapeHtml(o.txt)}</button>`);
+  return h+'</div>';
 }
 function answerChoice(idx){
-  if(cur.answered) return;
-  cur.answered = true;
-  const ej = cur.ejs[cur.i];
-  const btns = app.querySelectorAll('.opt');
-  const good = ej._opts[idx].ok;
-  btns.forEach((b,i)=>{ b.disabled=true;
-    if(ej._opts[i].ok) b.classList.add('ok');
-    else if(i===idx) b.classList.add('no');
-  });
-  feedback(good, ej.explica);
+  if(cur.answered) return; cur.answered=true;
+  const ej=cur.ejs[cur.i];
+  app.querySelectorAll('.opt').forEach((b,i)=>{ b.disabled=true;
+    if(ej._opts[i].ok) b.classList.add('ok'); else if(i===idx) b.classList.add('no'); });
+  feedback(ej._opts[idx].ok, ej.explica);
 }
 
 /* ---- cazá el error (bug) ---- */
 function renderBug(ej){
-  let h = '<div class="opts">';
-  ej.lineas.forEach((l,idx)=>{
-    h += `<button class="opt mono" onclick="answerBug(${idx})">${escapeHtml(l===''?' ':l)}</button>`;
-  });
-  h += '</div><p class="muted" style="font-size:.82rem;margin-top:8px">Tocá la línea que tiene el error 🐞</p>';
-  return h;
+  let h='<div class="opts">';
+  ej.lineas.forEach((l,idx)=> h+=`<button class="opt mono" onclick="answerBug(${idx})">${escapeHtml(l===''?' ':l)}</button>`);
+  return h+'</div><p class="muted" style="font-size:.82rem;margin-top:8px">Tocá la línea que tiene el error 🐞</p>';
 }
 function answerBug(idx){
-  if(cur.answered) return;
-  cur.answered = true;
-  const ej = cur.ejs[cur.i];
-  const good = idx===ej.bug;
-  const btns = app.querySelectorAll('.opt');
-  btns.forEach((b,i)=>{ b.disabled=true;
-    if(i===ej.bug) b.classList.add('ok');
-    else if(i===idx) b.classList.add('no');
-  });
-  feedback(good, ej.explica);
+  if(cur.answered) return; cur.answered=true;
+  const ej=cur.ejs[cur.i];
+  app.querySelectorAll('.opt').forEach((b,i)=>{ b.disabled=true;
+    if(i===ej.bug) b.classList.add('ok'); else if(i===idx) b.classList.add('no'); });
+  feedback(idx===ej.bug, ej.explica);
 }
 
 /* ---- ordená el código (parsons) ---- */
@@ -395,6 +697,7 @@ function renderOrder(ej){
     <div class="pcol"><h4>Bloques disponibles</h4><div class="pbin" id="pbin"></div></div>
     <div class="pcol"><h4>Tu programa</h4><div class="pbuild" id="pbuild"></div></div>
   </div>
+  <div id="stageOrder"></div>
   <button class="btn" id="checkBtn" onclick="checkOrder()" disabled>Comprobar ✓</button>`;
 }
 function mountOrder(ej){
@@ -402,69 +705,72 @@ function mountOrder(ej){
   drawOrder();
 }
 function drawOrder(){
-  const bin = document.getElementById('pbin');
-  const build = document.getElementById('pbuild');
+  const ej=cur.ejs[cur.i];
+  const bin=document.getElementById('pbin'), build=document.getElementById('pbuild');
   bin.innerHTML = orderState.bin.length ? '' : '<div class="emptyhint">— vacío —</div>';
   orderState.bin.forEach((o,k)=>{
-    const el = document.createElement('div'); el.className='pline';
-    el.innerHTML = paint(o.t); el.onclick=()=>{ orderState.build.push(o); orderState.bin.splice(k,1); drawOrder(); };
-    bin.appendChild(el);
+    const el=document.createElement('div'); el.className='pline'; el.innerHTML=paint(o.t);
+    el.onclick=()=>{ orderState.build.push(o); orderState.bin.splice(k,1); drawOrder(); }; bin.appendChild(el);
   });
   build.innerHTML = orderState.build.length ? '' : '<div class="emptyhint">Tocá los bloques en orden ↑</div>';
   orderState.build.forEach((o,k)=>{
-    const el = document.createElement('div'); el.className='pline'; el.innerHTML = paint(o.t);
-    el.onclick=()=>{ orderState.bin.push(o); orderState.build.splice(k,1); drawOrder(); };
-    build.appendChild(el);
+    const el=document.createElement('div'); el.className='pline'; el.innerHTML=paint(o.t);
+    el.onclick=()=>{ orderState.bin.push(o); orderState.build.splice(k,1); drawOrder(); }; build.appendChild(el);
   });
-  const btn = document.getElementById('checkBtn');
-  if(btn) btn.disabled = orderState.bin.length>0 || orderState.build.length===0;
+  const full = orderState.bin.length===0 && orderState.build.length>0;
+  const btn=document.getElementById('checkBtn'); if(btn) btn.disabled=!full;
+  // escenario "probar mi orden"
+  const stg=document.getElementById('stageOrder');
+  if(stg){
+    const lines=orderState.build.map(o=>o.t);
+    if(full && simulatable(lines)){
+      stg.innerHTML='<div class="sttitle" style="margin-top:12px">🎬 Probá tu orden antes de comprobar:</div><div class="stage" id="stgO"></div>';
+      mountStage(document.getElementById('stgO'), lines);
+    } else stg.innerHTML='';
+  }
 }
 function checkOrder(){
   if(cur.answered) return;
-  const ej = cur.ejs[cur.i];
-  let good = true;
-  const build = document.getElementById('pbuild');
-  build.querySelectorAll('.pline').forEach((el,k)=>{
+  const ej=cur.ejs[cur.i]; let good=true;
+  document.querySelectorAll('#pbuild .pline').forEach((el,k)=>{
     el.classList.add('locked'); el.onclick=null;
-    const ok = orderState.build[k].i === k;
-    el.classList.add(ok?'okline':'noline');
-    if(!ok) good=false;
+    const ok=orderState.build[k].i===k; el.classList.add(ok?'okline':'noline'); if(!ok) good=false;
   });
-  document.getElementById('checkBtn').disabled = true;
+  document.getElementById('checkBtn').disabled=true;
   document.querySelectorAll('#pbin .pline').forEach(el=>el.onclick=null);
-  cur.answered = true;
+  document.getElementById('stageOrder').innerHTML='';
+  cur.answered=true;
   feedback(good, ej.explica);
 }
 
 /* -------------------- FEEDBACK -------------------- */
 function feedback(good, explica){
   if(good){ cur.puntos++; cur.streak++; } else { cur.streak=0; }
-  const fb = document.getElementById('fb');
-  const rachas = cur.streak>=3 ? `<div class="streak">🔥 ¡Racha de ${cur.streak}!</div>` : '';
+  const ej=cur.ejs[cur.i];
+  const fb=document.getElementById('fb');
+  const racha = cur.streak>=3 ? `<div class="streak">🔥 ¡Racha de ${cur.streak}!</div>` : '';
   fb.innerHTML = `<div class="fb ${good?'good':'bad'}">
-      <span class="t">${good?'¡Correcto! 🎉':'Casi… 🤔'}</span>
-      ${explica}${rachas}
+      <span class="t">${good?'¡Correcto! 🎉':'Casi… 🤔'}</span>${explica}${racha}
     </div>
+    <div id="stageWrap"></div>
     <button class="btn" onclick="next()">${cur.i+1>=cur.ejs.length?'Ver resultado 🏁':'Siguiente →'}</button>`;
+  if(runnableStage(ej) && ej.type!=='order'){
+    const sw=document.getElementById('stageWrap');
+    sw.innerHTML='<div class="sttitle" style="margin-top:14px">🎬 Mirá cómo corre este código:</div><div class="stage" id="stgFb"></div>';
+    mountStage(document.getElementById('stgFb'), getRunLines(ej), {autoplay:true});
+  }
   fb.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 function next(){ cur.i++; render(); }
 
 /* -------------------- FIN DE SALA -------------------- */
 function finSala(){
-  const total = cur.ejs.length, pts = cur.puntos;
-  const ratio = pts/total;
-  let med, emoji, msg;
+  const total=cur.ejs.length, pts=cur.puntos, ratio=pts/total;
+  let med,emoji,msg;
   if(ratio===1){ med='🥇 ¡Oro!'; emoji='🏆'; msg='¡Todas bien! Sos un crack del código.'; }
   else if(ratio>=0.6){ med='🥈 Plata'; emoji='🎉'; msg='¡Muy bien! Ya casi lo dominás.'; }
   else { med='🥉 Bronce'; emoji='💪'; msg='¡Buen intento! Volvé a probar para mejorar.'; }
-
-  // guardar mejor puntaje (no aplica a mezcla)
-  if(cur.sala.id!=='mezcla'){
-    const prev = done[cur.sala.id];
-    if(!prev || pts>prev.puntos) done[cur.sala.id] = {puntos:pts, total};
-  }
-
+  if(cur.sala.id!=='mezcla'){ const prev=done[cur.sala.id]; if(!prev||pts>prev.puntos) done[cur.sala.id]={puntos:pts,total}; }
   app.innerHTML = `<div class="card final">
       <div class="big">${emoji}</div>
       <div class="med">${med}</div>
@@ -476,7 +782,7 @@ function finSala(){
 }
 
 /* -------------------- utils -------------------- */
-function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 menu();
 </script>

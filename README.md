@@ -14,14 +14,30 @@ que avanzan los cursos (mismo link para todos).
 | Sala | Concepto | Qué practican |
 |------|----------|---------------|
 | 🧩 Ordená el código | **Secuencia** | Poner instrucciones en orden (Parsons) |
-| 🔁 ¿Cuántas veces? | **Bucle** | Contar repeticiones y su efecto |
+| 🧭 Algoritmos | **Algoritmo** | Qué es un algoritmo + ordenar pasos cotidianos |
+| ➗ Operadores y números | **Operadores / matemática** | Cuentas, división, resto `%`, par/impar, precedencia |
+| 🏷️ Tipos de datos | **Tipos de datos** | Entero, decimal, texto, booleano |
+| 🔁 ¿Cuántas veces? | **Bucle** | Contar repeticiones y qué dibuja |
 | 🔀 Completá el hueco | **Condicional** | Elegir la condición / bloque `si… entonces` |
+| 🧠 Decisiones | **Condicionales complejos** | Anidados y con `y` / `o` |
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
 | 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
 | 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
 
 Cada ejercicio muestra el nombre del concepto, es **autocorregido** y da una
 **explicación** al responder. Puntaje, racha y medallas (oro/plata/bronce).
+
+## Escenario animado 🎬
+
+Después de responder (o al probar tu orden en "Ordená"), un **escenario** ejecuta el
+código: un personaje se mueve/dibuja en un canvas, un **panel de variables** muestra
+cómo cambian los valores paso a paso, y una **pantalla** muestra la salida. Controles:
+▶ Ejecutar, ⏭ Paso, ↺ reiniciar. Sirve para *ver* qué hace el código, no solo leerlo.
+
+El pseudocódigo soporta: `avanzar` / `girar` / `rebotar` (movimiento), variables y
+asignaciones, operadores `+ - * / %` con precedencia y paréntesis, comparaciones
+(`> < >= <= = distinto`), lógicos (`y` `o` `no`), `repetir N veces:` y `si… sino:`
+(incluso anidados).
 
 ## Cómo se usa
 

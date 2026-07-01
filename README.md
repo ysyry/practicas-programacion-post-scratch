@@ -14,7 +14,8 @@ que avanzan los cursos (mismo link para todos).
 | Sala | Concepto | Qué practican |
 |------|----------|---------------|
 | 🧩 Ordená el código | **Secuencia** | Poner instrucciones en orden (Parsons) |
-| 🧭 Algoritmos | **Algoritmo** | Qué es un algoritmo + ordenar pasos cotidianos |
+| 🧭 Algoritmos | **Algoritmo / programa** | Qué es un algoritmo y un programa + ordenar pasos |
+| 🔷 Diagramas de flujo | **Diagrama de flujo** | Leer algoritmos dibujados (óvalo/rectángulo/rombo/flecha) |
 | ➗ Operadores y números | **Operadores / matemática** | Cuentas, división, resto `%`, par/impar, precedencia |
 | 🏷️ Tipos de datos | **Tipos de datos** | Entero, decimal, texto, booleano |
 | 🔁 ¿Cuántas veces? | **Bucle** | Contar repeticiones y qué dibuja |
@@ -25,7 +26,11 @@ que avanzan los cursos (mismo link para todos).
 | 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
 
 Cada ejercicio muestra el nombre del concepto, es **autocorregido** y da una
-**explicación** al responder. Puntaje, racha y medallas (oro/plata/bronce).
+**explicación** al responder. Si te equivocás, podés **corregir y reintentar** en el
+momento (la explicación conceptual queda a la vista). Puntaje, racha y medallas.
+
+Se refuerza la idea de que **lo que se escribe es un programa** que la computadora
+ejecuta línea por línea (se ve en el escenario animado).
 
 ## Escenario animado 🎬
 

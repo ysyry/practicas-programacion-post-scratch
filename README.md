@@ -19,10 +19,12 @@ que avanzan los cursos (mismo link para todos).
 | ➗ Operadores y números | **Operadores / matemática** | Cuentas, división, resto `%`, par/impar, precedencia |
 | 🏷️ Tipos de datos | **Tipos de datos** | Entero, decimal, texto, booleano |
 | 🔁 ¿Cuántas veces? | **Bucle** | Contar repeticiones y qué dibuja |
+| 🎨 Dibujar con código | **Arte generativo** | Programar figuras (triángulo, estrella, hexágono) |
 | 🔀 Completá el hueco | **Condicional** | Elegir la condición / bloque `si… entonces` |
 | 🧠 Decisiones | **Condicionales complejos** | Anidados y con `y` / `o` |
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
 | 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
+| 🎨 Estudio de dibujo | Modo libre | Perillas (repetición/largo/giro) → la tortuga dibuja en vivo |
 | 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
 
 Cada ejercicio muestra el nombre del concepto, es **autocorregido** y da una

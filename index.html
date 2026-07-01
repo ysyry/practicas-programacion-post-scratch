@@ -96,6 +96,8 @@
     border-radius:10px;padding:9px 14px;font-size:.9rem;cursor:pointer;font-family:inherit}
   .rbtn.ghost{background:var(--card2);color:var(--txt);border:1px solid #3a4a63}
   .cbhdr{font-size:.78rem;font-weight:800;color:var(--b2);margin:2px 0 6px;letter-spacing:.2px}
+  .slider{width:100%;accent-color:var(--accent);margin:2px 0 10px;cursor:pointer}
+  .hint{background:rgba(251,191,36,.1);border-left:3px solid var(--warn);padding:9px 12px;border-radius:8px;font-size:.88rem;margin:10px 0}
   /* diagramas de flujo */
   .flow{background:#0b1220;border:1px solid #334155;border-radius:12px;padding:12px;margin:12px 0;text-align:center}
   .flowsvg{width:100%;max-width:330px;height:auto}
@@ -360,6 +362,26 @@ const SALAS = [
         code:'n = 1\nrepetir 4 veces:\n    n = n + n\nmostrar n',
         opts:['4','5','16','8'], correcta:2,
         explica:'Se duplica cada vuelta: 1 → 2 → 4 → 8 → 16. Seguilo en el panel de variables.' },
+    ]
+  },
+  {
+    id:'dib', emoji:'🎨', nom:'Dibujar con código', desc:'Hacé arte y figuras moviendo la tortuga',
+    concepto:'Dibujo con código (arte generativo)',
+    ejs:[
+      { type:'order', consigna:'Ordená el programa para dibujar un triángulo 🔺 (armalo y tocá ▶ para verlo dibujarse)',
+        correcto:['avanzar 100','girar 120 grados','avanzar 100','girar 120 grados','avanzar 100'],
+        explica:'Tres lados iguales, girando 120° entre cada uno, forman un triángulo. ¡Con código también se dibuja!' },
+      { type:'mc', consigna:'¿Qué figura dibuja este programa?',
+        code:'repetir 5 veces:\n    avanzar 100\n    girar 144 grados',
+        opts:['Una estrella','Un cuadrado','Un triángulo','Una línea'], correcta:0,
+        explica:'Repetir 5 veces girando 144° dibuja una estrella de 5 puntas ⭐. ¡Cambiando el ángulo cambia el dibujo!' },
+      { type:'mc', consigna:'Este programa gira 60° cada vez. ¿Cuántos lados va a tener la figura?',
+        code:'repetir 6 veces:\n    avanzar 80\n    girar 60 grados',
+        opts:['6 (un hexágono)','3','2','360'], correcta:0,
+        explica:'360 ÷ 60 = 6, así que la figura cierra con 6 lados: un hexágono. ¡La matemática decide la forma!' },
+      { type:'mc', consigna:'Programar dibujos con repeticiones y figuras se llama…',
+        opts:['arte generativo','arte con lápiz','una foto','un video'], correcta:0,
+        explica:'¡Arte generativo! Con pocas líneas de código y bucles se crean patrones y figuras. Ideal si te gusta dibujar. Probá el 🎨 Estudio de dibujo del menú.' },
     ]
   },
   {
@@ -704,6 +726,10 @@ function menu(){
       <div class="concepto">${s.concepto}</div>
       <div class="prog">${d?('✔ Mejor: '+d.puntos+'/'+d.total):''}</div></button>`;
   });
+  h += `<button class="sala mezcla" onclick="estudio()" style="background:linear-gradient(90deg,rgba(244,114,182,.2),rgba(251,191,36,.16));border-color:#5a4a63">
+      <div class="emoji">🎨</div>
+      <div class="nom">Estudio de dibujo — modo libre</div>
+      <div class="desc">Movés las perillas y programás arte con la tortuga. ¡Para los que aman dibujar!</div></button>`;
   h += `<button class="sala mezcla" onclick="startSala('mezcla')">
       <div class="emoji">🎲</div>
       <div class="nom">Modo Mezcla — desafío final</div>
@@ -824,9 +850,10 @@ function drawOrder(){
 function checkOrder(){
   if(cur.answered) return;
   const ej=cur.ejs[cur.i]; let good=true;
+  const built=orderState.build.map(o=>o.t);   // comparar por TEXTO (soporta bloques repetidos)
   document.querySelectorAll('#pbuild .pline').forEach((el,k)=>{
     el.classList.add('locked'); el.onclick=null;
-    const ok=orderState.build[k].i===k; el.classList.add(ok?'okline':'noline'); if(!ok) good=false;
+    const ok=built[k]===ej.correcto[k]; el.classList.add(ok?'okline':'noline'); if(!ok) good=false;
   });
   document.getElementById('checkBtn').disabled=true;
   document.querySelectorAll('#pbin .pline').forEach(el=>el.onclick=null);
@@ -864,6 +891,53 @@ function feedback(good, explica){
 }
 function retry(){ render(); }   // mismo ejercicio, intento nuevo (no reshuffle de opciones en mc)
 function next(){ cur.i++; render(); }
+
+/* -------------------- ESTUDIO DE DIBUJO (modo libre) -------------------- */
+function shapeHint(ang){
+  const nice={30:'un dodecágono (12 lados, ¡casi un círculo!) ⭕',36:'una estrella / decágono ⭐',45:'un octágono (8 lados)',60:'un hexágono (6 lados) ⬡',
+    72:'un pentágono (5 lados) ⬠',90:'un cuadrado 🟦',120:'un triángulo 🔺',144:'una estrella de 5 puntas ⭐',180:'una línea que va y vuelve ➖'};
+  if(nice[ang]) return `Con giro <b>${ang}°</b> intentás dibujar <b>${nice[ang]}</b>.`;
+  if(360%ang===0) return `Con giro <b>${ang}°</b> la figura cierra en <b>${360/ang} lados</b> (360 ÷ ${ang}).`;
+  return `Giro <b>${ang}°</b>: no divide justo a 360, ¡así que sale una espiral o figura abierta! 🌀`;
+}
+function estudio(){
+  cur=null;
+  app.innerHTML = `<div class="topbar">
+      <button class="backb" onclick="menu()">← Salas</button>
+      <div class="progtext">🎨 Estudio de dibujo</div>
+    </div>
+    <div class="card">
+      <h2>🎨 Estudio de dibujo</h2>
+      <p class="muted">Movés las perillas y la tortuga <b>dibuja con tu programa</b>. Cambiá el <b>giro</b> y mirá cómo aparecen triángulos, cuadrados, estrellas y espirales. ¡Estás haciendo arte con código!</p>
+      <label>🔁 Repeticiones: <b id="vRep">6</b></label>
+      <input type="range" id="sRep" class="slider" min="2" max="24" value="6">
+      <label>📏 Largo del paso: <b id="vLen">80</b></label>
+      <input type="range" id="sLen" class="slider" min="15" max="120" step="5" value="80">
+      <label>🔄 Giro (grados): <b id="vAng">120</b></label>
+      <input type="range" id="sAng" class="slider" min="10" max="180" step="1" value="120">
+      <div id="estHint" class="hint"></div>
+      <div class="cbhdr">💻 Tu programa (esto es lo que ejecuta la compu):</div>
+      <div class="code" id="estCode"></div>
+      <canvas id="estCanvas" class="stcanvas" width="330" height="250"></canvas>
+      <button class="btn ghost" id="estAnim">🎬 Verla dibujarse paso a paso</button>
+      <div id="estStage"></div>
+    </div>`;
+  const G=id=>document.getElementById(id);
+  function linesNow(){ return [`repetir ${+G('sRep').value} veces:`, `    avanzar ${+G('sLen').value}`, `    girar ${+G('sAng').value} grados`]; }
+  function upd(){
+    const rep=+G('sRep').value, len=+G('sLen').value, ang=+G('sAng').value;
+    G('vRep').textContent=rep; G('vLen').textContent=len; G('vAng').textContent=ang;
+    const lines=linesNow();
+    G('estCode').innerHTML=paint(lines.join('\n'));
+    const f=simulate(lines); const last=f[f.length-1];
+    drawFrame(G('estCanvas'), last, last.trail);
+    G('estHint').innerHTML=shapeHint(ang);
+    G('estStage').innerHTML='';
+  }
+  ['sRep','sLen','sAng'].forEach(id=>G(id).oninput=upd);
+  G('estAnim').onclick=()=>{ G('estStage').innerHTML='<div class="stage" id="estS"></div>'; mountStage(G('estS'), linesNow(), {autoplay:true}); };
+  upd();
+}
 
 /* -------------------- FIN DE SALA -------------------- */
 function finSala(){

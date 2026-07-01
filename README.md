@@ -39,10 +39,12 @@ ejecuta línea por línea (se ve en el escenario animado).
 ## Modo Jr (accesibilidad / DUA) 🎈
 
 Nivel ScratchJr para estudiantes que necesitan una entrada más simple (p. ej. una
-alumna con síndrome de Down). Sin texto para leer: se arma una secuencia de **flechas
-grandes** (⬆️➡️⬇️⬅️) para llevar un personaje hasta su objetivo en una grilla. Botones
-grandes, refuerzo positivo ("¡Muy bien! 🌟"), sin puntaje ni presión de tiempo, y el
-personaje nunca se cae del tablero. 4 misiones de dificultad creciente.
+alumna con síndrome de Down). **Sin texto para leer y sin audio** (la escuela no tiene
+parlantes): la consigna es puramente visual (`personaje ➡️ objetivo`) y el objetivo
+también se ve en la grilla. Se arma una secuencia de **flechas grandes** (⬆️➡️⬇️⬅️)
+para llevar al personaje hasta su objetivo. Botones grandes, refuerzo con emojis
+(🎉🌟👏), sin puntaje ni presión de tiempo, y el personaje nunca se cae del tablero.
+4 misiones de dificultad creciente.
 
 ## Escenario animado 🎬
 

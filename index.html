@@ -997,13 +997,13 @@ function estudio(){
   upd();
 }
 
-/* -------------------- MODO Jr (nivel ScratchJr, accesible) -------------------- */
+/* -------------------- MODO Jr (nivel ScratchJr, sin lectura, con voz) -------------------- */
 const JR_ICON={U:'⬆️',D:'⬇️',L:'⬅️',R:'➡️'};
 const JR=[
-  { char:'🐢', goal:'⭐', cols:3, rows:1, start:{c:0,r:0}, target:{c:2,r:0}, txt:'Llevá la 🐢 a la ⭐' },
-  { char:'🐱', goal:'🍎', cols:4, rows:1, start:{c:0,r:0}, target:{c:3,r:0}, txt:'Llevá el 🐱 a la 🍎' },
-  { char:'🚗', goal:'🏁', cols:5, rows:1, start:{c:0,r:0}, target:{c:4,r:0}, txt:'Llevá el 🚗 a la 🏁' },
-  { char:'🐰', goal:'🥕', cols:3, rows:2, start:{c:0,r:1}, target:{c:2,r:0}, txt:'Llevá el 🐰 a la 🥕' },
+  { char:'🐢', goal:'⭐', cols:3, rows:1, start:{c:0,r:0}, target:{c:2,r:0} },
+  { char:'🐱', goal:'🍎', cols:4, rows:1, start:{c:0,r:0}, target:{c:3,r:0} },
+  { char:'🚗', goal:'🏁', cols:5, rows:1, start:{c:0,r:0}, target:{c:4,r:0} },
+  { char:'🐰', goal:'🥕', cols:3, rows:2, start:{c:0,r:1}, target:{c:2,r:0} },
 ];
 let jrState;
 function jrMission(idx){
@@ -1019,14 +1019,15 @@ function jrRender(msg){
     const isGoal=(c===m.target.c&&r===m.target.r), isChar=(c===jrState.pos.c&&r===jrState.pos.r);
     cells+=`<div class="jrcell ${isGoal?'goal':''}">${isChar?m.char:(isGoal?m.goal:'')}</div>`;
   }
+  const dots=JR.map((_,k)=>k===jrState.idx?'●':'○').join(' ');
   app.innerHTML=`
-    <div class="topbar"><button class="backb" onclick="menu()">← Salas</button>
-      <div class="progtext">🎈 Jr · misión ${jrState.idx+1}/${JR.length}</div></div>
+    <div class="topbar"><button class="backb" onclick="menu()">←</button>
+      <div class="progtext" style="letter-spacing:3px;color:var(--b1)">${dots}</div></div>
     <div class="card jrwrap">
-      <div style="font-size:1.35rem;font-weight:800;margin-bottom:4px">${m.txt}</div>
+      <div style="font-size:2.6rem;margin:4px 0 8px">${m.char}<span style="font-size:1.6rem;opacity:.5;margin:0 14px">➡️</span>${m.goal}</div>
       <div class="jrgrid" style="grid-template-columns:repeat(${m.cols},56px)">${cells}</div>
       <div class="jrmsg">${msg||''}</div>
-      <div class="jrstrip">${prog.length?prog.map(a=>JR_ICON[a]).join(' '):'<span class="muted" style="font-size:1rem">Tocá las flechas 👇 y después ▶</span>'}</div>
+      <div class="jrstrip">${prog.length?prog.map(a=>JR_ICON[a]).join(' '):'<span style="opacity:.3;font-size:1.5rem">▫️ ▫️ ▫️</span>'}</div>
       ${showUD?`<div class="jrbtns"><button class="jrbtn" onclick="jrAdd('U')">⬆️</button></div>`:''}
       <div class="jrbtns">
         <button class="jrbtn" onclick="jrAdd('L')">⬅️</button>
@@ -1034,7 +1035,7 @@ function jrRender(msg){
       </div>
       ${showUD?`<div class="jrbtns"><button class="jrbtn" onclick="jrAdd('D')">⬇️</button></div>`:''}
       <div class="jrbtns" style="margin-top:12px">
-        <button class="jrgo" onclick="jrRun()">▶ ¡Ir!</button>
+        <button class="jrgo" onclick="jrRun()">▶</button>
         <button class="jrbtn" onclick="jrClear()">🗑️</button>
       </div>
     </div>`;
@@ -1061,15 +1062,15 @@ function jrFinish(){
   const {pos,m,idx}=jrState; jrState.playing=false;
   if(pos.c===m.target.c && pos.r===m.target.r){
     const last=idx>=JR.length-1;
-    const msg=app.querySelector('.jrmsg'); if(msg) msg.innerHTML='🎉 ¡Muy bien! 🌟';
+    const msg=app.querySelector('.jrmsg'); if(msg) msg.innerHTML='🎉 🌟 👏';
     const wrap=app.querySelector('.jrwrap');
     if(wrap){ const b=document.createElement('div'); b.className='jrbtns'; b.style.marginTop='12px';
-      b.innerHTML = last ? `<button class="jrgo" onclick="menu()">🏆 ¡Lo lograste! Volver</button>`
-                         : `<button class="jrgo" onclick="jrMission(${idx+1})">Otra misión ➡️</button>`;
+      b.innerHTML = last ? `<button class="jrgo" onclick="menu()">🏆</button>`
+                         : `<button class="jrgo" onclick="jrMission(${idx+1})">➡️ 🎈</button>`;
       wrap.appendChild(b); }
   } else {
-    const msg=app.querySelector('.jrmsg'); if(msg) msg.innerHTML='¡Casi! Probá otra vez 💪';
-    setTimeout(()=>{ jrState.pos={c:jrState.m.start.c,r:jrState.m.start.r}; jrRender('Cambiá las flechas y tocá ▶'); }, 950);
+    const msg=app.querySelector('.jrmsg'); if(msg) msg.innerHTML='🔁 🙂';
+    setTimeout(()=>{ jrState.pos={c:jrState.m.start.c,r:jrState.m.start.r}; jrRender(); }, 1100);
   }
 }
 

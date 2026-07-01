@@ -24,6 +24,7 @@ que avanzan los cursos (mismo link para todos).
 | 🧠 Decisiones | **Condicionales complejos** | Anidados y con `y` / `o` |
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
 | 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
+| 🏁 Repaso final | **Repaso general** | Un poco de todo, en orden de dificultad |
 | 🎨 Estudio de dibujo | Modo libre | Perillas (repetición/largo/giro) → la tortuga dibuja en vivo |
 | 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
 

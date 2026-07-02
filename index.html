@@ -103,6 +103,7 @@
   .jrgrid{display:grid;gap:6px;justify-content:center;margin:14px auto}
   .jrcell{width:56px;height:56px;border-radius:12px;background:#0b1220;border:1px solid #334155;display:flex;align-items:center;justify-content:center;font-size:2rem}
   .jrcell.goal{background:rgba(251,191,36,.14);border-color:var(--warn)}
+  .jrcell.wall{background:#3a2a20;border-color:#5a4030}
   .jrstrip{min-height:52px;background:#0b1220;border:1px dashed #3a4a63;border-radius:12px;padding:8px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin:10px 0;font-size:1.8rem}
   .jrbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:6px 0}
   .jrbtn{font-size:1.9rem;width:72px;height:64px;border-radius:16px;border:2px solid #3a4a63;background:var(--card2);color:var(--txt);cursor:pointer;transition:.1s}
@@ -516,6 +517,44 @@ const SALAS = [
     ]
   },
   {
+    id:'desafios', emoji:'🔥', nom:'Desafíos', desc:'Para los que ya terminaron: bien difíciles 💪',
+    concepto:'Desafíos (combinar todo)',
+    ejs:[
+      { type:'mc', consigna:'🔥 Bucle DENTRO de bucle. ¿Qué muestra?',
+        code:'total = 0\nrepetir 3 veces:\n    repetir 2 veces:\n        total = total + 1\nmostrar total',
+        opts:['6','5','3','2'], correcta:0,
+        explica:'El de afuera corre 3 veces y, en cada una, el de adentro suma 2: 3 × 2 = 6.' },
+      { type:'mc', consigna:'🔥 La variable se multiplica a sí misma. ¿Qué muestra?',
+        code:'r = 1\nrepetir 4 veces:\n    r = r * 2\nmostrar r',
+        opts:['16','8','6','4'], correcta:0,
+        explica:'Se duplica 4 veces: 1 → 2 → 4 → 8 → 16.' },
+      { type:'mc', consigna:'🔥 Condicional adentro del bucle: cuenta los pares. ¿Qué muestra?',
+        code:'cuenta = 0\nn = 1\nrepetir 5 veces:\n    n = n + 1\n    si n % 2 = 0 entonces:\n        cuenta = cuenta + 1\nmostrar cuenta',
+        opts:['3','2','5','1'], correcta:0,
+        explica:'n pasa por 2, 3, 4, 5, 6. Los pares (resto 0) son 2, 4 y 6 → cuenta 3.' },
+      { type:'mc', consigna:'🔥 Suma 1+2+3+4 con una variable que crece. ¿Qué muestra?',
+        code:'suma = 0\ni = 0\nrepetir 4 veces:\n    i = i + 1\n    suma = suma + i\nmostrar suma',
+        opts:['10','7','4','6'], correcta:0,
+        explica:'i sube 1, 2, 3, 4 y suma acumula: 1+2+3+4 = 10.' },
+      { type:'mc', consigna:'🔥 Condición con Y (un rango). ¿Qué muestra?',
+        code:'puntos = 10\nsi puntos > 5 y puntos < 20 entonces:\n    puntos = puntos * 2\nsino:\n    puntos = 0\nmostrar puntos',
+        opts:['20','10','0','40'], correcta:0,
+        explica:'10 está entre 5 y 20 (las dos condiciones verdaderas), así que se duplica: 20.' },
+      { type:'mc', consigna:'🔥 A la mitad, tres veces. ¿Qué muestra?',
+        code:'x = 16\nrepetir 3 veces:\n    x = x / 2\nmostrar x',
+        opts:['2','4','8','1'], correcta:0,
+        explica:'Se divide por 2 tres veces: 16 → 8 → 4 → 2.' },
+      { type:'mc', consigna:'🔥 Acumula solo si el valor es mayor a 2. ¿Qué muestra?',
+        code:'p = 0\nv = 5\nrepetir 4 veces:\n    v = v - 1\n    si v > 2 entonces:\n        p = p + v\nmostrar p',
+        opts:['7','12','4','0'], correcta:0,
+        explica:'v baja 4, 3, 2, 1. Suma solo cuando v > 2: 4 + 3 = 7 (el 2 y el 1 no cuentan).' },
+      { type:'mc', consigna:'🔥 Trampa: queremos 1+2+3+4+5 = 15. ¿Qué muestra EN REALIDAD?',
+        code:'suma = 0\ni = 0\nrepetir 5 veces:\n    suma = suma + i\n    i = i + 1\nmostrar suma',
+        opts:['10','15','5','20'], correcta:0,
+        explica:'¡Ojo el orden! Suma i ANTES de aumentarlo, así suma 0+1+2+3+4 = 10. Para que dé 15 habría que subir i primero.' },
+    ]
+  },
+  {
     id:'repaso', emoji:'🏁', nom:'Repaso final', desc:'Un poco de todo lo que aprendimos',
     concepto:'Repaso general',
     ejs:[
@@ -774,9 +813,10 @@ function menu(){
       <div class="desc">Misiones fáciles: llevá al personaje a su objetivo con flechas 👇</div></button>`;
   SALAS.forEach(s=>{
     const d=done[s.id];
-    const destacada = s.id==='repaso';
+    const destacada = s.id==='repaso'||s.id==='desafios';
     const cls = destacada ? 'sala mezcla' : 'sala';
-    const style = destacada ? ' style="background:linear-gradient(90deg,rgba(52,211,153,.2),rgba(56,189,248,.15));border-color:#3a5a63"' : '';
+    const style = s.id==='desafios' ? ' style="background:linear-gradient(90deg,rgba(248,113,113,.22),rgba(251,191,36,.18));border-color:#6a4030"'
+                : s.id==='repaso' ? ' style="background:linear-gradient(90deg,rgba(52,211,153,.2),rgba(56,189,248,.15));border-color:#3a5a63"' : '';
     h += `<button class="${cls}"${style} onclick="startSala('${s.id}')">
       <div class="emoji">${s.emoji}</div>
       <div class="nom">${s.nom}</div>
@@ -1000,11 +1040,19 @@ function estudio(){
 /* -------------------- MODO Jr (nivel ScratchJr, sin lectura, con voz) -------------------- */
 const JR_ICON={U:'⬆️',D:'⬇️',L:'⬅️',R:'➡️'};
 const JR=[
+  // fáciles
   { char:'🐢', goal:'⭐', cols:3, rows:1, start:{c:0,r:0}, target:{c:2,r:0} },
   { char:'🐱', goal:'🍎', cols:4, rows:1, start:{c:0,r:0}, target:{c:3,r:0} },
   { char:'🚗', goal:'🏁', cols:5, rows:1, start:{c:0,r:0}, target:{c:4,r:0} },
   { char:'🐰', goal:'🥕', cols:3, rows:2, start:{c:0,r:1}, target:{c:2,r:0} },
+  // difíciles: grillas más grandes, giros y paredes 🧱
+  { char:'🐢', goal:'⭐', cols:4, rows:3, start:{c:0,r:2}, target:{c:3,r:0} },
+  { char:'🐱', goal:'🍎', cols:4, rows:3, start:{c:0,r:0}, target:{c:3,r:2}, walls:[{c:1,r:1},{c:2,r:1}] },
+  { char:'🚗', goal:'🏁', cols:5, rows:3, start:{c:0,r:1}, target:{c:4,r:1}, walls:[{c:2,r:1}] },
+  { char:'🐭', goal:'🧀', cols:5, rows:4, start:{c:0,r:3}, target:{c:4,r:0}, walls:[{c:2,r:1},{c:2,r:2},{c:2,r:3}] },
+  { char:'🐢', goal:'⭐', cols:5, rows:5, start:{c:0,r:4}, target:{c:4,r:0}, walls:[{c:1,r:3},{c:3,r:1},{c:2,r:2}] },
 ];
+function jrWall(m,c,r){ return (m.walls||[]).some(w=>w.c===c&&w.r===r); }
 let jrState;
 function jrMission(idx){
   cur=null;
@@ -1016,8 +1064,8 @@ function jrRender(msg){
   const {m,prog}=jrState, showUD=m.rows>1;
   let cells='';
   for(let r=0;r<m.rows;r++) for(let c=0;c<m.cols;c++){
-    const isGoal=(c===m.target.c&&r===m.target.r), isChar=(c===jrState.pos.c&&r===jrState.pos.r);
-    cells+=`<div class="jrcell ${isGoal?'goal':''}">${isChar?m.char:(isGoal?m.goal:'')}</div>`;
+    const isGoal=(c===m.target.c&&r===m.target.r), isChar=(c===jrState.pos.c&&r===jrState.pos.r), isWall=jrWall(m,c,r);
+    cells+=`<div class="jrcell ${isGoal?'goal':''} ${isWall?'wall':''}">${isChar?m.char:(isWall?'🧱':(isGoal?m.goal:''))}</div>`;
   }
   const dots=JR.map((_,k)=>k===jrState.idx?'●':'○').join(' ');
   app.innerHTML=`
@@ -1050,10 +1098,9 @@ function jrRun(){
   const tick=()=>{
     if(i>=steps.length){ jrFinish(); return; }
     const a=steps[i++], p=jrState.pos, m=jrState.m;
-    if(a==='R'&&p.c<m.cols-1) p.c++;
-    else if(a==='L'&&p.c>0) p.c--;
-    else if(a==='U'&&p.r>0) p.r--;
-    else if(a==='D'&&p.r<m.rows-1) p.r++;
+    let nc=p.c, nr=p.r;
+    if(a==='R') nc++; else if(a==='L') nc--; else if(a==='U') nr--; else if(a==='D') nr++;
+    if(nc>=0&&nc<m.cols&&nr>=0&&nr<m.rows&&!jrWall(m,nc,nr)){ p.c=nc; p.r=nr; }  // clamp + paredes bloquean
     jrRender(); setTimeout(tick,520);
   };
   setTimeout(tick,300);

@@ -555,6 +555,68 @@ const SALAS = [
     ]
   },
   {
+    id:'desafios2', emoji:'🔥', nom:'Desafíos Nivel 2', desc:'Para 2do: más largos y difíciles, subiendo de a poco ⚡',
+    concepto:'Desafíos Nivel 2',
+    ejs:[
+      { type:'mc', consigna:'Nivel 2 · 1 — Orden de las operaciones. ¿Qué muestra?',
+        code:'r = 2 + 3 * 4 - 10 / 2\nmostrar r',
+        opts:['9','15','11','4'], correcta:0,
+        explica:'Primero × y ÷: 3×4=12, 10÷2=5. Después 2 + 12 − 5 = 9.' },
+      { type:'mc', consigna:'Nivel 2 · 2 — Una crece, la otra decrece. ¿Qué muestra?',
+        code:'a = 0\nb = 100\nrepetir 5 veces:\n    a = a + 10\n    b = b - 10\nmostrar a + b',
+        opts:['100','50','0','200'], correcta:0,
+        explica:'a sube a 50 y b baja a 50. a + b = 100 (lo que una gana, la otra lo pierde).' },
+      { type:'mc', consigna:'Nivel 2 · 3 — Suma de cuadrados. ¿Qué muestra?',
+        code:'suma = 0\ni = 0\nrepetir 4 veces:\n    i = i + 1\n    suma = suma + i * i\nmostrar suma',
+        opts:['30','10','16','20'], correcta:0,
+        explica:'i vale 1,2,3,4 y sumás i×i: 1+4+9+16 = 30.' },
+      { type:'mc', consigna:'Nivel 2 · 4 — Texto que se arma de a poco. ¿Qué muestra?',
+        code:'palabra = ""\nrepetir 3 veces:\n    palabra = palabra + "ha"\nmostrar palabra',
+        opts:['hahaha','ha','hahahaha','haha'], correcta:0,
+        explica:'Cada vuelta pega "ha" al final del texto: "" → ha → haha → hahaha.' },
+      { type:'mc', consigna:'Nivel 2 · 5 — Una bandera (booleano). ¿Qué muestra?',
+        code:'hay = falso\nn = 0\nrepetir 5 veces:\n    n = n + 1\n    si n = 3 entonces:\n        hay = verdadero\nmostrar hay',
+        opts:['verdadero','falso','3','5'], correcta:0,
+        explica:'Cuando n llega a 3, la bandera pasa a verdadero y ya queda así.' },
+      { type:'mc', consigna:'Nivel 2 · 6 — Contar múltiplos de 3. ¿Qué muestra?',
+        code:'c = 0\nn = 0\nrepetir 10 veces:\n    n = n + 1\n    si n % 3 = 0 entonces:\n        c = c + 1\nmostrar c',
+        opts:['3','4','10','9'], correcta:0,
+        explica:'n va de 1 a 10. Múltiplos de 3 (resto 0): 3, 6 y 9 → 3.' },
+      { type:'mc', consigna:'Nivel 2 · 7 — Guardar el mayor. ¿Qué muestra?',
+        code:'max = 0\nx = 3\nrepetir 4 veces:\n    x = x + 2\n    si x > max entonces:\n        max = x\nmostrar max',
+        opts:['11','9','8','3'], correcta:0,
+        explica:'x vale 5,7,9,11 y guardás el mayor visto. El máximo es 11.' },
+      { type:'mc', consigna:'Nivel 2 · 8 — Dos operaciones por vuelta. ¿Qué muestra?',
+        code:'x = 48\nrepetir 2 veces:\n    x = x / 2\n    x = x + 4\nmostrar x',
+        opts:['18','20','14','28'], correcta:0,
+        explica:'48÷2=24, +4=28; después 28÷2=14, +4=18.' },
+      { type:'mc', consigna:'Nivel 2 · 9 — Bucle dentro de bucle. ¿Qué muestra?',
+        code:'total = 0\nrepetir 3 veces:\n    repetir 4 veces:\n        total = total + 2\nmostrar total',
+        opts:['24','12','14','6'], correcta:0,
+        explica:'El de afuera 3 veces, el de adentro 4, sumando 2 cada vez: 3×4×2 = 24.' },
+      { type:'mc', consigna:'Nivel 2 · 10 — El factorial. ¿Qué muestra?',
+        code:'f = 1\nn = 1\nrepetir 4 veces:\n    f = f * n\n    n = n + 1\nmostrar f',
+        opts:['24','10','12','16'], correcta:0,
+        explica:'f se multiplica por n (1,2,3,4): 1×1×2×3×4 = 24. Es el factorial de 4.' },
+      { type:'mc', consigna:'Nivel 2 · 11 — Decidir en cada vuelta. ¿Qué muestra?',
+        code:'dinero = 100\nrepetir 3 veces:\n    si dinero > 50 entonces:\n        dinero = dinero - 30\n    sino:\n        dinero = dinero + 10\nmostrar dinero',
+        opts:['50','40','70','10'], correcta:0,
+        explica:'100>50 →70; 70>50 →40; 40 no es >50 → 40+10 = 50.' },
+      { type:'mc', consigna:'Nivel 2 · 12 — Lógica con "no". ¿Qué muestra?',
+        code:'a = 7\nb = 3\nsi a > 5 y no (b > 5) entonces:\n    mostrar "si"\nsino:\n    mostrar "no"',
+        opts:['si','no','verdadero','falso'], correcta:0,
+        explica:'a>5 es verdadero; y "no (b>5)" también (b no es mayor a 5). Verdadero Y verdadero → "si".' },
+      { type:'mc', consigna:'Nivel 2 · 13 — Bucle anidado con condición. ¿Qué muestra?',
+        code:'p = 0\nrepetir 3 veces:\n    repetir 3 veces:\n        p = p + 1\n        si p % 2 = 0 entonces:\n            p = p + 1\nmostrar p',
+        opts:['17','9','18','12'], correcta:0,
+        explica:'Cada vuelta suma 1 y, si queda par, suma 1 más. Repitiéndolo 9 veces se llega a 17.' },
+      { type:'mc', consigna:'Nivel 2 · 14 — La tabla completa (bien difícil). ¿Qué muestra?',
+        code:'suma = 0\nfila = 0\nrepetir 3 veces:\n    fila = fila + 1\n    columna = 0\n    repetir 3 veces:\n        columna = columna + 1\n        suma = suma + fila * columna\nmostrar suma',
+        opts:['36','18','12','9'], correcta:0,
+        explica:'Sumás fila×columna para fila y columna de 1 a 3: (1+2+3)+(2+4+6)+(3+6+9) = 36.' },
+    ]
+  },
+  {
     id:'repaso', emoji:'🏁', nom:'Repaso final', desc:'Un poco de todo lo que aprendimos',
     concepto:'Repaso general',
     ejs:[
@@ -813,9 +875,10 @@ function menu(){
       <div class="desc">Misiones fáciles: llevá al personaje a su objetivo con flechas 👇</div></button>`;
   SALAS.forEach(s=>{
     const d=done[s.id];
-    const destacada = s.id==='repaso'||s.id==='desafios';
+    const destacada = ['repaso','desafios','desafios2'].includes(s.id);
     const cls = destacada ? 'sala mezcla' : 'sala';
     const style = s.id==='desafios' ? ' style="background:linear-gradient(90deg,rgba(248,113,113,.22),rgba(251,191,36,.18));border-color:#6a4030"'
+                : s.id==='desafios2' ? ' style="background:linear-gradient(90deg,rgba(167,139,250,.25),rgba(244,114,182,.18));border-color:#5a3a6a"'
                 : s.id==='repaso' ? ' style="background:linear-gradient(90deg,rgba(52,211,153,.2),rgba(56,189,248,.15));border-color:#3a5a63"' : '';
     h += `<button class="${cls}"${style} onclick="startSala('${s.id}')">
       <div class="emoji">${s.emoji}</div>

@@ -24,6 +24,8 @@ que avanzan los cursos (mismo link para todos).
 | 🧠 Decisiones | **Condicionales complejos** | Anidados y con `y` / `o` |
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
 | 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
+| 🔥 Desafíos | **Combinar todo** | 8 ejercicios duros (bucles anidados, acumuladores…) |
+| 🔥 Desafíos Nivel 2 | **Nivel 2 (2do)** | 14 ejercicios más largos, dificultad creciente |
 | 🏁 Repaso final | **Repaso general** | Un poco de todo, en orden de dificultad |
 | 🎈 Jr | Nivel ScratchJr (accesible) | Llevar al personaje al objetivo con flechas grandes, sin texto |
 | 🎨 Estudio de dibujo | Modo libre | Perillas (repetición/largo/giro) → la tortuga dibuja en vivo |

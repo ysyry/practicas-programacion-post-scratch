@@ -23,6 +23,7 @@ que avanzan los cursos (mismo link para todos).
 | 🔀 Completá el hueco | **Condicional** | Elegir la condición / bloque `si… entonces` |
 | 🧠 Decisiones | **Condicionales complejos** | Anidados y con `y` / `o` |
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
+| 🧩 Mini programas | **Variables + condicionales** | Leer/armar programas reales + desafíos situacionales |
 | 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
 | 🔥 Desafíos | **Combinar todo** | 8 ejercicios (bucles anidados, acumuladores…) |
 | 🔥 Desafíos Nivel 2 | **Nivel 2 (2do)** | 14 ejercicios más largos, dificultad creciente |

@@ -487,7 +487,7 @@ const SALAS = [
   },
   {
     id:'miniprog', emoji:'🧩', nom:'Mini programas', desc:'Variables + decisiones: leé y armá programas de verdad',
-    concepto:'Variables + condicionales (un programa)',
+    concepto:'Variables + condicionales (un programa)', sinResultado:true,
     ejs:[
       { type:'mc', consigna:'Un programa guarda datos en variables 📦 y toma decisiones con condiciones 🔀. Cuando juntás todo eso, ¿qué tenés?',
         opts:['Un programa','Un dibujo','Un juego de mesa','Una foto'], correcta:0,
@@ -565,7 +565,7 @@ const SALAS = [
   },
   {
     id:'desafios', emoji:'🔥', nom:'Desafíos', desc:'Para los que ya terminaron 💪',
-    concepto:'Desafíos (combinar todo)',
+    concepto:'Desafíos (combinar todo)', sinResultado:true,
     ejs:[
       { type:'mc', consigna:'Bucle DENTRO de bucle. ¿Qué muestra?',
         code:'total = 0\nrepetir 3 veces:\n    repetir 2 veces:\n        total = total + 1\nmostrar total',
@@ -603,7 +603,7 @@ const SALAS = [
   },
   {
     id:'desafios2', emoji:'🔥', nom:'Desafíos Nivel 2', desc:'Para 2do: van subiendo de a poco ⚡',
-    concepto:'Desafíos Nivel 2',
+    concepto:'Desafíos Nivel 2', sinResultado:true,
     ejs:[
       { type:'mc', consigna:'Nivel 2 · 1 — Orden de las operaciones. ¿Qué muestra?',
         code:'r = 2 + 3 * 4 - 10 / 2\nmostrar r',
@@ -661,6 +661,54 @@ const SALAS = [
         code:'suma = 0\nfila = 0\nrepetir 3 veces:\n    fila = fila + 1\n    columna = 0\n    repetir 3 veces:\n        columna = columna + 1\n        suma = suma + fila * columna\nmostrar suma',
         opts:['36','18','12','9'], correcta:0,
         explica:'Sumás fila×columna para fila y columna de 1 a 3: (1+2+3)+(2+4+6)+(3+6+9) = 36.' },
+    ]
+  },
+  {
+    id:'situac', emoji:'🎯', nom:'Situacionales', desc:'Programá cosas de verdad, más completas 🧠',
+    concepto:'Programar situaciones (desafío)', sinResultado:true,
+    ejs:[
+      { type:'order', consigna:'🔐 Programá el acceso: si la clave es "sol" mostrá "Bienvenido", si no "Clave incorrecta". Ordená y probá con ▶.',
+        correcto:['clave = "sol"','si clave = "sol" entonces:','    mostrar "Bienvenido"','sino:','    mostrar "Clave incorrecta"'],
+        explica:'Guardás la clave en una variable y con un condicional decidís el mensaje. ¡Es un login de verdad!' },
+      { type:'order', consigna:'🚦 Programá un semáforo que repite 2 veces: Verde, Amarillo, Rojo. Ordená los bloques.',
+        correcto:['repetir 2 veces:','    mostrar "Verde"','    mostrar "Amarillo"','    mostrar "Rojo"'],
+        explica:'Un bucle repite la secuencia de luces. El orden Verde → Amarillo → Rojo importa.' },
+      { type:'order', consigna:'⏱️ Programá una cuenta regresiva: mostrá 3, 2, 1 y después "¡Ya!". Ordená y probá con ▶.',
+        correcto:['n = 3','repetir 3 veces:','    mostrar n','    n = n - 1','mostrar "¡Ya!"'],
+        explica:'La variable n arranca en 3; cada vuelta muestra n y le resta 1. Al terminar el bucle, "¡Ya!".' },
+      { type:'mc', consigna:'🛒 Este programa cobra un carrito con descuento si supera 150. ¿Qué muestra?',
+        code:'precio = 50\ncantidad = 4\ntotal = precio * cantidad\nsi total > 150 entonces:\n    total = total - 30\nmostrar total',
+        opts:['170','200','150','30'], correcta:0,
+        explica:'total = 50 × 4 = 200. Como 200 > 150, resta 30 → 170.' },
+      { type:'mc', consigna:'🍕 Este programa reparte la cuenta con 10% de propina entre 4 personas. ¿Qué muestra?',
+        code:'cuenta = 800\npersonas = 4\npropina = cuenta / 10\ntotal = cuenta + propina\ncadauno = total / personas\nmostrar cadauno',
+        opts:['220','200','880','80'], correcta:0,
+        explica:'Propina = 800/10 = 80. Total = 880. Entre 4 personas = 220 cada uno.' },
+      { type:'mc', consigna:'🎮 Este programa decide el estado del juego según vidas y puntaje. ¿Qué muestra?',
+        code:'vidas = 3\npuntos = 8\nsi vidas > 0 entonces:\n    si puntos >= 10 entonces:\n        mostrar "Ganaste"\n    sino:\n        mostrar "Seguí jugando"\nsino:\n    mostrar "Game Over"',
+        opts:['Seguí jugando','Ganaste','Game Over','8'], correcta:0,
+        explica:'Tiene vidas (>0) pero puntos 8 < 10, así que cae en el "sino" de adentro → "Seguí jugando". Es un condicional dentro de otro.' },
+      { type:'order', consigna:'🌡️ El más difícil: programá el clima. Menos de 10 → "Frío"; menos de 25 → "Templado"; si no → "Calor". Ordená (¡ojo la sangría!) y probá con ▶.',
+        correcto:['temp = 25','si temp < 10 entonces:','    mostrar "Frío"','sino:','    si temp < 25 entonces:','        mostrar "Templado"','    sino:','        mostrar "Calor"'],
+        explica:'Un condicional dentro de otro (anidado) parte los rangos: primero <10, si no <25, y si no, Calor. Con temp=25 → "Calor".' },
+    ]
+  },
+  {
+    id:'teoria', emoji:'📚', nom:'Teoría', desc:'Preguntas para repasar los conceptos 🧠',
+    concepto:'Teoría', sinResultado:true,
+    ejs:[
+      { type:'mc', consigna:'¿Qué es un algoritmo?', opts:['Una serie de pasos ordenados para resolver un problema','Una computadora','Un lenguaje de programación','Un error'], correcta:0, explica:'Pasos en orden y sin ambigüedad para resolver algo. Una receta también es un algoritmo.' },
+      { type:'mc', consigna:'¿Qué es un programa?', opts:['Un algoritmo escrito para que la computadora lo ejecute','Una foto','Una página web','Un cable'], correcta:0, explica:'Es el algoritmo escrito en un lenguaje que la compu entiende y ejecuta.' },
+      { type:'mc', consigna:'¿Qué es una variable?', opts:['Un espacio donde el programa guarda un valor','Un tipo de bucle','Un error del código','Un dibujo'], correcta:0, explica:'Una "cajita" con nombre que guarda un dato (puntos, vidas, nombre…).' },
+      { type:'mc', consigna:'¿Para qué sirve un bucle (repetir)?', opts:['Para repetir pasos sin escribirlos de nuevo','Para tomar decisiones','Para guardar datos','Para borrar el programa'], correcta:0, explica:'Repite una parte del programa muchas veces.' },
+      { type:'mc', consigna:'¿Qué hace un condicional (si… entonces)?', opts:['Ejecuta algo solo si se cumple una condición','Repite siempre lo mismo','Guarda un número','Dibuja una figura'], correcta:0, explica:'Decide: si la condición es verdadera hace una cosa; si no, otra.' },
+      { type:'mc', consigna:'¿Qué es depurar (debugging)?', opts:['Buscar y arreglar los errores de un programa','Escribir un programa nuevo','Apagar la computadora','Guardar el archivo'], correcta:0, explica:'Encontrar el error (bug) y corregirlo.' },
+      { type:'mc', consigna:'¿Qué es un dato booleano?', opts:['Un valor que solo puede ser verdadero o falso','Un número con coma','Un texto largo','Un color'], correcta:0, explica:'Verdadero / Falso. Se usa en las condiciones.' },
+      { type:'mc', consigna:'¿Qué calcula el operador % (resto)?', opts:['Lo que sobra de una división','La suma','La multiplicación','El promedio'], correcta:0, explica:'17 % 5 = 2 (sobra 2). Sirve, por ejemplo, para saber si un número es par.' },
+      { type:'mc', consigna:'En un diagrama de flujo, el rombo representa…', opts:['Una decisión (una pregunta con Sí/No)','Una acción','El inicio','El final'], correcta:0, explica:'Del rombo salen dos caminos: Sí y No.' },
+      { type:'mc', consigna:'¿Qué es un bucle anidado?', opts:['Un bucle adentro de otro bucle','Un bucle que nunca termina','Un bucle roto','Una variable'], correcta:0, explica:'Un "repetir" dentro de otro "repetir".' },
+      { type:'mc', consigna:'Si una condición usa "y" (ej: edad > 12 y tiene entrada)…', opts:['Se tienen que cumplir las dos cosas a la vez','Alcanza con que se cumpla una','Nunca se cumple','Siempre da falso'], correcta:0, explica:'Con "y" las dos deben ser verdaderas. Con "o" alcanza con una.' },
+      { type:'mc', consigna:'¿Cuál es la diferencia entre un algoritmo y un programa?', opts:['El algoritmo es la idea/los pasos; el programa es eso escrito para la compu','Son exactamente lo mismo','El programa es más corto','El algoritmo lo hace la máquina sola'], correcta:0, explica:'Primero pensás el algoritmo (los pasos) y después lo escribís como programa.' },
     ]
   },
   {
@@ -951,10 +999,10 @@ function startSala(id){
   let sala, ejs;
   if(id==='mezcla'){
     sala = {id:'mezcla', emoji:'🎲', nom:'Modo Mezcla', concepto:'Todos los conceptos'};
-    ejs = shuffle(SALAS.flatMap(s=>s.ejs.map(e=>Object.assign({},e,{concepto:s.concepto})))).slice(0,8);
+    ejs = shuffle(SALAS.flatMap(s=>s.ejs.map(e=>Object.assign({},e,{concepto:s.concepto, sinResultado:!!s.sinResultado})))).slice(0,8);
   } else {
     sala = SALAS.find(s=>s.id===id);
-    ejs = shuffle(sala.ejs.map(e=>Object.assign({},e,{concepto:sala.concepto})));
+    ejs = shuffle(sala.ejs.map(e=>Object.assign({},e,{concepto:sala.concepto, sinResultado:!!sala.sinResultado})));
   }
   cur = {sala, ejs, i:0, puntos:0, streak:0, answered:false};
   render();
@@ -1068,7 +1116,7 @@ function checkOrder(){
   document.getElementById('stageOrder').innerHTML='';
   cur.answered=true;
   let extra=ej.explica;
-  if(!good){
+  if(!good && !ej.sinResultado){
     const orden=ej.correcto.map((t,k)=>`${k+1}. ${t}`).join('<br>');
     extra += `<div style="margin-top:10px;padding:10px;background:#0b1220;border-radius:8px;font-size:.88rem"><b>✅ El orden correcto es:</b><br>${orden}</div>`;
   }
@@ -1076,24 +1124,44 @@ function checkOrder(){
 }
 
 /* -------------------- FEEDBACK -------------------- */
+function hintFor(ej){
+  if(ej.pista) return ej.pista;
+  if(ej.type==='order') return 'Probá tu orden con ▶ y fijate si hace lo que pide la consigna. Corregí lo que no encaje.';
+  if(ej.type==='fill')  return 'Pensá qué tiene que pasar para que el programa cumpla la consigna, y probá esa opción.';
+  if(ej.type==='bug')   return 'Leé línea por línea imaginando qué hace cada una. ¿Cuál NO hace lo que debería?';
+  if(ej.code)           return 'Seguí el programa línea por línea y anotá el valor de cada variable. ¿Con qué valor llega al "mostrar"?';
+  return 'Descartá las opciones que claramente no tienen sentido y quedate con la que mejor lo explica.';
+}
+function showHint(){
+  const b=document.getElementById('hintBox');
+  if(b) b.innerHTML=`<div class="fb" style="background:rgba(56,189,248,.12);border-left:4px solid var(--accent);margin-top:0">💡 <b>Pista:</b> ${hintFor(cur.ejs[cur.i])}</div>`;
+}
 function feedback(good, explica){
   if(good){ if(cur.scored!==cur.i){ cur.puntos++; cur.streak++; cur.scored=cur.i; } } else { cur.streak=0; }
   const ej=cur.ejs[cur.i];
   const fb=document.getElementById('fb');
-  const racha = cur.streak>=3 ? `<div class="streak">🔥 ¡Racha de ${cur.streak}!</div>` : '';
   const last = cur.i+1>=cur.ejs.length;
-  const retryBtn = good ? '' : `<button class="btn" onclick="retry()">🔄 Corregir y reintentar</button>`;
-  const nextBtn  = `<button class="btn ${good?'':'ghost'}" onclick="next()">${last?'Ver resultado 🏁':(good?'Siguiente →':'Saltear sin corregir →')}</button>`;
-  fb.innerHTML = `<div class="fb ${good?'good':'bad'}">
-      <span class="t">${good?'¡Correcto! 🎉':'Todavía no 🤔 — leé esto y volvé a intentar:'}</span>${explica}${racha}
-    </div>
-    <div id="stageWrap"></div>
-    ${retryBtn}${nextBtn}`;
-  // el escenario animado (que revela el resultado) solo al acertar, para no arruinar el reintento
-  if(good && runnableStage(ej) && ej.type!=='order'){
-    const sw=document.getElementById('stageWrap');
-    sw.innerHTML='<div class="sttitle" style="margin-top:14px">🎬 Mirá cómo corre este código:</div><div class="stage" id="stgFb"></div>';
-    mountStage(document.getElementById('stgFb'), getRunLines(ej), {autoplay:true});
+  if(good){
+    const racha = cur.streak>=3 ? `<div class="streak">🔥 ¡Racha de ${cur.streak}!</div>` : '';
+    fb.innerHTML = `<div class="fb good"><span class="t">¡Correcto! 🎉</span>${explica}${racha}</div>
+      <div id="stageWrap"></div>
+      <button class="btn" onclick="next()">${last?'Ver resultado 🏁':'Siguiente →'}</button>`;
+    if(runnableStage(ej) && ej.type!=='order'){
+      const sw=document.getElementById('stageWrap');
+      sw.innerHTML='<div class="sttitle" style="margin-top:14px">🎬 Mirá cómo corre este código:</div><div class="stage" id="stgFb"></div>';
+      mountStage(document.getElementById('stgFb'), getRunLines(ej), {autoplay:true});
+    }
+  } else if(ej.sinResultado){
+    // NO revelar el resultado: que lo piensen. Como máximo, una pista si la piden.
+    fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no 🤔</span>Revisalo con calma y volvé a intentar. Pensalo, no adivines 😉</div>
+      <button class="btn ghost" onclick="showHint()">💡 Ver una pista</button>
+      <div id="hintBox"></div>
+      <button class="btn" onclick="retry()">🔄 Intentar de nuevo</button>`;
+  } else {
+    fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no 🤔 — leé esto y volvé a intentar:</span>${explica}</div>
+      <div id="stageWrap"></div>
+      <button class="btn" onclick="retry()">🔄 Corregir y reintentar</button>
+      <button class="btn ghost" onclick="next()">${last?'Ver resultado 🏁':'Saltear sin corregir →'}</button>`;
   }
   fb.scrollIntoView({behavior:'smooth', block:'nearest'});
 }

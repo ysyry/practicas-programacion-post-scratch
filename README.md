@@ -21,6 +21,7 @@ que avanzan los cursos (mismo link para todos).
 | 🔁 ¿Cuántas veces? | **Bucle** | Contar repeticiones y qué dibuja |
 | 🎨 Dibujar con código | **Arte generativo** | Programar figuras (triángulo, estrella, hexágono) |
 | 🔀 Completá el hueco | **Condicional** | Elegir la condición / bloque `si… entonces` |
+| 🤖 Robots: sentir y decidir | **Sensores y decisiones** | Qué se entera y qué hace un aparato (introductorio, sin cuentas) |
 | 🧠 Decisiones | **Condicionales complejos** | Anidados y con `y` / `o` |
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
 | 🧩 Mini programas | **Variables + condicionales** | Leer/armar programas reales + desafíos situacionales |
@@ -32,6 +33,16 @@ que avanzan los cursos (mismo link para todos).
 | 🎈 Jr | Nivel ScratchJr (accesible) | Llevar al personaje al objetivo con flechas grandes, sin texto |
 | 🎨 Estudio de dibujo | Modo libre | Perillas (repetición/largo/giro) → la tortuga dibuja en vivo |
 | 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
+
+### Sala "Robots: sentir y decidir" 🤖
+
+Veinte ejercicios **introductorios**, pensados para 1er año, sin una sola cuenta. Arrancan
+desde algo que ya hicieron: el bloque *"si tocando color negro"* del laberinto **ya era un
+sensor**. Desde ahí: qué se entera (sensor) y qué hace (actuador), los tres pasos de todo
+aparato, elegir el sensor adecuado para un problema, escribir la decisión con `si… sino`,
+el `y` que exige dos condiciones, por qué un aparato vive adentro de un *"por siempre"*,
+el sensor bien elegido pero mal ubicado, la sangría que deja una línea afuera de la
+decisión, y el cierre: mismo aparato con distinto programa es otra cosa.
 
 ### Sala "Sensores y aparatos" 🌡️
 

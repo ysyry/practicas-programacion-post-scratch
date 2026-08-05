@@ -429,6 +429,103 @@ const SALAS = [
     ]
   },
   {
+    id:'robot1', emoji:'🤖', nom:'Robots: sentir y decidir', desc:'Tu primer acercamiento a los aparatos que deciden solos',
+    concepto:'Sensores y decisiones',
+    ejs:[
+      { type:'mc', consigna:'En el laberinto de Scratch usaste el bloque "si tocando color negro → volver al inicio". Sin darte cuenta, ahí ya usaste un sensor. ¿Qué hace un sensor?',
+        opts:['Se da cuenta de algo y le avisa al programa','Prende una luz','Guarda la partida','Dibuja el fondo'], correcta:0,
+        explica:'El bloque "tocando color" es un sensor: se da cuenta de que el personaje chocó la pared y le avisa al programa. En un robot de verdad pasa lo mismo, pero en vez de tocar un color mide la luz, la temperatura o la humedad de la tierra.' },
+
+      { type:'mc', consigna:'¿Cuál de estas cosas es un SENSOR?',
+        opts:['Un termómetro','Una lamparita','Un parlante','Una rueda'], correcta:0,
+        explica:'El termómetro se entera de algo: qué temperatura hace. La lamparita, el parlante y la rueda no se enteran de nada, hacen cosas. A esos se les dice actuadores.' },
+
+      { type:'mc', consigna:'¿Y cuál de estas cosas es un ACTUADOR, o sea algo que HACE?',
+        opts:['Un motor','Un termómetro','Un sensor de luz','Un botón'], correcta:0,
+        explica:'El motor hace: gira, mueve, empuja. Los otros tres se enteran. Regla fácil para acordarse: el sensor se entera, el actuador hace.' },
+
+      { type:'order',
+        consigna:'Un aparato que decide solo hace siempre estas tres cosas, y siempre en el mismo orden. Ordenalas.',
+        correcto:['se entera de algo (sensor)','decide qué hacer','hace algo (actuador)'],
+        explica:'Primero se entera, después decide, y recién ahí hace. Si le sacás el "decide", deja de ser un robot: queda una máquina que siempre hace lo mismo, como un timbre.' },
+
+      { type:'mc', consigna:'Querés un aparato que avise cuando la puerta de la heladera quedó abierta. ¿Qué sensor le ponés?',
+        opts:['Uno que detecte si la puerta está abierta o cerrada','Uno de humedad de la tierra','Uno que mida el peso','Ninguno, no hace falta'], correcta:0,
+        explica:'El sensor tiene que medir JUSTO lo que te importa. Si querés saber si la puerta quedó abierta, hay que medir la puerta. Es el error más común: medir algo parecido en vez de lo que realmente pasa.' },
+
+      { type:'mc', consigna:'Querés que la luz del pasillo se prenda sola cuando se hace de noche. ¿Qué sensor le ponés?',
+        opts:['Uno de luz','Uno de temperatura','Uno de humedad','Uno de sonido'], correcta:0,
+        explica:'Se hace de noche = hay menos luz. El sensor de luz se entera de eso. Con uno de temperatura casi funciona, porque de noche refresca, pero en verano puede estar oscuro y seguir haciendo calor. Casi no alcanza.' },
+
+      { type:'fill',
+        consigna:'Ahora escribamos la decisión de esa luz del pasillo. Completá el hueco.',
+        code:'esta_oscuro = verdadero\nsi ___ entonces:\n    mostrar "prender la luz"',
+        opts:['esta_oscuro','la luz','prender','pasillo'], correcta:0,
+        explica:'La condición es la pregunta que el aparato se hace: ¿está oscuro? Si la respuesta es verdadero, prende. Es exactamente el mismo "si… entonces" que usaste en el laberinto.' },
+
+      { type:'bug',
+        consigna:'Este aparato prende la luz de día y la apaga de noche: hace todo al revés. ¿Qué línea está mal?',
+        lineas:['esta_oscuro = verdadero','si esta_oscuro entonces:','    mostrar "apagar la luz"','sino:','    mostrar "prender la luz"'],
+        bug:2,
+        explica:'Adentro del "si está oscuro" dice apagar, y tendría que decir prender. Las dos acciones están cambiadas de lugar. Al aparato no le importa si tiene sentido: hace exactamente lo que le escribiste.' },
+
+      { type:'order',
+        consigna:'Ordená el algoritmo de una puerta que se abre sola.',
+        correcto:['fijarse si viene alguien','abrir la puerta','esperar unos segundos','cerrar la puerta'],
+        explica:'Primero se entera (¿viene alguien?), después actúa, espera y cierra. Y vuelve a empezar desde arriba: los aparatos repiten esto una y otra vez, todo el día.' },
+
+      { type:'mc', consigna:'La puerta del supermercado se abre sola cuando te acercás. ¿Es un robot?',
+        opts:['No, porque siempre hace lo mismo y no decide nada','Sí, porque se mueve sola','Sí, porque tiene un sensor','No, porque no habla'], correcta:0,
+        explica:'Tiene sensor y tiene actuador, pero le falta el del medio: no decide nada. Siempre abre, pase lo que pase. Un robot elige entre hacer una cosa u otra.' },
+
+      { type:'mc', consigna:'Tenés una plaquita con un sensor de luz y una lamparita. En vez de prender la luz cuando está oscuro, querés que avise cuando hay DEMASIADA luz. ¿Se puede?',
+        opts:['Sí, cambiando el programa','No, hay que cambiar el sensor','No, hay que comprar otra plaquita','Sí, pero hay que dar vuelta los cables'], correcta:0,
+        explica:'Los cables y el sensor son los mismos. Lo único que cambia es lo que le escribiste al programa. Mismo aparato + distinto programa = otra cosa completamente distinta. Esa es la idea más importante de todas.' },
+
+      { type:'mc', consigna:'En Scratch usaste el bloque "por siempre". Un aparato de verdad hace lo mismo: repite su trabajo sin parar. ¿Por qué le conviene repetir en vez de fijarse una sola vez?',
+        opts:['Porque el mundo cambia todo el tiempo y tiene que ir enterándose','Porque queda más lindo','Porque si no, no arranca','Porque así gasta menos pila'], correcta:0,
+        explica:'Si la luz del pasillo se fijara una sola vez si está oscuro, no serviría para nada: más tarde se hace de noche y ya no se entera. Por eso pregunta, decide y actúa, una y otra vez, todo el día.' },
+
+      { type:'mc', consigna:'¿Cuál de estas cosas hace tu celular gracias a un sensor?',
+        opts:['Da vuelta la pantalla cuando lo girás','Guarda tus fotos','Se conecta al wifi','Carga la batería'], correcta:0,
+        explica:'Adentro del celu hay un sensor que se da cuenta de cómo lo estás sosteniendo. También tiene sensor de luz (por eso la pantalla se oscurece sola) y de proximidad (por eso se apaga la pantalla cuando te lo ponés en la oreja).' },
+
+      { type:'mc', consigna:'Un aparato tiene que avisar si hace frío afuera, pero le pusieron el sensor adentro de la casa, al lado de la estufa. ¿Qué va a pasar?',
+        opts:['Va a decir que hace calor aunque afuera esté helando','Va a funcionar igual','Se va a romper','No va a medir nada'], correcta:0,
+        explica:'El sensor no miente: mide bien, pero mide el lugar equivocado. DÓNDE ponés el sensor es tan importante como cuál elegís.' },
+
+      { type:'fill',
+        consigna:'Completá lo que tiene que hacer el aparato cuando NO está oscuro.',
+        code:'esta_oscuro = falso\nsi esta_oscuro entonces:\n    mostrar "prender la luz"\nsino:\n    ___',
+        opts:['mostrar "apagar la luz"','mostrar "prender la luz"','esta_oscuro = verdadero','esperar 2 segundos'], correcta:0,
+        explica:'El "sino" es lo que pasa cuando la respuesta es no. Si no está oscuro, la luz se apaga. Un aparato tiene que saber qué hacer en los dos casos, no solo en uno.' },
+
+      { type:'mc', consigna:'Querés que el riego se prenda solo si la tierra está seca Y ADEMÁS no está lloviendo. ¿Qué palabrita une las dos condiciones?',
+        opts:['y','o','sino','entonces'], correcta:0,
+        explica:'Con "y" se tienen que cumplir las dos. Con "o" alcanzaba con una sola, y entonces el aparato regaría abajo de la lluvia. Una palabrita cambia todo el comportamiento.' },
+
+      { type:'mc', consigna:'Alarma para la noche. ¿Qué muestra este programa?',
+        code:'es_de_noche = verdadero\nhay_movimiento = falso\nsi es_de_noche y hay_movimiento entonces:\n    mostrar "sonar alarma"\nsino:\n    mostrar "todo tranquilo"',
+        opts:['todo tranquilo','sonar alarma','verdadero','falso'], correcta:0,
+        explica:'Con "y" se tienen que cumplir LAS DOS. Es de noche (verdadero) pero no hay movimiento (falso), así que la condición entera da falso y se va al sino.' },
+
+      { type:'order',
+        consigna:'Ordená el algoritmo de un robot que busca la luz y va hacia ella.',
+        correcto:['fijarse de qué lado hay más luz','girar para ese lado','avanzar un poco','volver a empezar'],
+        explica:'Fijate en el último paso: volver a empezar. Sin eso, el robot da un solo paso y se queda quieto para siempre. Todo aparato vive adentro de un "por siempre".' },
+
+      { type:'bug',
+        consigna:'Este aparato tendría que regar solo cuando la tierra está seca, pero riega siempre. ¿Qué línea está mal?',
+        lineas:['tierra_seca = falso','si tierra_seca entonces:','    mostrar "regar"','mostrar "regar"'],
+        bug:3,
+        explica:'La última línea quedó suelta, afuera del "si", porque no está corrida hacia la derecha. Todo lo que no está indentado se ejecuta siempre, pase lo que pase. Los espacios del principio le dicen al programa qué está adentro de la decisión y qué no.' },
+
+      { type:'mc', consigna:'¿Cuál de estos aparatos NO se podría hacer con un sensor y una plaquita?',
+        opts:['Uno que adivine en qué estás pensando','Uno que avise si hay humo','Uno que prenda un ventilador cuando hace calor','Uno que cuente cuánta gente entra a un local'], correcta:0,
+        explica:'Los otros tres se pueden hacer y son proyectos comunes. Adivinar pensamientos no: no existe un sensor que mida eso. Un aparato solo puede decidir con aquello que puede medir.' },
+    ]
+  },
+  {
     id:'dec', emoji:'🧠', nom:'Decisiones', desc:'Condicionales anidados y con y / o',
     concepto:'Condicionales complejos',
     ejs:[

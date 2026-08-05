@@ -1121,11 +1121,221 @@ function getRunLines(ej){
 function runnableStage(ej){ const l=getRunLines(ej); return l && simulatable(l); }
 
 /* -------------------- MENÚ -------------------- */
+/* ==================== INTRODUCCIÓN A LOS ROBOTS (1er año) ==================== */
+(function(){const st=document.createElement('style');st.textContent=`
+  .ic{background:#182234;border:1px solid #2b3purple;border-radius:20px;padding:30px 34px 24px;position:relative}
+  .ic{border-color:#2b3648}
+  @media(max-width:640px){.ic{padding:22px 18px}}
+  .ibar{position:absolute;left:0;right:0;top:0;height:4px;background:#222c3d;border-radius:20px 20px 0 0;overflow:hidden}
+  .ibar i{display:block;height:100%;background:linear-gradient(90deg,#38bdf8,#a78bfa,#f472b6);transition:.3s}
+  .ik{font-size:.74rem;letter-spacing:.7px;text-transform:uppercase;color:#fbbf24;font-weight:800;margin-top:6px}
+  .ic h2{font-size:1.9rem;line-height:1.15;margin:8px 0 18px;color:#fff}
+  @media(max-width:640px){.ic h2{font-size:1.45rem}}
+  .ib{font-size:1.14rem;line-height:1.8;color:#dbe4f0}
+  .ib b{color:#fff}
+  .ipreg{display:grid;gap:10px;margin-top:14px}
+  .ipreg div{background:#222d42;border-radius:13px;padding:14px 18px;font-size:1.12rem;font-weight:600}
+  .i3{display:flex;gap:10px;margin:18px 0;flex-wrap:wrap;align-items:stretch}
+  .i3 .n{flex:1;min-width:130px;background:#0f1725;border:2px solid #334155;border-radius:16px;padding:16px 12px;text-align:center}
+  .i3 .n.a{border-color:#34d399}.i3 .n.b{border-color:#38bdf8}.i3 .n.c{border-color:#f472b6}
+  .i3 .n .e{font-size:1.7rem}
+  .i3 .n .t{font-weight:800;font-size:1.02rem;margin-top:5px}
+  .i3 .n .d{font-size:.84rem;color:#93a3b8;margin-top:4px;line-height:1.45}
+  .i3 .fl{align-self:center;color:#64748b;font-size:1.4rem;font-weight:800}
+  .idos{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+  @media(max-width:640px){.idos{grid-template-columns:1fr}}
+  .idos .b{background:#222d42;border-radius:15px;padding:15px 17px}
+  .idos .b h4{margin:0 0 8px;font-size:1.05rem}
+  .idos .b ul{margin:0;padding-left:19px;font-size:.97rem;line-height:1.75;color:#c3cedd}
+  .ihist{margin:16px 0 4px;position:relative;padding-left:24px}
+  .ihist:before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,#38bdf8,#f472b6)}
+  .ihist .h{position:relative;margin-bottom:15px}
+  .ihist .h:before{content:"";position:absolute;left:-22px;top:7px;width:10px;height:10px;border-radius:50%;background:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.2)}
+  .ihist .y{font-family:ui-monospace,monospace;font-weight:800;color:#38bdf8;font-size:.9rem}
+  .ihist .x{font-size:1.02rem;line-height:1.6;margin-top:2px;color:#dbe4f0}
+  .icur{background:#222d42;border-radius:13px;padding:14px 17px;margin-bottom:10px;font-size:1.02rem;line-height:1.6}
+  .icur b{color:#fbbf24}
+  .idato{background:rgba(56,189,248,.1);border-left:4px solid #38bdf8;border-radius:11px;padding:14px 17px;margin-top:16px;font-size:1.04rem;line-height:1.65}
+  .inav{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+  .inav button{flex:1;min-width:130px;border:none;border-radius:14px;padding:15px;font-size:1.04rem;font-weight:800;
+    cursor:pointer;font-family:inherit;background:linear-gradient(90deg,#38bdf8,#a78bfa);color:#0f172a}
+  .inav button.g{background:#243044;color:#dbe4f0}
+  .idots{display:flex;gap:6px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  .idots span{width:9px;height:9px;border-radius:50%;background:#2b3648;cursor:pointer}
+  .idots span.on{background:#38bdf8;transform:scale(1.25)}
+`;document.head.appendChild(st)})();
+
+const INTRO1=[
+{k:'Arrancamos',t:'Hoy empezamos con robots',h:`
+  <div class="ib">Hasta ahora programaste cosas que pasan <b>adentro de la pantalla</b>: un laberinto,
+  una historia, un personaje que se mueve.<br><br>
+  Los robots son lo mismo pero <b>afuera</b>. Programas que hacen que algo pase en el mundo real:
+  una luz que se prende, una alarma que suena, una puerta que se abre.<br><br>
+  Y no arrancás de cero. <b>Ya sabés casi todo lo que hace falta</b>, aunque todavía no lo sepas.</div>`},
+
+{k:'Para pensar',t:'¿Cuál de estas cosas es un robot?',h:`
+  <div class="ib">No contesten rápido. Piensen y discutan con el de al lado.</div>
+  <div class="ipreg">
+    <div>Un lavarropas</div><div>Un semáforo</div>
+    <div>La puerta del supermercado que se abre sola</div>
+    <div>Una aspiradora robot</div><div>Un control remoto</div>
+  </div>
+  <div class="idato">Si no se ponen de acuerdo, mejor. Guardá tu argumento para dentro de dos minutos.</div>`},
+
+{k:'La definición',t:'Un robot hace tres cosas',h:`
+  <div class="i3">
+    <div class="n a"><div class="e">👀</div><div class="t">SE ENTERA</div><div class="d">de algo que pasa en el mundo</div></div>
+    <div class="fl">→</div>
+    <div class="n b"><div class="e">🤔</div><div class="t">DECIDE</div><div class="d">qué hacer con esa información</div></div>
+    <div class="fl">→</div>
+    <div class="n c"><div class="e">💪</div><div class="t">HACE</div><div class="d">algo que cambia el mundo</div></div>
+  </div>
+  <div class="ib">Y lo repite <b>una y otra vez</b>, sin parar.<br><br>
+  El del medio es el importante. La puerta del súper <b>se entera</b> de que te acercás y <b>abre</b>,
+  pero no decide nada: siempre hace lo mismo. Por eso no es un robot.<br><br>
+  Y fijate que en ningún lado dice que tenga que tener forma de persona ni patas.
+  <b>Eso lo puso el cine.</b></div>`},
+
+{k:'Sorpresa',t:'Vos ya programaste un sensor',h:`
+  <div class="ib">¿Te acordás del laberinto? Usaste este bloque:</div>
+  <div class="icur" style="font-family:ui-monospace,monospace;font-size:1.06rem;margin-top:14px">
+    si <b>tocando color negro</b> → ir al inicio</div>
+  <div class="ib"><b>Eso es un sensor.</b> El programa se entera de que el personaje chocó la pared,
+  y ahí decide qué hacer.<br><br>
+  En un robot de verdad es igualito, pero en vez de tocar un color, se entera de otras cosas:
+  cuánta luz hay, qué temperatura hace, si la tierra está seca.<br><br>
+  <b>La idea es la misma. Cambia lo que mide.</b></div>`},
+
+{k:'Las partes',t:'Sensores: los sentidos',h:`
+  <div class="ib">Un <b>sensor</b> se entera de algo y le avisa al programa. Es como un sentido:
+  el ojo, el oído, la piel.</div>
+  <div class="idos">
+    <div class="b"><h4>Algunos sensores</h4><ul>
+      <li>De <b>luz</b>: se entera si está oscuro</li>
+      <li>De <b>temperatura</b>: si hace frío o calor</li>
+      <li>De <b>humedad</b>: si la tierra está seca</li>
+      <li>De <b>movimiento</b>: si alguien pasó</li>
+      <li>De <b>distancia</b>: qué tan cerca hay algo</li></ul></div>
+    <div class="b"><h4>Los tenés encima</h4><ul>
+      <li>El celu <b>da vuelta la pantalla</b> cuando lo girás</li>
+      <li>Se <b>oscurece solo</b> de noche</li>
+      <li>Se <b>apaga</b> cuando te lo ponés en la oreja</li>
+      <li>El <b>termómetro</b> del auto</li></ul></div>
+  </div>
+  <div class="idato">Un sensor <b>no entiende</b> lo que mide. Solo tira un número. El significado se lo ponemos
+  nosotros cuando escribimos el programa.</div>`},
+
+{k:'Las partes',t:'Actuadores: las manos',h:`
+  <div class="ib">Un <b>actuador</b> es lo contrario: recibe una orden y <b>hace</b> algo.</div>
+  <div class="idos">
+    <div class="b"><h4>Para avisar</h4><ul>
+      <li>Una <b>luz</b> que se prende</li>
+      <li>Un <b>parlantito</b> que hace ruido</li>
+      <li>Una <b>pantallita</b> con un mensaje</li></ul></div>
+    <div class="b"><h4>Para mover</h4><ul>
+      <li>Un <b>motor</b>: ruedas, hélices</li>
+      <li>Un <b>servo</b>: abre y cierra algo</li>
+      <li>Una <b>bomba</b> de agua para regar</li></ul></div>
+  </div>
+  <div class="idato">Regla fácil para no confundirse nunca más:
+  <b>el sensor se entera, el actuador hace.</b></div>`},
+
+{k:'Dos mundos',t:'Lo que se toca y lo que no',h:`
+  <div class="idos">
+    <div class="b"><h4>🔩 Hardware</h4><ul>
+      <li>Lo que podés tocar</li><li>La plaquita, los cables</li>
+      <li>El sensor, el motor, la lamparita</li><li>Si se rompe, hay que cambiarlo</li></ul></div>
+    <div class="b"><h4>💾 Software</h4><ul>
+      <li>Las instrucciones</li><li>No pesa, no se toca</li>
+      <li>Se copia infinitas veces</li><li>Si está mal, lo arreglás y listo</li></ul></div>
+  </div>
+  <div class="ib" style="margin-top:6px"><b>Y acá está lo más importante de la clase de hoy:</b><br><br>
+  El mismo hardware, con distinto software, <b>es un aparato distinto</b>.<br><br>
+  La misma plaquita, con el mismo sensor y los mismos cables, puede ser una alarma o
+  puede ser un regador. No cambia nada de lo que se toca. <b>Cambia el programa.</b></div>`},
+
+{k:'De dónde viene',t:'Un poco de historia',h:`
+  <div class="ihist">
+    <div class="h"><div class="y">Hace 2000 años</div><div class="x">En Egipto, un tipo llamado Herón hacía
+      <b>puertas de templo que se abrían solas</b> con vapor. La gente creía que eran los dioses.</div></div>
+    <div class="h"><div class="y">1804</div><div class="x">Un telar que tejía <b>dibujos distintos según unas
+      tarjetas con agujeritos</b>. La misma máquina, distinto resultado, según las instrucciones.
+      Eso ya era software, sin que existiera la palabra.</div></div>
+    <div class="h"><div class="y">1920</div><div class="x">Nace la palabra <b>robot</b>, en una obra de teatro
+      checa. Viene de <i>robota</i>, que quiere decir <b>trabajo forzado</b>. En la obra los robots
+      se rebelan contra los humanos.</div></div>
+    <div class="h"><div class="y">1961</div><div class="x">El <b>primer robot de fábrica</b>: un brazo que
+      levantaba pedazos de metal al rojo vivo. El trabajo que quemaba a las personas.</div></div>
+    <div class="h"><div class="y">2002</div><div class="x">La <b>aspiradora robot</b>. El primer robot que
+      entró de verdad a las casas.</div></div>
+    <div class="h"><div class="y">Hoy</div><div class="x">Drones que fumigan campos, máquinas que ordeñan
+      vacas, brazos que ayudan a operar. Y la discusión de siempre: <b>¿qué trabajos reemplazan?</b></div></div>
+  </div>`},
+
+{k:'Datos raros',t:'Tres curiosidades',h:`
+  <div class="icur"><b>La palabra robot nació con miedo adentro.</b> Significa "trabajo forzado", casi
+  esclavitud, y en la obra donde apareció los robots terminan rebelándose. Desde el día uno la
+  palabra vino con esa carga.</div>
+  <div class="icur"><b>La aspiradora robot viene de la guerra.</b> La empresa que la inventó hacía
+  robots para desactivar minas.</div>
+  <div class="icur"><b>Casi ningún robot de verdad tiene forma de persona.</b> La mayoría son brazos
+  atornillados al piso. Ponerle forma humana a una máquina casi siempre es una mala idea de ingeniería:
+  las piernas son muy difíciles y las ruedas andan mejor.</div>`},
+
+{k:'Mirá alrededor',t:'Robots que no parecen robots',h:`
+  <div class="ib">Muchas cosas que usás todos los días se enteran, deciden y hacen. Nadie les dice robots,
+  pero funcionan igual:</div>
+  <div class="ipreg" style="margin-top:14px">
+    <div>🚪 El ascensor decide a qué piso ir primero</div>
+    <div>🌡️ La estufa se apaga sola cuando llega a la temperatura</div>
+    <div>📱 El celu baja el brillo cuando hay poca luz</div>
+    <div>🚦 Algunos semáforos miden cuántos autos hay y se adaptan</div>
+    <div>🚰 El inodoro del shopping que descarga cuando te vas</div>
+  </div>
+  <div class="idato">Buscá uno más en tu casa. Preguntate siempre lo mismo:
+  <b>¿de qué se entera? ¿qué hace? ¿decide algo o siempre hace lo mismo?</b></div>`},
+
+{k:'Listo',t:'Ahora te toca a vos',h:`
+  <div class="ib">Ya sabés lo que hace falta para arrancar:<br><br>
+  Un robot <b>se entera</b>, <b>decide</b> y <b>hace</b>.<br>
+  El <b>sensor</b> se entera. El <b>actuador</b> hace.<br>
+  Y el que decide sos vos, cuando escribís el <b>programa</b>.<br><br>
+  En la sala <b>🤖 Robots: sentir y decidir</b> vas a practicar todo esto, y vas a ver que
+  el "si… entonces" del laberinto es exactamente lo mismo que usa un aparato de verdad
+  para decidir.</div>
+  <div class="idato">Después seguí con las otras salas. Cuando te sientas cómodo, la sala
+  🌡️ <b>Sensores y aparatos</b> es el paso siguiente.</div>`}
+];
+
+function introHome(){ introGo(0); }
+function introGo(i){
+  if(i<0)i=0;
+  if(i>=INTRO1.length) return menu();
+  const s=INTRO1[i];
+  app.innerHTML=`<div class="ic">
+    <div class="ibar"><i style="width:${(i+1)/INTRO1.length*100}%"></i></div>
+    <div class="ik">${s.k} · ${i+1} de ${INTRO1.length}</div>
+    <h2>${s.t}</h2>
+    ${s.h}
+    <div class="inav">
+      ${i>0?`<button class="g" onclick="introGo(${i-1})">← Anterior</button>`:''}
+      <button onclick="introGo(${i+1})">${i+1>=INTRO1.length?'Ir a las misiones →':'Siguiente →'}</button>
+    </div>
+    <div class="idots">${INTRO1.map((_,k)=>`<span class="${k===i?'on':''}" onclick="introGo(${k})"></span>`).join('')}</div>
+  </div>
+  <button class="sala" style="width:100%;margin-top:14px;text-align:center" onclick="menu()">Salir de la introducción</button>`;
+  window.scrollTo(0,0);
+}
+
 function menu(){
   cur = null;
   let h = '<div class="card"><h2>Elegí una misión 👇</h2>'+
     '<p class="muted">Cada sala practica un concepto. Lo que leés es un <b>programa</b>: respondé y después mirá el 🎬 escenario, donde la computadora lo ejecuta.</p>'+
     '<div class="salas">'+
+    `<button class="sala mezcla" onclick="introHome()" style="background:linear-gradient(90deg,rgba(56,189,248,.22),rgba(167,139,250,.18));border-color:#3a5a7a">
+      <div class="emoji">🤖</div>
+      <div class="nom">¿Qué es un robot?</div>
+      <div class="desc">Empezá por acá: de qué se trata todo esto, en 11 pantallas</div></button>`+
     `<button class="sala mezcla" onclick="jrMission(0)" style="background:linear-gradient(90deg,rgba(244,114,182,.22),rgba(167,139,250,.18));border-color:#5a4a63">
       <div class="emoji">🎈</div>
       <div class="nom">Jr</div>

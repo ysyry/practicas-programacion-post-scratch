@@ -9,6 +9,17 @@ Se usa en **1er y 2do año**: los pibes ya trabajaron los conceptos en Scratch
 representación, **nombrando cada concepto**. Se le van **agregando salas** a medida
 que avanzan los cursos (mismo link para todos).
 
+## Introducción: ¿Qué es un robot? 🤖
+
+Antes de las salas de ejercicios hay una **introducción de 11 pantallas** para 1er año, con
+navegación adelante/atrás y puntitos para saltar. Cuenta de qué se trata todo esto antes de
+mandarlos a practicar: qué es un robot (se entera, decide, hace), que el bloque *"si tocando
+color negro"* del laberinto **ya era un sensor**, qué son sensores y actuadores, hardware y
+software, una línea de tiempo simple de Herón a hoy, tres curiosidades y robots cotidianos
+que no parecen robots.
+
+Sin tecnicismos: no menciona voltajes, pines ni Arduino. Eso queda para 3ro.
+
 ## Salas (una por concepto)
 
 | Sala | Concepto | Qué practican |

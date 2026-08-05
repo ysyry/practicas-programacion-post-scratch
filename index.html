@@ -564,6 +564,71 @@ const SALAS = [
     ]
   },
   {
+    id:'sensores', emoji:'🌡️', nom:'Sensores y aparatos', desc:'Del juego al mundo real: leer un sensor y decidir',
+    concepto:'Sensores, entrada y salida',
+    ejs:[
+      { type:'mc', consigna:'¿Qué hace un sensor?',
+        opts:['Convierte algo del mundo real en un número','Prende una luz','Es un tipo de computadora','Guarda archivos'], correcta:0,
+        explica:'Un sensor traduce. La humedad de la tierra, la temperatura o la luz se convierten en un número que el programa puede leer. Ojo: el sensor NO entiende lo que mide, solo tira el número. El significado se lo ponemos nosotros en el programa.' },
+
+      { type:'mc', consigna:'Un botón solo puede estar apretado o no apretado. Un sensor de humedad puede dar cualquier valor entre 0 y 1023. ¿Cómo se llama cada uno?',
+        opts:['El botón es digital y el sensor es analógico','Los dos son digitales','El botón es analógico y el sensor digital','Los dos son analógicos'], correcta:0,
+        explica:'Digital = dos estados nada más (prendido o apagado, sí o no). Analógico = un valor dentro de un rango. No hay "medio apretado", pero sí hay "un poco húmedo".' },
+
+      { type:'mc', consigna:'En nuestro sensor de humedad, 0 es tierra seca y 1023 es tierra empapada. Si el sensor marca 120, ¿cómo está la tierra?',
+        opts:['Muy seca','Empapada','Justo en el medio','No se puede saber'], correcta:0,
+        explica:'120 está pegadito a 0, o sea al extremo seco. Los números de un sensor no significan nada solos: siempre hay que saber qué representa cada extremo.' },
+
+      { type:'fill',
+        consigna:'Queremos regar cuando la tierra está seca. Acordate: número BAJO = seco. Completá el hueco.',
+        code:'humedad = 180\nsi humedad ___ 300 entonces:\n    mostrar "hay que regar"',
+        opts:['<','>','=','%'], correcta:0,
+        explica:'Regamos cuando el número es BAJO, o sea "menor que 300". Si ponías >, el aparato regaría justo cuando ya está empapada.' },
+
+      { type:'mc', consigna:'¿Qué muestra este programa?',
+        code:'humedad = 420\nsi humedad < 300 entonces:\n    mostrar "hay que regar"\nsino:\n    mostrar "está bien"',
+        opts:['está bien','hay que regar','420','no muestra nada'], correcta:0,
+        explica:'420 no es menor que 300, así que la condición da falso y se ejecuta el "sino". Fijate lo importante: el programa decidió solo, sin que nadie le dijera nada.' },
+
+      { type:'fill',
+        consigna:'El sensor da un número entre 0 y 1023, pero eso no lo entiende nadie. Queremos mostrarlo como porcentaje. Completá.',
+        code:'humedad = 1023\nporcentaje = humedad * 100 ___ 1023\nmostrar porcentaje',
+        opts:['/','*','+','-'], correcta:0,
+        explica:'Multiplicás por 100 y dividís por el máximo. Con 1023 da 100 (el tope), con 512 daría 50 (la mitad). Esta cuentita tiene nombre en mate: es una función lineal.' },
+
+      { type:'order',
+        consigna:'Todo aparato con sensor hace siempre los mismos cuatro pasos, en el mismo orden. Ordenalos.',
+        correcto:['leer el sensor','convertir el número a porcentaje','decidir si está seco o no','prender o apagar la bomba'],
+        explica:'Sensar, convertir, decidir, actuar. Ese orden no cambia nunca. No podés decidir antes de medir, ni actuar antes de decidir.' },
+
+      { type:'bug',
+        consigna:'Este regador riega justo cuando la tierra ya está mojada, y no riega cuando está seca. ¿Qué línea está mal?',
+        lineas:['humedad = 800','si humedad > 300 entonces:','    mostrar "regar"','sino:','    mostrar "no regar"'],
+        bug:1,
+        explica:'La condición está al revés. Como los números bajos son tierra seca, para regar tiene que decir "humedad < 300". Un solo símbolo cambiado y el aparato hace exactamente lo contrario.' },
+
+      { type:'mc', consigna:'Semáforo de luz para los plantines. Si el sensor de luz marca 55, ¿qué muestra?',
+        code:'luz = 55\nsi luz < 30 entonces:\n    mostrar "falta sol"\nsino:\n    si luz < 70 entonces:\n        mostrar "está bien"\n    sino:\n        mostrar "demasiado sol"',
+        opts:['está bien','falta sol','demasiado sol','55'], correcta:0,
+        explica:'55 no es menor que 30, entonces va al "sino". Ahí pregunta si es menor que 70: sí. Las decisiones se prueban de arriba hacia abajo y se queda con la PRIMERA que sea verdadera.' },
+
+      { type:'bug',
+        consigna:'El semáforo tendría que prender una sola luz, pero con el sensor en 20 prende la roja Y la amarilla. ¿Qué línea está mal?',
+        lineas:['luz = 20','si luz < 30 entonces:','    mostrar "roja"','si luz < 70 entonces:','    mostrar "amarilla"'],
+        bug:3,
+        explica:'Son dos "si" sueltos, uno atrás del otro, y 20 cumple los dos (es menor que 30 y también menor que 70). Para que prenda una sola, el segundo tendría que ser un "sino" adentro del primero.' },
+
+      { type:'mc', consigna:'El aparato mide cuatro veces seguidas y cuenta cuántas veces la tierra estuvo seca (menos de 300). ¿Qué muestra al final?',
+        code:'seco = 0\nmedicion = 100\nrepetir 4 veces:\n    si medicion < 300 entonces:\n        seco = seco + 1\n    medicion = medicion + 100\nmostrar seco',
+        opts:['2','4','3','1'], correcta:0,
+        explica:'Las mediciones son 100, 200, 300 y 400. Solo las dos primeras son menores que 300, así que el contador queda en 2. Ojo con el 300: no es MENOR que 300, es igual. Ese detalle en un aparato real cambia si riega o no.' },
+
+      { type:'mc', consigna:'El mismo aparato, con el mismo cable y el mismo sensor, puede ser un regador o una alarma de heladas. ¿Por qué?',
+        opts:['Porque lo que cambia es el programa','Porque se le cambia el sensor de lugar','Porque tiene dos botones','No se puede, hay que armar otro aparato'], correcta:0,
+        explica:'El hardware es exactamente el mismo. Lo que cambia es el software: qué mide, con qué número lo compara y qué hace después. Mismo hardware + distinto programa = otro aparato. Esa es la idea más importante de todo esto.' },
+    ]
+  },
+  {
     id:'desafios', emoji:'🔥', nom:'Desafíos', desc:'Para los que ya terminaron 💪',
     concepto:'Desafíos (combinar todo)', sinResultado:true,
     ejs:[

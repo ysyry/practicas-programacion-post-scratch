@@ -25,12 +25,24 @@ que avanzan los cursos (mismo link para todos).
 | 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
 | 🧩 Mini programas | **Variables + condicionales** | Leer/armar programas reales + desafíos situacionales |
 | 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
+| 🌡️ Sensores y aparatos | **Entrada, decisión y salida** | Leer un sensor, convertirlo y decidir qué hacer (puente hacia Arduino) |
 | 🔥 Desafíos | **Combinar todo** | 8 ejercicios (bucles anidados, acumuladores…) |
 | 🔥 Desafíos Nivel 2 | **Nivel 2 (2do)** | 14 ejercicios más largos, dificultad creciente |
 | 🏁 Repaso final | **Repaso general** | Un poco de todo, en orden de dificultad |
 | 🎈 Jr | Nivel ScratchJr (accesible) | Llevar al personaje al objetivo con flechas grandes, sin texto |
 | 🎨 Estudio de dibujo | Modo libre | Perillas (repetición/largo/giro) → la tortuga dibuja en vivo |
 | 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
+
+### Sala "Sensores y aparatos" 🌡️
+
+Doce ejercicios que llevan lo aprendido en Scratch hacia el mundo físico, de fácil a difícil:
+qué hace un sensor, digital vs analógico, leer un valor entre 0 y 1023, escribir la condición
+que decide, convertirlo a porcentaje (que es una función lineal), ordenar los cuatro pasos de
+cualquier aparato (sensar, convertir, decidir, actuar), encontrar la condición invertida en un
+regador, seguir un semáforo con tres casos, cazar el "sino" que falta, trazar un bucle con
+contador, y cerrar con la idea central: mismo hardware más distinto programa igual a otro aparato.
+
+No necesita placa ni hardware: se resuelve en el navegador como el resto de las salas.
 
 Cada ejercicio muestra el nombre del concepto, es **autocorregido** y da una
 **explicación** al responder. Si te equivocás, podés **corregir y reintentar** en el

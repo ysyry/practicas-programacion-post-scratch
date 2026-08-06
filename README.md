@@ -20,51 +20,21 @@ que no parecen robots.
 
 Sin tecnicismos: no menciona voltajes, pines ni Arduino. Eso queda para 3ro.
 
-## Salas (una por concepto)
+## Cómo está organizado
 
-| Sala | Concepto | Qué practican |
-|------|----------|---------------|
-| 🧩 Ordená el código | **Secuencia** | Poner instrucciones en orden (Parsons) |
-| 🧭 Algoritmos | **Algoritmo / programa** | Qué es un algoritmo y un programa + ordenar pasos |
-| 🔷 Diagramas de flujo | **Diagrama de flujo** | Leer algoritmos dibujados (óvalo/rectángulo/rombo/flecha) |
-| ➗ Operadores y números | **Operadores / matemática** | Cuentas, división, resto `%`, par/impar, precedencia |
-| 🏷️ Tipos de datos | **Tipos de datos** | Entero, decimal, texto, booleano |
-| 🔁 ¿Cuántas veces? | **Bucle** | Contar repeticiones y qué dibuja |
-| 🎨 Dibujar con código | **Arte generativo** | Programar figuras (triángulo, estrella, hexágono) |
-| 🔀 Completá el hueco | **Condicional** | Elegir la condición / bloque `si… entonces` |
-| 🤖 Robots: sentir y decidir | **Sensores y decisiones** | Qué se entera y qué hace un aparato (introductorio, sin cuentas) |
-| 🧠 Decisiones | **Condicionales complejos** | Anidados y con `y` / `o` |
-| 📦 Seguí la variable | **Variables y traza** | Seguir el valor que queda en una variable |
-| 🧩 Mini programas | **Variables + condicionales** | Leer/armar programas reales + desafíos situacionales |
-| 🐞 Cazá el error | **Debugging** | Encontrar la línea equivocada |
-| 🌡️ Sensores y aparatos | **Entrada, decisión y salida** | Leer un sensor, convertirlo y decidir qué hacer (puente hacia Arduino) |
-| 🔥 Desafíos | **Combinar todo** | 8 ejercicios (bucles anidados, acumuladores…) |
-| 🔥 Desafíos Nivel 2 | **Nivel 2 (2do)** | 14 ejercicios más largos, dificultad creciente |
-| 🏁 Repaso final | **Repaso general** | Un poco de todo, en orden de dificultad |
-| 🎈 Jr | Nivel ScratchJr (accesible) | Llevar al personaje al objetivo con flechas grandes, sin texto |
-| 🎨 Estudio de dibujo | Modo libre | Perillas (repetición/largo/giro) → la tortuga dibuja en vivo |
-| 🎲 Modo Mezcla | Todos | Desafío final con ejercicios mezclados |
+Las salas están agrupadas en **módulos temáticos**, y cada una lleva un **nivel**
+(inicial, intermedio o avanzado):
 
-### Sala "Robots: sentir y decidir" 🤖
-
-Veinte ejercicios **introductorios**, pensados para 1er año, sin una sola cuenta. Arrancan
-desde algo que ya hicieron: el bloque *"si tocando color negro"* del laberinto **ya era un
-sensor**. Desde ahí: qué se entera (sensor) y qué hace (actuador), los tres pasos de todo
-aparato, elegir el sensor adecuado para un problema, escribir la decisión con `si… sino`,
-el `y` que exige dos condiciones, por qué un aparato vive adentro de un *"por siempre"*,
-el sensor bien elegido pero mal ubicado, la sangría que deja una línea afuera de la
-decisión, y el cierre: mismo aparato con distinto programa es otra cosa.
-
-### Sala "Sensores y aparatos" 🌡️
-
-Doce ejercicios que llevan lo aprendido en Scratch hacia el mundo físico, de fácil a difícil:
-qué hace un sensor, digital vs analógico, leer un valor entre 0 y 1023, escribir la condición
-que decide, convertirlo a porcentaje (que es una función lineal), ordenar los cuatro pasos de
-cualquier aparato (sensar, convertir, decidir, actuar), encontrar la condición invertida en un
-regador, seguir un semáforo con tres casos, cazar el "sino" que falta, trazar un bucle con
-contador, y cerrar con la idea central: mismo hardware más distinto programa igual a otro aparato.
-
-No necesita placa ni hardware: se resuelve en el navegador como el resto de las salas.
+| Módulo | Salas |
+|---|---|
+| Para arrancar | Introducción a la robótica · Modo Jr |
+| 1 · Fundamentos | Ordená el código · Algoritmos · Diagramas de flujo |
+| 2 · Datos y cuentas | Operadores y números · Tipos de datos · Seguí la variable |
+| 3 · Repetir y decidir | ¿Cuántas veces? · Completá el hueco · Decisiones |
+| 4 · Programas enteros | Mini programas · Cazá el error |
+| 5 · Del programa al aparato | Robots: sentir y decidir · Sensores y aparatos |
+| 6 · Crear con código | Dibujar con código · Estudio de dibujo |
+| Poner a prueba | Teoría · Repaso final · Situacionales · Desafíos · Más desafíos · Modo mezcla |
 
 Cada ejercicio muestra el nombre del concepto, es **autocorregido** y da una
 **explicación** al responder. Si te equivocás, podés **corregir y reintentar** en el

@@ -5,35 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Práctica de programación · Post Scratch</title>
 <style>
-  :root{--bg:#0f172a;--card:#1e293b;--card2:#273449;--txt:#e2e8f0;--muted:#94a3b8;
+  :root{--bg:#0b0f16;--card:#141b26;--card2:#1b2432;--line:#222c3b;--txt:#dfe6ef;--muted:#8b9aad;
     --accent:#38bdf8;--good:#34d399;--bad:#f87171;--warn:#fbbf24;--b1:#a78bfa;--b2:#f472b6}
   *{box-sizing:border-box}
   body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-    background:linear-gradient(160deg,#0f172a,#1e1b4b);color:var(--txt);min-height:100vh}
-  header{padding:16px;text-align:center;position:relative}
-  header h1{margin:0;font-size:1.5rem;background:linear-gradient(90deg,var(--accent),var(--b1),var(--b2));
-    -webkit-background-clip:text;background-clip:text;color:transparent}
-  header p{margin:4px 0 0;color:var(--muted);font-size:.85rem}
-  .wrap{max-width:720px;margin:0 auto;padding:8px 16px 60px}
-  .card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.3);margin-bottom:16px}
+    background:var(--bg);color:var(--txt);min-height:100vh}
+  header{padding:22px 16px 16px;text-align:center;position:relative;border-bottom:1px solid var(--line);margin-bottom:22px}
+  header h1{margin:0;font-size:1.32rem;color:#fff;font-weight:700;letter-spacing:-.01em}
+  header p{margin:5px 0 0;color:var(--muted);font-size:.86rem}
+  .wrap{max-width:860px;margin:0 auto;padding:0 20px 70px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
+
+  /* ---- menú por módulos ---- */
+  .mod{margin-bottom:30px}
+  .mod .mt{font-size:.74rem;letter-spacing:1px;text-transform:uppercase;color:#5f7085;font-weight:800;margin:0 0 4px}
+  .mod .md{font-size:.9rem;color:var(--muted);margin:0 0 14px;line-height:1.5}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media(max-width:620px){.grid{grid-template-columns:1fr}}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;cursor:pointer;
+    text-align:left;color:inherit;font-family:inherit;transition:.13s;display:flex;flex-direction:column;gap:5px}
+  .item:hover{border-color:var(--accent);background:#18212f}
+  .item .n{font-weight:700;font-size:1.02rem;color:#fff}
+  .item .d{font-size:.85rem;color:var(--muted);line-height:1.5}
+  .item .foot{display:flex;align-items:center;gap:8px;margin-top:6px}
+  .item.wide{grid-column:1/-1}
+  .item.dest{border-color:#2f4560;background:#16202e}
+  .lvl{font-size:.66rem;font-weight:800;letter-spacing:.6px;text-transform:uppercase;
+    border-radius:99px;padding:3px 9px;border:1px solid}
+  .lvl.l1{color:var(--good);border-color:rgba(52,211,153,.35)}
+  .lvl.l2{color:var(--accent);border-color:rgba(56,189,248,.35)}
+  .lvl.l3{color:var(--warn);border-color:rgba(251,191,36,.35)}
+  .hecho{font-size:.74rem;color:var(--good);font-weight:700;margin-left:auto}
   h2{margin:.1em 0 .5em;font-size:1.25rem}
   h3{font-size:1.05rem;margin:.2em 0}
   .muted{color:var(--muted)}
-  /* menu de salas */
-  .salas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(max-width:540px){.salas{grid-template-columns:1fr}}
-  .sala{background:var(--card2);border:2px solid transparent;border-radius:14px;padding:16px;cursor:pointer;
-    transition:.15s;text-align:left;color:var(--txt);font-family:inherit}
-  .sala:hover{border-color:var(--accent);transform:translateY(-2px)}
-  .sala .emoji{font-size:1.8rem}
-  .sala .nom{font-weight:700;font-size:1.02rem;margin:6px 0 2px}
-  .sala .desc{font-size:.8rem;color:var(--muted)}
-  .sala .prog{font-size:.74rem;color:var(--good);margin-top:8px;font-weight:700}
-  .sala.mezcla{grid-column:1/-1;background:linear-gradient(90deg,rgba(56,189,248,.15),rgba(167,139,250,.15));
-    border:1px solid #3a4a63}
-  .concepto{display:inline-block;background:rgba(167,139,250,.18);color:var(--b1);border:1px solid rgba(167,139,250,.4);
-    border-radius:99px;padding:3px 11px;font-size:.72rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin-top:8px}
-  .concepto.big{font-size:.78rem;margin:0 0 12px}
+  .sala{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;
+    transition:.15s;text-align:left;color:var(--txt);font-family:inherit;width:100%}
+  .sala:hover{border-color:var(--accent)}
+  .concepto{display:inline-block;color:var(--muted);border:1px solid var(--line);
+    border-radius:99px;padding:3px 11px;font-size:.7rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+  .concepto.big{margin:0 0 14px}
   /* barra superior de ejercicio */
   .topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
   .backb{background:var(--card2);color:var(--txt);border:1px solid #3a4a63;border-radius:99px;
@@ -142,7 +153,7 @@
 <body>
 <header>
   <h1>🚀 Práctica de programación</h1>
-  <p>Lo que aprendiste en Scratch… ¡ahora leyendo código!</p>
+  <p>Lo que hiciste en Scratch, ahora leyendo código</p>
 </header>
 <div class="wrap" id="app"></div>
 
@@ -223,7 +234,7 @@ const FLOW_PARIMPAR = (function(){
    ============================================================ */
 const SALAS = [
   {
-    id:'sec', emoji:'🧩', nom:'Ordená el código', desc:'Poné las instrucciones en el orden correcto',
+    id:'sec', nom:'Ordená el código', desc:'Poner las instrucciones en el orden correcto',
     concepto:'Secuencia',
     ejs:[
       { type:'order',
@@ -249,12 +260,12 @@ const SALAS = [
     ]
   },
   {
-    id:'alg', emoji:'🧭', nom:'Algoritmos', desc:'¿Qué es un algoritmo? Ordená pasos para resolver algo',
+    id:'alg', nom:'Algoritmos', desc:'Qué es un algoritmo y qué es un programa',
     concepto:'Algoritmo',
     ejs:[
       { type:'mc', consigna:'¿Qué es un algoritmo?',
         opts:['Una serie de pasos ordenados para resolver un problema','Un lenguaje de programación','Una parte de la computadora','Un error en el programa'], correcta:0,
-        explica:'Un algoritmo es una secuencia de pasos, en orden y sin ambigüedad, que resuelve un problema. ¡Una receta también es un algoritmo!' },
+        explica:'Un algoritmo es una secuencia de pasos, en orden y sin ambigüedad, que resuelve un problema. Una receta de cocina también es un algoritmo.' },
       { type:'mc', consigna:'¿Cuál de estas cosas NO es un algoritmo?',
         opts:['La foto de un paisaje','Una receta de cocina','Los pasos para armar un mueble','Las instrucciones para llegar a la escuela'], correcta:0,
         explica:'Una foto no describe pasos. Las recetas e instrucciones SÍ son algoritmos: dicen qué hacer y en qué orden.' },
@@ -273,11 +284,11 @@ const SALAS = [
       { type:'mc', consigna:'Escribo estas instrucciones y la compu las ejecuta y me muestra 7. ¿Cómo se llama eso?',
         code:'a = 3\nb = 4\nmostrar a + b',
         opts:['Un programa','Un algoritmo desordenado','Un error','Una foto'], correcta:0,
-        explica:'¡Es un programa! Vos lo escribís y la computadora lo ejecuta línea por línea: guarda 3, guarda 4 y muestra la suma (7). Eso es programar.' },
+        explica:'Es un programa. Vos lo escribís y la computadora lo ejecuta línea por línea: guarda 3, guarda 4 y muestra la suma (7). Eso es programar.' },
     ]
   },
   {
-    id:'flow', emoji:'🔷', nom:'Diagramas de flujo', desc:'Leé algoritmos dibujados con figuras y flechas',
+    id:'flow', nom:'Diagramas de flujo', desc:'Leer algoritmos dibujados con figuras y flechas',
     concepto:'Diagrama de flujo',
     ejs:[
       { type:'mc', consigna:'Un diagrama de flujo dibuja un algoritmo. ¿Qué figura representa una DECISIÓN (una pregunta con Sí/No)?',
@@ -295,14 +306,14 @@ const SALAS = [
       { type:'mc', consigna:'El MISMO diagrama, pero ahora el número es 10. ¿Qué muestra?',
         svg: FLOW_PARIMPAR,
         opts:['es par','es impar','10','Fin'], correcta:0,
-        explica:'10 es par (10 % 2 = 0), tomamos el camino "Sí" → "es par". ¡El mismo diagrama da distinto según el dato de entrada!' },
+        explica:'10 es par (10 % 2 = 0), tomamos el camino "Sí" → "es par". El mismo diagrama da distinto según el dato de entrada.' },
       { type:'mc', consigna:'¿Para qué sirve un diagrama de flujo?',
         opts:['Para representar un algoritmo con figuras y flechas','Para dibujar personajes','Para escuchar música','Para escribir un cuento'], correcta:0,
         explica:'Es una forma visual de mostrar los pasos de un algoritmo y cómo se decide el camino. Cada figura significa algo distinto.' },
     ]
   },
   {
-    id:'ope', emoji:'➗', nom:'Operadores y números', desc:'Programitas que hacen cuentas — como en mate',
+    id:'ope', nom:'Operadores y números', desc:'Cuentas, división, resto y precedencia',
     concepto:'Operadores y matemática',
     ejs:[
       { type:'mc', consigna:'¿Cuánto vale resultado? (ojo el orden de las operaciones)',
@@ -316,14 +327,14 @@ const SALAS = [
         explica:'17 dividido 5 es 3 y sobran 2 (porque 5*3=15, y 17-15=2). El resto es 2.' },
       { type:'mc', consigna:'Con el resto sabemos si un número es PAR. ¿Qué muestra para el 8?',
         code:'numero = 8\nresto = numero % 2\nmostrar resto', opts:['0','1','4','8'], correcta:0,
-        explica:'Si un número es par, al dividir por 2 el resto es 0. 8 % 2 = 0 → ¡es par! (los impares dan 1).' },
-      { type:'mc', consigna:'⚡ ¿Cuánto vale total? (mirá los paréntesis)',
+        explica:'Si un número es par, al dividir por 2 el resto es 0. 8 % 2 = 0, así que es par. Los impares dan resto 1.' },
+      { type:'mc', consigna:'¿Cuánto vale total? Mirá los paréntesis',
         code:'a = 10\nb = 4\ntotal = (a - b) * 2\nmostrar total', opts:['12','16','2','6'], correcta:0,
         explica:'Los paréntesis van primero: (10-4)=6, y 6*2=12.' },
     ]
   },
   {
-    id:'tip', emoji:'🏷️', nom:'Tipos de datos', desc:'Entero, decimal, texto, verdadero/falso',
+    id:'tip', nom:'Tipos de datos', desc:'Entero, decimal, texto, verdadero y falso',
     concepto:'Tipos de datos',
     ejs:[
       { type:'mc', consigna:'¿Qué tipo de dato es el 42?',
@@ -340,14 +351,14 @@ const SALAS = [
         explica:'Verdadero / Falso es un dato booleano: sirve para las condiciones (si… entonces).' },
       { type:'mc', consigna:'Una comparación devuelve un booleano. ¿Qué muestra?',
         code:'resultado = 5 > 3\nmostrar resultado', opts:['verdadero','falso','8','2'], correcta:0,
-        explica:'5 es mayor que 3, así que la comparación da verdadero. ¡Los > < = devuelven booleanos!' },
+        explica:'5 es mayor que 3, así que la comparación da verdadero. Las comparaciones siempre devuelven verdadero o falso.' },
       { type:'mc', consigna:'¿Cuál de estos valores es un número entero?',
         opts:['7','7.5','"7"','falso'], correcta:0,
         explica:'7 es entero. 7.5 es decimal, "7" es texto (tiene comillas) y falso es booleano.' },
     ]
   },
   {
-    id:'buc', emoji:'🔁', nom:'¿Cuántas veces?', desc:'Contá repeticiones y mirá qué dibuja',
+    id:'buc', nom:'¿Cuántas veces?', desc:'Contar repeticiones y anticipar el resultado',
     concepto:'Bucle (repetición)',
     ejs:[
       { type:'mc',
@@ -359,7 +370,7 @@ const SALAS = [
         consigna:'¿Qué figura dibuja este código?',
         code:'repetir 3 veces:\n    avanzar 100\n    girar 120 grados',
         opts:['Un triángulo','Un cuadrado','Una línea recta','Un círculo'], correcta:0,
-        explica:'3 lados iguales girando 120° cada vez = un triángulo. ¡Mirá cómo lo dibuja!' },
+        explica:'Tres lados iguales girando 120 grados cada vez dan un triángulo. Probalo con el escenario.' },
       { type:'mc',
         consigna:'¿Qué número muestra al final?',
         code:'puntos = 0\nrepetir 3 veces:\n    puntos = puntos + 2\nmostrar puntos',
@@ -371,34 +382,34 @@ const SALAS = [
         opts:['10','6','4','0'], correcta:1,
         explica:'Resta 1 cuatro veces: 10 → 9 → 8 → 7 → 6. Un bucle también puede restar.' },
       { type:'mc',
-        consigna:'⚡ Difícil: ¿qué muestra? (la variable se suma a sí misma)',
+        consigna:'¿Qué muestra? La variable se suma a sí misma',
         code:'n = 1\nrepetir 4 veces:\n    n = n + n\nmostrar n',
         opts:['4','5','16','8'], correcta:2,
         explica:'Se duplica cada vuelta: 1 → 2 → 4 → 8 → 16. Seguilo en el panel de variables.' },
     ]
   },
   {
-    id:'dib', emoji:'🎨', nom:'Dibujar con código', desc:'Hacé arte y figuras moviendo la tortuga',
+    id:'dib', nom:'Dibujar con código', desc:'Figuras y arte moviendo la tortuga',
     concepto:'Dibujo con código (arte generativo)',
     ejs:[
       { type:'order', consigna:'Ordená el programa para dibujar un triángulo 🔺 (armalo y tocá ▶ para verlo dibujarse)',
         correcto:['avanzar 100','girar 120 grados','avanzar 100','girar 120 grados','avanzar 100'],
-        explica:'Tres lados iguales, girando 120° entre cada uno, forman un triángulo. ¡Con código también se dibuja!' },
+        explica:'Tres lados iguales, girando 120 grados entre cada uno, forman un triángulo.' },
       { type:'mc', consigna:'¿Qué figura dibuja este programa?',
         code:'repetir 5 veces:\n    avanzar 100\n    girar 144 grados',
         opts:['Una estrella','Un cuadrado','Un triángulo','Una línea'], correcta:0,
-        explica:'Repetir 5 veces girando 144° dibuja una estrella de 5 puntas ⭐. ¡Cambiando el ángulo cambia el dibujo!' },
+        explica:'Repetir 5 veces girando 144° dibuja una estrella de 5 puntas. Cambiando el ángulo cambia la figura.' },
       { type:'mc', consigna:'Este programa gira 60° cada vez. ¿Cuántos lados va a tener la figura?',
         code:'repetir 6 veces:\n    avanzar 80\n    girar 60 grados',
         opts:['6 (un hexágono)','3','2','360'], correcta:0,
-        explica:'360 ÷ 60 = 6, así que la figura cierra con 6 lados: un hexágono. ¡La matemática decide la forma!' },
+        explica:'360 ÷ 60 = 6, así que la figura cierra con 6 lados: un hexágono. La matemática decide la forma.' },
       { type:'mc', consigna:'Programar dibujos con repeticiones y figuras se llama…',
         opts:['arte generativo','arte con lápiz','una foto','un video'], correcta:0,
-        explica:'¡Arte generativo! Con pocas líneas de código y bucles se crean patrones y figuras. Ideal si te gusta dibujar. Probá el 🎨 Estudio de dibujo del menú.' },
+        explica:'A esto se le dice arte generativo: con pocas líneas y un bucle salen patrones y figuras. En el menú está el Estudio de dibujo para probar libremente.' },
     ]
   },
   {
-    id:'con', emoji:'🔀', nom:'Completá el hueco', desc:'Elegí la condición o el bloque que falta',
+    id:'con', nom:'Completá el hueco', desc:'Elegir la condición o el bloque que falta',
     concepto:'Condicional (si… entonces)',
     ejs:[
       { type:'fill',
@@ -422,14 +433,14 @@ const SALAS = [
         opts:['mostrar "necesitás la llave"','abrir puerta','puntos = puntos + 1','girar 90'], correcta:0,
         explica:'El "sino" es lo que pasa cuando la condición es falsa: acá, avisar que falta la llave.' },
       { type:'fill',
-        consigna:'⚡ Difícil: solo abre si tiene la llave Y la puerta está cerrada. Completá.',
+        consigna:'Solo abre si tiene la llave Y la puerta está cerrada. Completá.',
         code:'si tiene_llave ___ puerta_cerrada entonces:\n    abrir puerta',
         opts:['y','o','+','no'], correcta:0,
         explica:'Se tienen que cumplir las DOS cosas a la vez → usamos "y" (ambas verdaderas).' },
     ]
   },
   {
-    id:'robot1', emoji:'🤖', nom:'Robots: sentir y decidir', desc:'Tu primer acercamiento a los aparatos que deciden solos',
+    id:'robot1', nom:'Robots: sentir y decidir', desc:'Qué se entera y qué hace un aparato, sin cuentas',
     concepto:'Sensores y decisiones',
     ejs:[
       { type:'mc', consigna:'En el laberinto de Scratch usaste el bloque "si tocando color negro → volver al inicio". Sin darte cuenta, ahí ya usaste un sensor. ¿Qué hace un sensor?',
@@ -526,7 +537,7 @@ const SALAS = [
     ]
   },
   {
-    id:'dec', emoji:'🧠', nom:'Decisiones', desc:'Condicionales anidados y con y / o',
+    id:'dec', nom:'Decisiones', desc:'Condicionales anidados y con y / o',
     concepto:'Condicionales complejos',
     ejs:[
       { type:'mc', consigna:'¿Qué mensaje muestra?',
@@ -545,14 +556,14 @@ const SALAS = [
         code:'jubilado = falso\nestudiante = verdadero\nsi jubilado o estudiante entonces:\n    mostrar "Tenés descuento"\nsino:\n    mostrar "Precio completo"',
         opts:['Tenés descuento','Precio completo','falso','nada'], correcta:0,
         explica:'Con "o" alcanza con que UNA sea verdadera. No es jubilado, pero sí estudiante → hay descuento.' },
-      { type:'mc', consigna:'⚡ ¿Qué muestra? Fijate el rango de temperatura.',
+      { type:'mc', consigna:'¿Qué muestra? Fijate el rango de temperatura.',
         code:'temp = 25\nsi temp < 10 entonces:\n    mostrar "Frío"\nsino:\n    si temp < 24 entonces:\n        mostrar "Templado"\n    sino:\n        mostrar "Calor"',
         opts:['Calor','Templado','Frío','25'], correcta:0,
         explica:'25 no es < 10 ni < 24, así que cae en el último "sino" → "Calor".' },
     ]
   },
   {
-    id:'var', emoji:'📦', nom:'Seguí la variable', desc:'Hacé la traza: ¿qué valor queda?',
+    id:'var', nom:'Seguí la variable', desc:'Seguir el valor que va quedando en una variable',
     concepto:'Variables y traza',
     ejs:[
       { type:'mc',
@@ -576,14 +587,14 @@ const SALAS = [
         opts:['4','10','14','0'], correcta:0,
         explica:'b copió el valor de a (4) en ese momento. Aunque después a cambie a 10, b sigue valiendo 4.' },
       { type:'mc',
-        consigna:'⚡ Difícil: se intercambian valores. ¿Qué muestra b?',
+        consigna:'Se intercambian valores. ¿Qué muestra b?',
         code:'a = 5\nb = 3\na = a + b\nb = a - b\nmostrar b',
         opts:['3','5','8','2'], correcta:1,
         explica:'a = 5+3 = 8. Después b = 8-3 = 5. ¡Terminaron intercambiados! Seguilo en el panel.' },
     ]
   },
   {
-    id:'miniprog', emoji:'🧩', nom:'Mini programas', desc:'Variables + decisiones: leé y armá programas de verdad',
+    id:'miniprog', nom:'Mini programas', desc:'Leer y armar programas con variables y decisiones',
     concepto:'Variables + condicionales (un programa)', sinResultado:true,
     ejs:[
       { type:'mc', consigna:'Un programa guarda datos en variables 📦 y toma decisiones con condiciones 🔀. Cuando juntás todo eso, ¿qué tenés?',
@@ -630,7 +641,7 @@ const SALAS = [
     ]
   },
   {
-    id:'bug', emoji:'🐞', nom:'Cazá el error', desc:'Encontrá la línea equivocada',
+    id:'bug', nom:'Cazá el error', desc:'Encontrar la línea equivocada',
     concepto:'Debugging (depuración)',
     ejs:[
       { type:'bug',
@@ -661,7 +672,7 @@ const SALAS = [
     ]
   },
   {
-    id:'sensores', emoji:'🌡️', nom:'Sensores y aparatos', desc:'Del juego al mundo real: leer un sensor y decidir',
+    id:'sensores', nom:'Sensores y aparatos', desc:'Leer un sensor, convertirlo y decidir',
     concepto:'Sensores, entrada y salida',
     ejs:[
       { type:'mc', consigna:'¿Qué hace un sensor?',
@@ -726,7 +737,7 @@ const SALAS = [
     ]
   },
   {
-    id:'desafios', emoji:'🔥', nom:'Desafíos', desc:'Para los que ya terminaron 💪',
+    id:'desafios', nom:'Desafíos', desc:'Ejercicios largos que combinan todo',
     concepto:'Desafíos (combinar todo)', sinResultado:true,
     ejs:[
       { type:'mc', consigna:'Bucle DENTRO de bucle. ¿Qué muestra?',
@@ -764,8 +775,8 @@ const SALAS = [
     ]
   },
   {
-    id:'desafios2', emoji:'🔥', nom:'Desafíos Nivel 2', desc:'Para 2do: van subiendo de a poco ⚡',
-    concepto:'Desafíos Nivel 2', sinResultado:true,
+    id:'desafios2', nom:'Más desafíos', desc:'Segunda tanda, más extensa',
+    concepto:'Desafíos, segunda parte', sinResultado:true,
     ejs:[
       { type:'mc', consigna:'Nivel 2 · 1 — Orden de las operaciones. ¿Qué muestra?',
         code:'r = 2 + 3 * 4 - 10 / 2\nmostrar r',
@@ -826,7 +837,7 @@ const SALAS = [
     ]
   },
   {
-    id:'situac', emoji:'🎯', nom:'Situacionales', desc:'Programá cosas de verdad, más completas 🧠',
+    id:'situac', nom:'Situacionales', desc:'Programar situaciones completas',
     concepto:'Programar situaciones (desafío)', sinResultado:true,
     ejs:[
       { type:'order', consigna:'🔐 Programá el acceso: si la clave es "sol" mostrá "Bienvenido", si no "Clave incorrecta". Ordená y probá con ▶.',
@@ -856,7 +867,7 @@ const SALAS = [
     ]
   },
   {
-    id:'teoria', emoji:'📚', nom:'Teoría', desc:'Preguntas para repasar los conceptos 🧠',
+    id:'teoria', nom:'Teoría', desc:'Preguntas para repasar los conceptos',
     concepto:'Teoría', sinResultado:true,
     ejs:[
       { type:'mc', consigna:'¿Qué es un algoritmo?', opts:['Una serie de pasos ordenados para resolver un problema','Una computadora','Un lenguaje de programación','Un error'], correcta:0, explica:'Pasos en orden y sin ambigüedad para resolver algo. Una receta también es un algoritmo.' },
@@ -874,7 +885,7 @@ const SALAS = [
     ]
   },
   {
-    id:'repaso', emoji:'🏁', nom:'Repaso final', desc:'Un poco de todo lo que aprendimos',
+    id:'repaso', nom:'Repaso final', desc:'Un recorrido por todo, en orden de dificultad',
     concepto:'Repaso general',
     ejs:[
       { type:'mc', consigna:'Para empezar: ¿qué es un algoritmo?',
@@ -909,7 +920,7 @@ const SALAS = [
       { type:'mc', consigna:'Para cerrar: ¿qué figura dibuja este programa?',
         code:'repetir 4 veces:\n    avanzar 100\n    girar 90 grados',
         opts:['Un cuadrado','Un triángulo','Una estrella','Una línea'], correcta:0,
-        explica:'4 lados girando 90° = un cuadrado 🟦. ¡Con código también se dibuja! 🎉' },
+        explica:'Cuatro lados girando 90 grados dan un cuadrado.' },
     ]
   },
 ];
@@ -1068,7 +1079,7 @@ function mountStage(container, lines, opts){
   const frames=simulate(lines);
   const full=frames[frames.length-1].trail;
   container.innerHTML =
-    `<div class="cbhdr">💻 La computadora ejecuta tu programa línea por línea:</div>`+
+    `<div class="cbhdr">La computadora ejecuta tu programa línea por línea:</div>`+
     `<div class="cblock">${codeLinesHtml(lines)}</div>`+
     (hasMove?'<canvas class="stcanvas" width="320" height="200"></canvas>':'')+
     (hasVar?'<div class="vpanel"></div>':'')+
@@ -1091,8 +1102,8 @@ function mountStage(container, lines, opts){
     if(vp) vp.innerHTML = Object.keys(f.vars).length
       ? Object.keys(f.vars).map(k=>`<span class="vchip ${f.changed===k?'chg':''}">${k} = <b>${fmt(f.vars[k])}</b></span>`).join('')
       : '<span class="muted" style="font-size:.8rem">(sin variables todavía)</span>';
-    if(op) op.innerHTML = f.out.length ? '🖥️ '+f.out.map(escapeHtml).join('   ')
-      : '<span class="muted" style="font-size:.82rem">🖥️ pantalla</span>';
+    if(op) op.innerHTML = f.out.length ? f.out.map(escapeHtml).join('   ')
+      : '<span class="muted" style="font-size:.82rem">pantalla</span>';
   }
   function stop(){ if(timer){clearInterval(timer);timer=null;} }
   function play(){ stop(); if(idx>=frames.length-1) idx=-1; timer=setInterval(()=>{
@@ -1184,11 +1195,11 @@ const INTRO1=[
 
 {k:'La definición',t:'Un robot hace tres cosas',h:`
   <div class="i3">
-    <div class="n a"><div class="e">👀</div><div class="t">SE ENTERA</div><div class="d">de algo que pasa en el mundo</div></div>
+    <div class="n a"><div class="t">SE ENTERA</div><div class="d">de algo que pasa en el mundo</div></div>
     <div class="fl">→</div>
-    <div class="n b"><div class="e">🤔</div><div class="t">DECIDE</div><div class="d">qué hacer con esa información</div></div>
+    <div class="n b"><div class="t">DECIDE</div><div class="d">qué hacer con esa información</div></div>
     <div class="fl">→</div>
-    <div class="n c"><div class="e">💪</div><div class="t">HACE</div><div class="d">algo que cambia el mundo</div></div>
+    <div class="n c"><div class="t">HACE</div><div class="d">algo que cambia el mundo</div></div>
   </div>
   <div class="ib">Y lo repite <b>una y otra vez</b>, sin parar.<br><br>
   El del medio es el importante. La puerta del súper <b>se entera</b> de que te acercás y <b>abre</b>,
@@ -1327,42 +1338,61 @@ function introGo(i){
   window.scrollTo(0,0);
 }
 
+const NIVEL={sec:1,alg:1,flow:1,ope:1,tip:1,buc:1,con:1,dib:1,robot1:1,
+             var:2,dec:2,miniprog:2,bug:2,sensores:2,teoria:2,repaso:2,
+             situac:3,desafios:3,desafios2:3};
+const NIVELN=['','Inicial','Intermedio','Avanzado'];
+
+const MODULOS=[
+ {t:'Para arrancar', d:'Si es tu primera vez con esto, empezá por acá.', esp:['intro','jr']},
+ {t:'1 · Fundamentos', d:'Qué es un programa, cómo se lee y en qué orden pasan las cosas.',
+  ids:['sec','alg','flow']},
+ {t:'2 · Datos y cuentas', d:'Los valores con los que trabaja un programa y qué se puede hacer con ellos.',
+  ids:['ope','tip','var']},
+ {t:'3 · Repetir y decidir', d:'Las dos estructuras que hacen posible todo lo demás.',
+  ids:['buc','con','dec']},
+ {t:'4 · Programas enteros', d:'Leer, armar y arreglar programas completos.',
+  ids:['miniprog','bug']},
+ {t:'5 · Del programa al aparato', d:'Cuando el programa sale de la pantalla y hace algo en el mundo.',
+  ids:['robot1','sensores']},
+ {t:'6 · Crear con código', d:'Dibujar y hacer arte programando.',
+  ids:['dib'], esp:['estudio']},
+ {t:'Poner a prueba', d:'Para cuando ya recorriste los módulos de arriba.',
+  ids:['teoria','repaso','situac','desafios','desafios2'], esp:['mezcla']}
+];
+
+const ESPECIALES={
+ intro:{n:'Introducción a la robótica', d:'Qué es un robot, de dónde viene y cómo está hecho. Once pantallas para leer de corrido.', fn:'introHome()', wide:true, dest:true},
+ jr:   {n:'Modo Jr', d:'Nivel más simple, sin texto para leer: llevá al personaje hasta su objetivo con flechas.', fn:'jrMission(0)', lvl:0},
+ estudio:{n:'Estudio de dibujo', d:'Modo libre: movés las perillas y la tortuga dibuja en vivo.', fn:'estudio()'},
+ mezcla:{n:'Modo mezcla', d:'Ocho ejercicios tomados al azar de todas las salas.', fn:"startSala('mezcla')", wide:true}
+};
+
+function itemHTML(o){
+  const lvl = o.lvl===undefined ? '' :
+    (o.lvl?`<span class="lvl l${o.lvl}">${NIVELN[o.lvl]}</span>`:'');
+  return `<button class="item${o.wide?' wide':''}${o.dest?' dest':''}" onclick="${o.fn}">
+    <div class="n">${o.n}</div>
+    <div class="d">${o.d}</div>
+    ${(lvl||o.hecho)?`<div class="foot">${lvl}${o.hecho?`<span class="hecho">${o.hecho}</span>`:''}</div>`:''}
+  </button>`;
+}
+
 function menu(){
   cur = null;
-  let h = '<div class="card"><h2>Elegí una misión 👇</h2>'+
-    '<p class="muted">Cada sala practica un concepto. Lo que leés es un <b>programa</b>: respondé y después mirá el 🎬 escenario, donde la computadora lo ejecuta.</p>'+
-    '<div class="salas">'+
-    `<button class="sala mezcla" onclick="introHome()" style="background:linear-gradient(90deg,rgba(56,189,248,.22),rgba(167,139,250,.18));border-color:#3a5a7a">
-      <div class="emoji">🤖</div>
-      <div class="nom">¿Qué es un robot?</div>
-      <div class="desc">Empezá por acá: de qué se trata todo esto, en 11 pantallas</div></button>`+
-    `<button class="sala mezcla" onclick="jrMission(0)" style="background:linear-gradient(90deg,rgba(244,114,182,.22),rgba(167,139,250,.18));border-color:#5a4a63">
-      <div class="emoji">🎈</div>
-      <div class="nom">Jr</div>
-      <div class="desc">Misiones fáciles: llevá al personaje a su objetivo con flechas 👇</div></button>`;
-  SALAS.forEach(s=>{
-    const d=done[s.id];
-    const destacada = ['repaso','desafios','desafios2'].includes(s.id);
-    const cls = destacada ? 'sala mezcla' : 'sala';
-    const style = s.id==='desafios' ? ' style="background:linear-gradient(90deg,rgba(248,113,113,.22),rgba(251,191,36,.18));border-color:#6a4030"'
-                : s.id==='desafios2' ? ' style="background:linear-gradient(90deg,rgba(167,139,250,.25),rgba(244,114,182,.18));border-color:#5a3a6a"'
-                : s.id==='repaso' ? ' style="background:linear-gradient(90deg,rgba(52,211,153,.2),rgba(56,189,248,.15));border-color:#3a5a63"' : '';
-    h += `<button class="${cls}"${style} onclick="startSala('${s.id}')">
-      <div class="emoji">${s.emoji}</div>
-      <div class="nom">${s.nom}</div>
-      <div class="desc">${s.desc}</div>
-      <div class="concepto">${s.concepto}</div>
-      <div class="prog">${d?('✔ Mejor: '+d.puntos+'/'+d.total):''}</div></button>`;
+  let h = '';
+  MODULOS.forEach(m=>{
+    let items = '';
+    (m.esp||[]).forEach(k=>{ if(ESPECIALES[k]) items += itemHTML(ESPECIALES[k]); });
+    (m.ids||[]).forEach(id=>{
+      const sala = SALAS.find(x=>x.id===id); if(!sala) return;
+      const d = done[id];
+      items += itemHTML({n:sala.nom, d:sala.desc, fn:`startSala('${id}')`,
+        lvl:NIVEL[id]||1, hecho:d?`${d.puntos}/${d.total}`:''});
+    });
+    h += `<section class="mod"><div class="mt">${m.t}</div><div class="md">${m.d}</div>
+      <div class="grid">${items}</div></section>`;
   });
-  h += `<button class="sala mezcla" onclick="estudio()" style="background:linear-gradient(90deg,rgba(244,114,182,.2),rgba(251,191,36,.16));border-color:#5a4a63">
-      <div class="emoji">🎨</div>
-      <div class="nom">Estudio de dibujo — modo libre</div>
-      <div class="desc">Movés las perillas y programás arte con la tortuga. ¡Para los que aman dibujar!</div></button>`;
-  h += `<button class="sala mezcla" onclick="startSala('mezcla')">
-      <div class="emoji">🎲</div>
-      <div class="nom">Modo Mezcla — desafío final</div>
-      <div class="desc">Ejercicios de todas las salas, mezclados. ¿Te animás?</div></button>`;
-  h += '</div></div>';
   app.innerHTML = h;
 }
 
@@ -1370,7 +1400,7 @@ function menu(){
 function startSala(id){
   let sala, ejs;
   if(id==='mezcla'){
-    sala = {id:'mezcla', emoji:'🎲', nom:'Modo Mezcla', concepto:'Todos los conceptos'};
+    sala = {id:'mezcla', nom:'Modo mezcla', concepto:'Todos los conceptos'};
     ejs = shuffle(SALAS.flatMap(s=>s.ejs.map(e=>Object.assign({},e,{concepto:s.concepto, sinResultado:!!s.sinResultado})))).slice(0,8);
   } else {
     sala = SALAS.find(s=>s.id===id);
@@ -1386,15 +1416,15 @@ function render(){
   const ej = cur.ejs[cur.i], n=cur.ejs.length, pct=Math.round(cur.i/n*100);
   let h = `<div class="topbar">
       <button class="backb" onclick="menu()">← Salas</button>
-      <div class="progtext">${cur.sala.emoji} ${cur.i+1}/${n} · <span class="score">${cur.puntos} pts</span></div>
+      <div class="progtext">${cur.i+1}/${n} · <span class="score">${cur.puntos} pts</span></div>
     </div>
     <div class="bar"><i style="width:${pct}%"></i></div>
     <div class="card">
-      <div class="concepto big">📚 Concepto: ${ej.concepto}</div>
+      <div class="concepto big">${ej.concepto}</div>
       <div class="consigna">${ej.consigna}</div>`;
 
   if(ej.svg) h += `<div class="flow">${ej.svg}</div>`;
-  if(ej.code) h += `<div class="cbhdr">💻 Este es un programa — la compu lo ejecuta:</div><div class="code">${paint(ej.code)}</div>`;
+  if(ej.code) h += `<div class="cbhdr">La computadora ejecuta esto línea por línea:</div><div class="code">${paint(ej.code)}</div>`;
 
   if(ej.type==='order')    h += renderOrder(ej);
   else if(ej.type==='bug') h += renderBug(ej);
@@ -1514,8 +1544,8 @@ function feedback(good, explica){
   const fb=document.getElementById('fb');
   const last = cur.i+1>=cur.ejs.length;
   if(good){
-    const racha = cur.streak>=3 ? `<div class="streak">🔥 ¡Racha de ${cur.streak}!</div>` : '';
-    fb.innerHTML = `<div class="fb good"><span class="t">¡Correcto! 🎉</span>${explica}${racha}</div>
+    const racha = cur.streak>=3 ? `<div class="streak">Racha de ${cur.streak}</div>` : '';
+    fb.innerHTML = `<div class="fb good"><span class="t">Correcto</span>${explica}${racha}</div>
       <div id="stageWrap"></div>
       <button class="btn" onclick="next()">${last?'Ver resultado 🏁':'Siguiente →'}</button>`;
     if(runnableStage(ej) && ej.type!=='order'){
@@ -1528,11 +1558,11 @@ function feedback(good, explica){
     fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no 🤔</span>Revisalo con calma y volvé a intentar. Pensalo, no adivines 😉</div>
       <button class="btn ghost" onclick="showHint()">💡 Ver una pista</button>
       <div id="hintBox"></div>
-      <button class="btn" onclick="retry()">🔄 Intentar de nuevo</button>`;
+      <button class="btn" onclick="retry()">Intentar de nuevo</button>`;
   } else {
     fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no 🤔 — leé esto y volvé a intentar:</span>${explica}</div>
       <div id="stageWrap"></div>
-      <button class="btn" onclick="retry()">🔄 Corregir y reintentar</button>
+      <button class="btn" onclick="retry()">Corregir y reintentar</button>
       <button class="btn ghost" onclick="next()">${last?'Ver resultado 🏁':'Saltear sin corregir →'}</button>`;
   }
   fb.scrollIntoView({behavior:'smooth', block:'nearest'});
@@ -1542,8 +1572,8 @@ function next(){ cur.i++; render(); }
 
 /* -------------------- ESTUDIO DE DIBUJO (modo libre) -------------------- */
 function shapeHint(ang){
-  const nice={30:'un dodecágono (12 lados, ¡casi un círculo!) ⭕',36:'una estrella / decágono ⭐',45:'un octágono (8 lados)',60:'un hexágono (6 lados) ⬡',
-    72:'un pentágono (5 lados) ⬠',90:'un cuadrado 🟦',120:'un triángulo 🔺',144:'una estrella de 5 puntas ⭐',180:'una línea que va y vuelve ➖'};
+  const nice={30:'un dodecágono, 12 lados, casi un círculo',36:'un decágono',45:'un octágono, 8 lados',60:'un hexágono (6 lados) ⬡',
+    72:'un pentágono, 5 lados',90:'un cuadrado',120:'un triángulo',144:'una estrella de 5 puntas',180:'una línea que va y vuelve'};
   if(nice[ang]) return `Con giro <b>${ang}°</b> intentás dibujar <b>${nice[ang]}</b>.`;
   if(360%ang===0) return `Con giro <b>${ang}°</b> la figura cierra en <b>${360/ang} lados</b> (360 ÷ ${ang}).`;
   return `Giro <b>${ang}°</b>: no divide justo a 360, ¡así que sale una espiral o figura abierta! 🌀`;
@@ -1552,19 +1582,19 @@ function estudio(){
   cur=null;
   app.innerHTML = `<div class="topbar">
       <button class="backb" onclick="menu()">← Salas</button>
-      <div class="progtext">🎨 Estudio de dibujo</div>
+      <div class="progtext">Estudio de dibujo</div>
     </div>
     <div class="card">
-      <h2>🎨 Estudio de dibujo</h2>
+      <h2>Estudio de dibujo</h2>
       <p class="muted">Movés las perillas y la tortuga <b>dibuja con tu programa</b>. Cambiá el <b>giro</b> y mirá cómo aparecen triángulos, cuadrados, estrellas y espirales. ¡Estás haciendo arte con código!</p>
       <label>🔁 Repeticiones: <b id="vRep">6</b></label>
       <input type="range" id="sRep" class="slider" min="2" max="24" value="6">
       <label>📏 Largo del paso: <b id="vLen">80</b></label>
       <input type="range" id="sLen" class="slider" min="15" max="120" step="5" value="80">
-      <label>🔄 Giro (grados): <b id="vAng">120</b></label>
+      <label>Giro (grados): <b id="vAng">120</b></label>
       <input type="range" id="sAng" class="slider" min="10" max="180" step="1" value="120">
       <div id="estHint" class="hint"></div>
-      <div class="cbhdr">💻 Tu programa (esto es lo que ejecuta la compu):</div>
+      <div class="cbhdr">Tu programa, tal como lo ejecuta la computadora:</div>
       <div class="code" id="estCode"></div>
       <canvas id="estCanvas" class="stcanvas" width="330" height="250"></canvas>
       <button class="btn ghost" id="estAnim">🎬 Verla dibujarse paso a paso</button>
@@ -1674,17 +1704,16 @@ function jrFinish(){
 /* -------------------- FIN DE SALA -------------------- */
 function finSala(){
   const total=cur.ejs.length, pts=cur.puntos, ratio=pts/total;
-  let med,emoji,msg;
-  if(ratio===1){ med='🥇 ¡Oro!'; emoji='🏆'; msg='¡Todas bien! Sos un crack del código.'; }
-  else if(ratio>=0.6){ med='🥈 Plata'; emoji='🎉'; msg='¡Muy bien! Ya casi lo dominás.'; }
-  else { med='🥉 Bronce'; emoji='💪'; msg='¡Buen intento! Volvé a probar para mejorar.'; }
+  let med,msg;
+  if(ratio===1){ med='Todas bien'; msg='No se te escapó ninguna.'; }
+  else if(ratio>=0.6){ med='Bien'; msg='La mayoría salió. Repasá las que fallaron y volvé a probar.'; }
+  else { med='A repasar'; msg='Volvé sobre las explicaciones y probá de nuevo.'; }
   if(cur.sala.id!=='mezcla'){ const prev=done[cur.sala.id]; if(!prev||pts>prev.puntos) done[cur.sala.id]={puntos:pts,total}; }
   app.innerHTML = `<div class="card final">
-      <div class="big">${emoji}</div>
       <div class="med">${med}</div>
       <div style="font-size:1.3rem;font-weight:700">${pts} / ${total}</div>
       <div class="sub">${msg}</div>
-      <button class="btn" onclick="startSala('${cur.sala.id}')">Reintentar 🔄</button>
+      <button class="btn" onclick="startSala('${cur.sala.id}')">Reintentar</button>
       <button class="btn ghost" onclick="menu()">← Volver a las salas</button>
     </div>`;
 }

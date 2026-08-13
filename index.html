@@ -2720,6 +2720,7 @@ function finSala(){
   const esUni = cur.sala._uni!==undefined;
   const ult = DB.load().slice(-1)[0];
   _ultimoCodigo = (guardado && ult) ? codigoDeTanda(ult) : '';
+  if(ult) enviarPendientes();   // manda esta y las que hayan quedado colgadas
   app.innerHTML = `<div class="card final">
       <div class="med">${med}</div>
       ${cuenta ? `<div style="font-size:2.2rem;font-weight:800;color:var(--warn)">${sinAyuda} / ${total}</div>
@@ -2747,6 +2748,12 @@ function finSala(){
      · un respaldo .json para juntar los datos de varias máquinas
    ============================================================ */
 const CLAVE_DOCENTE = 'profe';        // ← cambiala acá si querés otra
+
+/* URL del buzón en el Drive de la escuela (Apps Script).
+   Mientras esté vacía, la app funciona igual pero sin enviar nada.
+   Ver buzon-apps-script.gs para armarlo en 5 minutos. */
+const URL_BUZON = '';
+
 const K_SES='pps.sesion.v1', K_DAT='pps.datos.v1';
 
 const LS={
@@ -2912,6 +2919,14 @@ function panelDocente(f){
         <div class="kpi"><div class="v pct ${pctCls(pct(sinT,ejT))}">${pct(sinT,ejT)}%</div><div class="k">Sin ayuda</div></div>
         <div class="kpi"><div class="v">${pistT}</div><div class="k">Pistas pedidas</div></div>
       </div>
+      ${URL_BUZON ? (()=>{ const p=pendientes().length;
+          return `<p class="muted" style="font-size:.8rem;margin:14px 0 0">
+            ${p ? `<b style="color:var(--warn)">${p} sin enviar</b> a la planilla del Drive (se reintenta solo).
+                   <button class="dbtn" style="padding:5px 11px;margin-left:6px" onclick="enviarPendientes().then(()=>panelDocente())">Reintentar ahora</button>`
+                : 'Todo enviado a la planilla del Drive.'}</p>`; })()
+        : `<p class="muted" style="font-size:.8rem;margin:14px 0 0">
+            El envío automático al Drive todavía no está configurado (ver <b>buzon-apps-script.gs</b>).
+            Por ahora se juntan con los códigos de los alumnos.</p>`}
       <div class="dbtns">
         <button class="dbtn pri" onclick="exportarXlsx()">Descargar planilla Excel</button>
         <button class="dbtn" onclick="pegarCodigos()">Pegar códigos de los alumnos</button>
@@ -2946,6 +2961,36 @@ function panelDocente(f){
     </div>`;
 }
 function salirDocente(){ if(SES) menu(); else pantallaIdentidad(); }
+
+/* ============================================================
+   BUZÓN: envío automático a la planilla del Drive de la escuela
+   ------------------------------------------------------------
+   Cada tanda se manda apenas termina. Si no hay internet en ese
+   momento queda pendiente y se reintenta al abrir la app o al
+   terminar la siguiente, así no se pierde nada. El localStorage
+   sigue siendo el respaldo local.
+   ============================================================ */
+function enviarTanda(t){
+  if(!URL_BUZON || !t || t.enviada) return Promise.resolve(false);
+  return fetch(URL_BUZON, {
+      method:'POST', mode:'no-cors', cache:'no-store',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(t)
+    })
+    .then(()=>{ marcarEnviada(t.id); return true; })
+    .catch(()=>false);          // sin red: queda pendiente
+}
+function marcarEnviada(id){
+  const a=DB.load(); const t=a.find(x=>x.id===id);
+  if(t && !t.enviada){ t.enviada=true; DB.save(a); }
+}
+function pendientes(){ return DB.load().filter(t=>!t.enviada); }
+function enviarPendientes(){
+  if(!URL_BUZON) return Promise.resolve(0);
+  const p=pendientes();
+  if(!p.length) return Promise.resolve(0);
+  return Promise.all(p.map(enviarTanda)).then(r=>r.filter(Boolean).length);
+}
 
 /* ============================================================
    CÓDIGO DE RESULTADO
@@ -3256,6 +3301,7 @@ function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt
 
 /* -------------------- arranque -------------------- */
 function boot(){
+  enviarPendientes();   // lo que quedó sin mandar de clases anteriores
   if(location.hash.replace('#','')==='docente'){ pedirDocente(); return; }
   /* si la sesión guardada es de otro día, que confirme quién es
      (las PC se comparten y las usan distintos cursos) */

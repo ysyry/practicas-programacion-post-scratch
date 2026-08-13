@@ -111,14 +111,31 @@ Las fechas van como fecha real de Excel (se filtran y ordenan).
 Botón gris **"· panel docente ·"** al pie del menú, o agregando `#docente` a la URL.
 Pide una clave: **`profe`**. Se cambia en la constante `CLAVE_DOCENTE` de `index.html`.
 
-### Juntar los datos de todas las PC
+### Juntar todo en una sola planilla
 
-Cada máquina guarda lo suyo en su propio navegador. Para consolidar:
+Cada máquina guarda lo suyo en su navegador. Hay dos formas de que todo termine
+junto en la planilla de la docente, sin pasar por las PC de los alumnos.
 
-1. En cada PC: panel docente → **Descargar respaldo** (baja un `.json`).
-2. En tu máquina: panel docente → **Importar respaldo** con cada archivo.
-   No duplica nada (cada tanda tiene id único).
-3. Recién ahí: **Descargar planilla Excel**.
+**A · Envío automático al Drive de la escuela (recomendado)**
+
+Cada tanda se manda sola a una planilla de Google apenas termina. Si en ese momento
+no hay internet, queda en cola y se reintenta al abrir la app o al terminar la
+siguiente: no se pierde nada.
+
+Configuración, una sola vez (5 minutos): seguí los pasos de **`buzon-apps-script.gs`**
+y pegá la URL que te da Google en la constante `URL_BUZON` de `index.html`.
+
+Mientras `URL_BUZON` esté vacía la app funciona igual, solo que sin enviar.
+
+**B · Códigos que pegan los alumnos (sin configurar nada)**
+
+1. Al terminar, el alumno toca **“Copiar mi resultado”** y lo pega donde le digas
+   (Classroom, un documento compartido).
+2. Vos copiás todos esos códigos juntos y en el panel usás
+   **“Pegar códigos de los alumnos”**. Los separa solos y descarta repetidos.
+3. Descargás la planilla.
+
+**C · Respaldo `.json`** — sigue estando, para mover datos entre máquinas propias.
 
 ### Privacidad
 

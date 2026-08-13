@@ -189,6 +189,28 @@
   .jrgo:active{transform:scale(.96)}
   .jrmsg{font-size:1.4rem;font-weight:700;margin:10px 0;min-height:34px}
 
+  /* ---- circuitos y electrónica ---- */
+  .elec{background:#0b0e15;border:1px solid var(--line);border-radius:12px;padding:16px 14px;
+    margin:16px 0;text-align:center}
+  .elecsvg{width:100%;max-width:430px;height:auto}
+  .elecsvg .w{stroke:#5d6779;stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .elecsvg .w.on{stroke:var(--accent)}
+  .elecsvg .w.off{stroke:#39414f;stroke-dasharray:5 5}
+  .elecsvg .t{fill:var(--muted);font:600 11.5px ui-sans-serif,system-ui,sans-serif;text-anchor:middle}
+  .elecsvg .t.hi{fill:#fff;font-weight:700}
+  .elecsvg .t.sm{font-size:10px;fill:var(--faint)}
+  .elecsvg .bulb{fill:#161b26;stroke:#5d6779;stroke-width:2.4}
+  .elecsvg .bulb.on{fill:rgba(232,182,84,.3);stroke:var(--warn)}
+  .elecsvg .fil{stroke:#5d6779;stroke-width:1.8;fill:none}
+  .elecsvg .fil.on{stroke:var(--warn)}
+  .elecsvg .ray{stroke:var(--warn);stroke-width:2;stroke-linecap:round;opacity:.85}
+  .elecsvg .body{fill:#161b26;stroke:#5d6779;stroke-width:2}
+  .elecsvg .chip{fill:#1c2432;stroke:var(--violet);stroke-width:2}
+  .elecsvg .pin{fill:#5d6779}
+  .elecsvg .pin.in{fill:var(--good)}
+  .elecsvg .pin.out{fill:var(--accent)}
+  .elecsvg .res{stroke:var(--warn);stroke-width:2.4;fill:none;stroke-linejoin:round}
+  .elecsvg .water{fill:rgba(99,179,242,.35);stroke:var(--accent);stroke-width:1.8}
   /* ---- diagramas ---- */
   .flow{background:#0b0e15;border:1px solid var(--line);border-radius:10px;padding:14px;margin:13px 0;text-align:center}
   .flowsvg{width:100%;max-width:330px;height:auto}
@@ -399,6 +421,145 @@ const FLOW_PARIMPAR = (function(){
    BANCO DE EJERCICIOS
    type: 'order' | 'mc' | 'fill' | 'bug'  (+ svg opcional: diagrama)
    ============================================================ */
+/* ============================================================
+   CIRCUITOS — dibujados acá como SVG.
+   Nada de imágenes externas: la app tiene que andar sin internet
+   y ser un solo archivo. Además así se ven nítidos en cualquier
+   pantalla y acompañan la paleta.
+   ============================================================ */
+function _eSvg(w,h,inner){ return `<svg class="elecsvg" viewBox="0 0 ${w} ${h}">${inner}</svg>`; }
+function _rayos(cx,cy,r){
+  return [0,45,90,135,180,225,270,315].map(a=>{
+    const k=a*Math.PI/180, c=Math.cos(k), s=Math.sin(k);
+    return `<line class="ray" x1="${(cx+c*(r+5)).toFixed(1)}" y1="${(cy+s*(r+5)).toFixed(1)}"
+      x2="${(cx+c*(r+12)).toFixed(1)}" y2="${(cy+s*(r+12)).toFixed(1)}"/>`;
+  }).join('');
+}
+function _lampara(cx,cy,on){
+  const r=21;
+  return (on?_rayos(cx,cy,r):'')
+    +`<circle class="bulb${on?' on':''}" cx="${cx}" cy="${cy}" r="${r}"/>
+      <path class="fil${on?' on':''}" d="M${cx-9},${cy-6} L${cx-4},${cy+7} L${cx},${cy-3} L${cx+4},${cy+7} L${cx+9},${cy-6}"/>`;
+}
+function _pila(x,y,on){
+  const c=on?' on':'';
+  return `<line class="w${c}" x1="${x-17}" y1="${y-9}" x2="${x+17}" y2="${y-9}"/>
+    <line class="w${c}" x1="${x-8}" y1="${y+3}" x2="${x+8}" y2="${y+3}"/>
+    <text class="t sm" x="${x-27}" y="${y-12}">+</text>
+    <text class="t sm" x="${x-27}" y="${y+11}">−</text>`;
+}
+function _llave(cx,cy,cerrado){
+  const x1=cx-25, x2=cx+25;
+  return `<circle class="pin" cx="${x1}" cy="${cy}" r="3.5"/><circle class="pin" cx="${x2}" cy="${cy}" r="3.5"/>
+    <line class="w${cerrado?' on':''}" x1="${x1}" y1="${cy}" x2="${cerrado?x2:x2-7}" y2="${cerrado?cy:cy-25}"/>`;
+}
+function _resis(cx,cy){
+  return `<path class="res" d="M${cx-21},${cy} l6,0 l3,-9 l6,18 l6,-18 l6,18 l6,-18 l3,9 l6,0"/>`;
+}
+
+const CIRC_ABIERTO = _eSvg(420,205,`
+  <text class="t hi" x="210" y="16">Interruptor abierto: no pasa nada</text>
+  <path class="w off" d="M70,90 L70,45 L189,45"/>
+  <path class="w off" d="M231,45 L350,45 L350,155 L235,155"/>
+  <path class="w off" d="M185,155 L70,155 L70,104"/>
+  ${_pila(70,100,false)}${_lampara(210,45,false)}${_llave(210,155,false)}
+  <text class="t" x="70" y="185">pila</text><text class="t" x="240" y="185">interruptor</text>`);
+
+const CIRC_CERRADO = _eSvg(420,205,`
+  <text class="t hi" x="210" y="16">Interruptor cerrado: la corriente da la vuelta entera</text>
+  <path class="w on" d="M70,90 L70,45 L189,45"/>
+  <path class="w on" d="M231,45 L350,45 L350,155 L235,155"/>
+  <path class="w on" d="M185,155 L70,155 L70,104"/>
+  ${_pila(70,100,true)}${_lampara(210,45,true)}${_llave(210,155,true)}
+  <text class="t" x="70" y="185">pila</text><text class="t" x="240" y="185">interruptor</text>`);
+
+function circSerie(rota){
+  const on=!rota;
+  return _eSvg(420,205,`
+    <text class="t hi" x="210" y="16">En serie${rota?': sacamos una y se apagan las dos':''}</text>
+    <path class="w${on?' on':''}" d="M70,90 L70,45 L139,45"/>
+    <path class="w${on?' on':''}" d="M181,45 L239,45"/>
+    <path class="w${on?' on':''}" d="M281,45 L350,45 L350,155 L70,155 L70,104"/>
+    ${_pila(70,100,on)}
+    ${rota
+      ? `<circle class="bulb" cx="160" cy="45" r="21" stroke-dasharray="4 4"/>
+         <line class="w off" x1="150" y1="35" x2="170" y2="55"/><line class="w off" x1="170" y1="35" x2="150" y2="55"/>`
+      : _lampara(160,45,true)}
+    ${_lampara(260,45,on)}
+    <text class="t" x="160" y="88">${rota?'sacada':'prende'}</text>
+    <text class="t" x="260" y="88">${on?'prende':'se apagó igual'}</text>
+    <text class="t sm" x="210" y="180">un solo camino: si se corta, se corta para todas</text>`);
+}
+function circParalelo(rota){
+  const on=!rota;
+  return _eSvg(420,215,`
+    <text class="t hi" x="210" y="16">En paralelo${rota?': sacamos una y la otra sigue prendida':''}</text>
+    <path class="w on" d="M70,90 L70,40 L350,40 L350,165 L70,165 L70,104"/>
+    <path class="w${on?' on':''}" d="M170,40 L170,74"/><path class="w${on?' on':''}" d="M170,116 L170,165"/>
+    <path class="w on" d="M280,40 L280,74"/><path class="w on" d="M280,116 L280,165"/>
+    ${_pila(70,100,true)}
+    ${rota
+      ? `<circle class="bulb" cx="170" cy="95" r="21" stroke-dasharray="4 4"/>
+         <line class="w off" x1="160" y1="85" x2="180" y2="105"/><line class="w off" x1="180" y1="85" x2="160" y2="105"/>`
+      : _lampara(170,95,true)}
+    ${_lampara(280,95,true)}
+    <text class="t" x="170" y="196">${rota?'sacada':'prende'}</text>
+    <text class="t" x="280" y="196">sigue prendida</text>
+    <text class="t sm" x="210" y="30">cada una tiene su propio camino</text>`);
+}
+const LED_SIN_RESIS = _eSvg(420,190,`
+  <text class="t hi" x="210" y="16">Sin resistencia: le llega todo de golpe</text>
+  <path class="w on" d="M70,85 L70,50 L190,50"/>
+  <path class="w on" d="M212,50 L350,50 L350,140 L70,140 L70,99"/>
+  ${_pila(70,95,true)}
+  <polygon class="bulb on" points="188,39 188,61 208,50"/>
+  <line class="w on" x1="209" y1="37" x2="209" y2="63"/>
+  ${_rayos(198,50,16)}
+  <text class="t" x="198" y="88">LED quemado</text>
+  <text class="t sm" x="210" y="168">el LED no sabe frenarse solo</text>`);
+
+const LED_CON_RESIS = _eSvg(420,190,`
+  <text class="t hi" x="210" y="16">Con resistencia: pasa lo justo</text>
+  <path class="w on" d="M70,85 L70,50 L129,50"/>
+  <path class="w on" d="M171,50 L230,50"/>
+  <path class="w on" d="M252,50 L350,50 L350,140 L70,140 L70,99"/>
+  ${_pila(70,95,true)}${_resis(150,50)}
+  <polygon class="bulb on" points="228,39 228,61 248,50"/>
+  <line class="w on" x1="249" y1="37" x2="249" y2="63"/>
+  ${_rayos(238,50,16)}
+  <text class="t" x="150" y="88">resistencia</text>
+  <text class="t" x="240" y="88">LED sano</text>
+  <text class="t sm" x="210" y="168">la resistencia le baja la corriente al LED</text>`);
+
+const PLACA = _eSvg(430,250,`
+  <text class="t hi" x="215" y="18">Un microcontrolador</text>
+  <rect class="body" x="145" y="55" width="140" height="120" rx="10"/>
+  <rect class="chip" x="180" y="95" width="70" height="42" rx="5"/>
+  <text class="t hi" x="215" y="120">tu programa</text>
+  <text class="t sm" x="215" y="76">plaquita</text>
+  <circle class="pin in" cx="145" cy="80" r="6"/><circle class="pin in" cx="145" cy="115" r="6"/><circle class="pin in" cx="145" cy="150" r="6"/>
+  <circle class="pin out" cx="285" cy="80" r="6"/><circle class="pin out" cx="285" cy="115" r="6"/><circle class="pin out" cx="285" cy="150" r="6"/>
+  <path class="w" d="M60,115 L139,115"/><path class="w" d="M291,115 L370,115"/>
+  <text class="t" x="62" y="98">sensores</text>
+  <text class="t sm" x="62" y="140">entradas</text>
+  <text class="t" x="368" y="98">actuadores</text>
+  <text class="t sm" x="368" y="140">salidas</text>
+  <text class="t sm" x="215" y="200">se entera por las patas verdes,</text>
+  <text class="t sm" x="215" y="216">decide adentro y actúa por las azules</text>`);
+
+const AGUA = _eSvg(430,205,`
+  <text class="t hi" x="215" y="16">La electricidad se parece al agua</text>
+  <rect class="body" x="40" y="34" width="86" height="66" rx="6"/>
+  <rect class="water" x="46" y="56" width="74" height="40" rx="3"/>
+  <text class="t sm" x="83" y="118">altura</text><text class="t sm" x="83" y="133">= voltaje</text>
+  <path class="w on" d="M83,100 L83,160 L200,160"/>
+  <path class="w on" d="M240,160 L360,160"/>
+  <path class="res" d="M200,150 L212,160 L200,170"/><path class="res" d="M240,150 L228,160 L240,170"/>
+  <text class="t sm" x="220" y="140">caño angosto</text><text class="t sm" x="220" y="192">= resistencia</text>
+  <circle class="bulb on" cx="380" cy="160" r="17"/>
+  <text class="t sm" x="380" y="192">molinete</text>
+  <text class="t" x="140" y="152">caudal = corriente</text>`);
+
 const SALAS = [
   {
     id:'sec', nom:'Ordená el código', desc:'Poner las instrucciones en el orden correcto',
@@ -931,6 +1092,74 @@ const SALAS = [
     ]
   },
   {
+    id:'electro', nom:'Electricidad y circuitos', desc:'Cómo funciona la parte física: pilas, lamparitas y microcontroladores',
+    concepto:'Electrónica',
+    ejs:[
+      { type:'mc', u:5, consigna:'Este circuito tiene pila, lamparita y cables… y la lamparita no prende. ¿Qué le falta?',
+        svg: CIRC_ABIERTO,
+        opts:['Que el camino se cierre: la corriente tiene que poder volver a la pila','Una pila más grande','Otra lamparita','Más cables'], correcta:0,
+        explica:'La corriente sale de la pila, recorre todo y tiene que VOLVER a la pila. Si el camino está cortado en algún punto (acá, el interruptor abierto), no circula nada. Un circuito abierto es como una calle cortada.' },
+
+      { type:'mc', u:5, consigna:'¿Qué hace exactamente un interruptor?',
+        opts:['Corta o cierra el camino por donde pasa la corriente','Le da más fuerza a la pila','Enfría la lamparita','Guarda electricidad'], correcta:0,
+        explica:'Nada más que eso: abre o cierra el camino. Toda la lógica de "prender y apagar" arranca acá. Cuando un programa prende una luz, en el fondo está cerrando un interruptor, pero electrónicamente.' },
+
+      { type:'mc', u:5, consigna:'Estas dos lamparitas están EN SERIE (una atrás de la otra). Si sacamos una, ¿qué pasa con la otra?',
+        svg: circSerie(false),
+        opts:['Se apaga también','Sigue prendida igual','Prende más fuerte','Explota'], correcta:0,
+        explica:'En serie hay UN SOLO camino. Si lo cortás en cualquier punto, se corta para todas. Son las guirnaldas viejas de navidad: se quemaba una y te quedabas sin luces, y había que buscar cuál era.' },
+
+      { type:'mc', u:5, consigna:'Ahora las mismas dos lamparitas EN PARALELO (cada una con su camino). Sacamos una. ¿Y la otra?',
+        svg: circParalelo(false),
+        opts:['Sigue prendida, ni se entera','Se apaga también','Prende a la mitad','Se quema'], correcta:0,
+        explica:'En paralelo cada una tiene su propio camino hasta la pila. Que se corte uno no afecta al otro. Por eso tu casa está en paralelo: si se quema la lamparita de la cocina, no se apaga toda la casa.' },
+
+      { type:'mc', u:5, consigna:'¿Por qué las casas se cablean en paralelo y no en serie?',
+        opts:['Para que cada cosa se prenda y se apague por separado','Porque gasta menos cable','Porque es más lindo','Porque en serie no funciona nada'], correcta:0,
+        explica:'En serie, prender el velador te obligaría a prender toda la casa, y una lamparita quemada dejaría todo a oscuras. En paralelo cada aparato es independiente. Lo mismo vale cuando conectás varios LED a una plaquita.' },
+
+      { type:'mc', u:5, consigna:'Conectamos un LED directo a la pila, sin nada más, y se quema al toque. ¿Qué le faltó?',
+        svg: LED_SIN_RESIS,
+        opts:['Una resistencia que le limite la corriente','Una pila más chica','Otro LED','Un interruptor'], correcta:0,
+        explica:'El LED no sabe frenarse: deja pasar toda la corriente que pueda hasta quemarse. La resistencia va antes y le limita el paso. Es la pieza más aburrida del cajón y la que salva todos los LED.' },
+
+      { type:'mc', u:5, consigna:'Armás todo bien, con resistencia, y el LED igual no prende. Lo das vuelta y prende. ¿Por qué?',
+        opts:['El LED tiene un solo sentido: la pata larga va al +','Estaba flojo','Los LED tardan en calentarse','La resistencia estaba al revés'], correcta:0,
+        explica:'El LED es un diodo: la corriente le pasa en un solo sentido. La pata larga (ánodo) va al positivo. Al revés no se rompe, simplemente no prende. La resistencia, en cambio, va para cualquier lado.' },
+
+      { type:'mc', u:5, consigna:'Ley de Ohm: V = I × R. Si tenés 9 voltios y una resistencia de 3 ohms, ¿cuánta corriente pasa?',
+        opts:['3 amperes','27 amperes','12 amperes','6 amperes'], correcta:0,
+        explica:'Si V = I × R, entonces I = V ÷ R = 9 ÷ 3 = 3 amperes. Es la fórmula que usás para elegir la resistencia de un LED: sabés el voltaje y cuánta corriente querés que pase, y despejás R.' },
+
+      { type:'mc', u:5, consigna:'Con la misma pila de 9V, si ponés una resistencia MÁS GRANDE, ¿qué pasa con la corriente?',
+        opts:['Pasa menos corriente','Pasa más corriente','Queda igual','La pila se descarga más rápido'], correcta:0,
+        explica:'Más resistencia = más freno = menos corriente. Es el caño angosto de la analogía del agua: misma altura de tanque, pero pasa menos caudal.' },
+
+      { type:'mc', u:5, consigna:'¿Qué es un microcontrolador?',
+        svg: PLACA,
+        opts:['Una computadora chiquita que corre tu programa y tiene patas para conectar cosas','Una pila especial','Un tipo de sensor','Un cable grueso'], correcta:0,
+        explica:'Es la computadora del aparato. Corre TU programa, se entera por unas patas (entradas) y actúa por otras (salidas). Micro:bit y Arduino son microcontroladores. No tiene pantalla ni teclado: lo que hace lo decidís vos al programarlo.' },
+
+      { type:'mc', u:5, consigna:'En la plaquita, ¿qué conectarías a un pin de ENTRADA?',
+        opts:['Un sensor de humedad','Una lamparita','Un motor','Un parlante'], correcta:0,
+        explica:'Por las entradas el programa SE ENTERA: van los sensores y los botones. Por las salidas el programa HACE: van lamparitas, motores y parlantes. Es la misma división de sensor/actuador, ahora en patas concretas.' },
+
+      { type:'order', u:5, consigna:'Ordená los pasos para armar y probar un LED que prende con la plaquita.',
+        correcto:['conectar la resistencia al pin de salida','conectar la pata larga del LED a la resistencia','conectar la pata corta al negativo','escribir el programa que prende ese pin','probar y ver si enciende'],
+        explica:'Primero el circuito físico (y siempre la resistencia antes del LED), después el programa, y recién ahí se prueba. Si lo probás antes de terminar de cablear, no sabés si falla el circuito o el código.' },
+
+      { type:'bug', u:5, consigna:'Este programa tendría que hacer parpadear un LED, pero queda prendido fijo. ¿Qué línea está mal?',
+        lineas:['por siempre:','    prender el LED','    esperar 1 segundo','    prender el LED','    esperar 1 segundo'],
+        bug:3,
+        explica:'La línea 4 vuelve a prender un LED que ya estaba prendido. Tendría que decir "apagar el LED". Para que parpadee hace falta prender, esperar, APAGAR y esperar. Es el bug clásico del primer programa con LED.' },
+
+      { type:'mc', u:5, consigna:'En la analogía del agua, ¿qué representa el VOLTAJE de la pila?',
+        svg: AGUA,
+        opts:['La altura del tanque: cuánta fuerza empuja el agua','La cantidad de agua que hay','El ancho del caño','El color del agua'], correcta:0,
+        explica:'Voltaje = la fuerza que empuja (la altura del tanque). Corriente = cuánta agua pasa por segundo (el caudal). Resistencia = qué tan angosto es el caño. Con más altura pasa más agua; con el caño más angosto, menos.' },
+    ]
+  },
+  {
     id:'desafios', nom:'Desafíos', desc:'Ejercicios largos que combinan todo',
     concepto:'Desafíos (combinar todo)', sinResultado:true,
     ejs:[
@@ -1122,6 +1351,7 @@ const SALAS = [
 /* ============================================================
    MOTOR: parsear + simular pseudocódigo -> frames de animación
    ============================================================ */
+/* (la sala de electrónica está más arriba, dentro de SALAS) */
 function lexExpr(s){
   const out=[]; const re=/("[^"]*"|>=|<=|==|!=|[()+\-*/%<>=]|[A-Za-zÁÉÍÓÚáéíóúñÑ_]\w*|\d+\.\d+|\d+)/g;
   let m; while(m=re.exec(s)) out.push(m[0]); return out;
@@ -1569,7 +1799,7 @@ const TALLERES = {
  '2do': {
   nom:'Taller de robótica',
   sub:'Programar algo que pase en el mundo real, no en la pantalla.',
-  salas:['robot1','sensores'],
+  salas:['robot1','sensores','electro'],
   us:[
   /* ---------------- UNIDAD 1 ---------------- */
   { t:'Sentir, decidir, hacer', d:'Qué es un robot y qué no. Las tres cosas que hace siempre.',
@@ -1815,6 +2045,118 @@ const TALLERES = {
       { type:'mc', consigna:'Tenés una plaquita, un sensor de humedad y una bomba. ¿Qué es lo ÚNICO que hay que cambiar para que, en vez de regar la huerta, avise que se inundó el sótano?',
         opts:['El programa','El sensor','La plaquita','La bomba'], correcta:0,
         explica:'El mismo hardware sirve para las dos cosas. Lo que cambia es la decisión: regar cuando el número es BAJO, avisar cuando es ALTO. El aparato es el mismo; el programa es otro.' },
+    ]},
+
+  /* ---------------- UNIDAD 5 ---------------- */
+  { t:'Electricidad y circuitos', d:'Cómo es la parte física: pilas, cables, lamparitas y la plaquita que corre tu programa.',
+    slides:[
+    {k:'Arrancamos',t:'Y esto… ¿con qué se arma?',h:`
+      <div class="ib">Hasta acá diseñaste aparatos <b>en papel</b>: qué sensor, qué umbral, qué decisión.<br><br>
+      Falta la parte que se toca. Porque un programa que dice "prender la luz" no prende nada
+      si no hay una lamparita, un cable y algo que le dé corriente.<br><br>
+      Esta unidad es la <b>electrónica</b>: las cuatro o cinco ideas que hacen falta para que
+      lo que programaste exista de verdad. No hace falta ser técnico. Son menos cosas de las que parece.</div>`},
+
+    {k:'La idea base',t:'La electricidad se parece al agua',h:`
+      <div class="ib">Es la comparación que usa todo el mundo porque funciona:</div>
+      <div class="elec">${AGUA}</div>
+      <div class="idos">
+        <div class="b"><h4>Los tres números</h4><ul>
+          <li><b>Voltaje</b> (V): la fuerza que empuja. La altura del tanque.</li>
+          <li><b>Corriente</b> (A): cuánta pasa. El caudal.</li>
+          <li><b>Resistencia</b> (Ω): cuánto frena. El caño angosto.</li></ul></div>
+        <div class="b"><h4>Cómo se relacionan</h4><ul>
+          <li>Más altura → pasa más agua</li>
+          <li>Caño más angosto → pasa menos</li>
+          <li>Una pila de 9V empuja más que una de 1,5V</li></ul></div>
+      </div>`},
+
+    {k:'Regla de oro',t:'El circuito tiene que cerrarse',h:`
+      <div class="ib">La corriente sale de la pila, recorre todo y <b>tiene que volver a la pila</b>.
+      Si el camino está cortado en cualquier punto, no pasa absolutamente nada.</div>
+      <div class="elec">${CIRC_ABIERTO}</div>
+      <div class="elec">${CIRC_CERRADO}</div>
+      <div class="idato">Un <b>interruptor</b> no hace nada más que esto: cortar o cerrar el camino.
+      Cuando tu programa "prende una luz", en el fondo está cerrando un interruptor.</div>`},
+
+    {k:'Las famosas',t:'Serie y paralelo',h:`
+      <div class="ib">Dos formas de conectar varias cosas. La diferencia se nota cuando una falla.</div>
+      <div class="elec">${circSerie(true)}</div>
+      <div class="ib"><b>En serie</b> hay un solo camino. Se corta en un lado y se corta para todas.
+      Son las guirnaldas viejas de navidad: se quemaba una y quedabas sin luces.</div>
+      <div class="elec">${circParalelo(true)}</div>
+      <div class="ib"><b>En paralelo</b> cada una tiene su propio camino. Que se corte una no afecta a las otras.</div>
+      <div class="idato">Tu casa está cableada <b>en paralelo</b>. Por eso podés prender el velador sin
+      prender la cocina, y una lamparita quemada no deja todo a oscuras.</div>`},
+
+    {k:'Cuidado',t:'El LED necesita una resistencia',h:`
+      <div class="ib">El LED es la lucecita que vas a usar en todo. Tiene dos mañas:</div>
+      <div class="elec">${LED_SIN_RESIS}</div>
+      <div class="ib"><b>1. No sabe frenarse.</b> Deja pasar toda la corriente que pueda hasta quemarse.
+      Por eso siempre va una <b>resistencia</b> antes.</div>
+      <div class="elec">${LED_CON_RESIS}</div>
+      <div class="ib"><b>2. Tiene un solo sentido.</b> La pata larga va al positivo. Al revés no se rompe,
+      simplemente no prende — y te vas a volver loco buscando el error.</div>
+      <div class="idato">Si un LED no enciende, probá estas dos antes que nada:
+      <b>¿está al revés? ¿tiene resistencia?</b></div>`},
+
+    {k:'La cuenta',t:'Ley de Ohm, y para qué sirve',h:`
+      <div class="icur" style="text-align:center;font-size:1.3rem;font-family:ui-monospace,monospace;padding:20px">
+        <b>V = I × R</b></div>
+      <div class="ib">Voltaje = corriente × resistencia. Con dos de los tres números sacás el que falta.<br><br>
+      <b>¿Para qué la vas a usar?</b> Para elegir la resistencia del LED. Sabés cuánto empuja la pila
+      y cuánta corriente aguanta el LED; despejás y te da qué resistencia poner.</div>
+      <div class="idos">
+        <div class="b"><h4>Ejemplo</h4><ul>
+          <li>Pila de 9V, resistencia de 3Ω</li>
+          <li>I = V ÷ R = 9 ÷ 3</li>
+          <li>Pasan <b>3 amperes</b></li></ul></div>
+        <div class="b"><h4>Lo que hay que retener</h4><ul>
+          <li>Más resistencia → menos corriente</li>
+          <li>Más voltaje → más corriente</li>
+          <li>Es el caño angosto del tanque</li></ul></div>
+      </div>`},
+
+    {k:'El cerebro',t:'El microcontrolador',h:`
+      <div class="ib">Es <b>la computadora del aparato</b>. Chiquita, sin pantalla ni teclado,
+      pero corre <b>tu programa</b> y tiene patas para conectarle cosas.</div>
+      <div class="elec">${PLACA}</div>
+      <div class="ib">Y acá se cierra todo lo del taller:<br><br>
+      Por las <b>entradas</b> se entera (van los sensores y los botones).<br>
+      Adentro <b>decide</b> con el programa que escribiste vos.<br>
+      Por las <b>salidas</b> hace (van los LED, los motores, los parlantes).<br><br>
+      <b>Sentir, decidir, hacer</b> — lo de la unidad 1, ahora en patas concretas.</div>
+      <div class="idato">Los dos más usados en escuelas son <b>micro:bit</b> y <b>Arduino</b>.
+      Cuestan lo que un par de zapatillas y aguantan años de aula.</div>`},
+
+    {k:'Listo',t:'Qué se puede armar con esto',h:`
+      <div class="ib">Con una plaquita, un sensor, un LED y una resistencia ya alcanza para:</div>
+      <div class="ipreg">
+        <div>Riego que arranca solo cuando la tierra está seca</div>
+        <div>Alarma de heladas para la huerta</div>
+        <div>Luz que se prende cuando oscurece</div>
+        <div>Cartel que avisa cuando el aula está muy ruidosa</div>
+      </div>
+      <div class="ib" style="margin-top:18px">Y si querés probar circuitos <b>sin romper nada</b>,
+      hay simuladores gratis (necesitás internet):</div>
+      <div class="idos">
+        <div class="b"><h4>Para circuitos</h4><ul>
+          <li><a href="https://phet.colorado.edu/es/simulations/circuit-construction-kit-dc" target="_blank" rel="noopener">PhET · Kit de circuitos</a><br>
+          <span style="font-size:.85rem">Armás con pilas y lamparitas, en español</span></li></ul></div>
+        <div class="b"><h4>Para plaquitas</h4><ul>
+          <li><a href="https://www.tinkercad.com/circuits" target="_blank" rel="noopener">Tinkercad Circuits</a><br>
+          <span style="font-size:.85rem">Simula un Arduino de verdad</span></li>
+          <li><a href="https://makecode.microbit.org/" target="_blank" rel="noopener">MakeCode micro:bit</a><br>
+          <span style="font-size:.85rem">Con bloques tipo Scratch</span></li></ul></div>
+      </div>`}
+    ],
+    integ:[
+      { type:'mc', consigna:'Querés poner tres LED en la huerta para mostrar el estado de la tierra: seca, húmeda, empapada. Solo tiene que estar prendido uno por vez. ¿Cómo los conectás?',
+        opts:['En paralelo, cada uno a su propio pin de salida','En serie, todos juntos','En serie con una sola resistencia','Directo a la pila'], correcta:0,
+        explica:'En paralelo y cada uno con su pin: así el programa puede prender uno y apagar los otros de forma independiente. En serie prenderían y se apagarían siempre los tres juntos, que es justo lo que no querés. Y cada LED con su resistencia.' },
+      { type:'order', consigna:'Ordená todo lo que hay que hacer para que la huerta avise que está seca, del principio al final.',
+        correcto:['elegir el sensor de humedad','decidir el umbral probando la tierra','conectar el sensor a un pin de entrada','conectar el LED con su resistencia a un pin de salida','escribir el programa que compara con el umbral','probar con tierra seca y con tierra mojada'],
+        explica:'Primero se decide qué medir y desde qué número, después se cablea (entrada y salida), después se programa, y al final se prueba en los dos extremos. Probar solo un caso es el error más común: si nunca lo probaste con tierra mojada, no sabés si el "sino" funciona.' },
     ]},
  ]}
 };

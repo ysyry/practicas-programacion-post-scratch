@@ -55,12 +55,19 @@
 var HOJA_TANDAS  = 'Tandas';
 var HOJA_DETALLE = 'Detalle';
 
+/* ID de la planilla donde escribir. Es la parte larga de su URL:
+   docs.google.com/spreadsheets/d/  ESTO DE ACÁ  /edit
+   Se usa openById en vez de getActiveSpreadsheet() para que el script
+   funcione aunque no esté vinculado a la planilla (si lo creaste desde
+   script.google.com y no desde Extensiones → Apps Script). */
+var ID_PLANILLA = '15Z-tYVsm7q5-hsA4zH-l8-tpnQL2XNBH9vg_j6YS2cE';
+
 function doPost(e) {
   try {
     var t = JSON.parse(e.postData.contents);
     if (!t || !t.id) return _ok('sin id');
 
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = SpreadsheetApp.openById(ID_PLANILLA);
     var hT = _hoja(ss, HOJA_TANDAS, [
       'id','Fecha','Alumno','Año','Sala','Modo','Ejercicios',
       'Practicó (con ayuda)','Sin ayuda','% sin ayuda','Pistas','Salteadas','Minutos','Recibido'

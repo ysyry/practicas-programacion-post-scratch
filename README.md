@@ -139,8 +139,14 @@ Mientras `URL_BUZON` esté vacía la app funciona igual, solo que sin enviar.
 
 ### Privacidad
 
-Todo queda en el `localStorage` de cada máquina. **La app no manda nada a ningún
-servidor y no usa internet.** Se lo dice al alumno en la pantalla de entrada.
+Con `URL_BUZON` vacía, todo queda en el `localStorage` de cada máquina y la app no
+manda nada a ningún lado.
+
+**Si configurás el buzón, eso cambia:** el nombre que escribe el alumno y sus
+resultados viajan a una planilla de Google. Es el Drive de la escuela, no un tercero
+cualquiera, pero sigue siendo Google. Si preferís no guardar nombres completos,
+pediles nombre y la inicial del apellido, o el número de lista: la planilla funciona
+igual y alcanza para identificar a cada uno.
 
 Al abrir un día distinto, la app vuelve a pedir quién es (las PC se comparten entre
 cursos). Hay un "no soy yo" siempre visible.

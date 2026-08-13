@@ -1098,65 +1098,65 @@ const SALAS = [
       { type:'mc', u:5, consigna:'Este circuito tiene pila, lamparita y cables… y la lamparita no prende. ¿Qué le falta?',
         svg: CIRC_ABIERTO,
         opts:['Que el camino se cierre: la corriente tiene que poder volver a la pila','Una pila más grande','Otra lamparita','Más cables'], correcta:0,
-        explica:'La corriente sale de la pila, recorre todo y tiene que VOLVER a la pila. Si el camino está cortado en algún punto (acá, el interruptor abierto), no circula nada. Un circuito abierto es como una calle cortada.' },
+        explica:'La corriente sale de la pila, recorre el circuito y tiene que VOLVER a ella. Si el camino está interrumpido en algún punto (en este caso, el interruptor abierto), no circula corriente. A eso se lo llama circuito abierto.' },
 
       { type:'mc', u:5, consigna:'¿Qué hace exactamente un interruptor?',
         opts:['Corta o cierra el camino por donde pasa la corriente','Le da más fuerza a la pila','Enfría la lamparita','Guarda electricidad'], correcta:0,
-        explica:'Nada más que eso: abre o cierra el camino. Toda la lógica de "prender y apagar" arranca acá. Cuando un programa prende una luz, en el fondo está cerrando un interruptor, pero electrónicamente.' },
+        explica:'Únicamente eso: abre o cierra el camino de la corriente. Toda la lógica de encendido y apagado se apoya en esa función. Cuando un programa enciende una luz, lo que hace es cerrar el circuito por medios electrónicos.' },
 
       { type:'mc', u:5, consigna:'Estas dos lamparitas están EN SERIE (una atrás de la otra). Si sacamos una, ¿qué pasa con la otra?',
         svg: circSerie(false),
         opts:['Se apaga también','Sigue prendida igual','Prende más fuerte','Explota'], correcta:0,
-        explica:'En serie hay UN SOLO camino. Si lo cortás en cualquier punto, se corta para todas. Son las guirnaldas viejas de navidad: se quemaba una y te quedabas sin luces, y había que buscar cuál era.' },
+        explica:'En serie hay UN SOLO camino. Si se interrumpe en cualquier punto, se interrumpe para todas. Es lo que ocurría con las guirnaldas antiguas: al quemarse una lámpara se apagaba la guirnalda completa, y había que revisar una por una para encontrarla.' },
 
       { type:'mc', u:5, consigna:'Ahora las mismas dos lamparitas EN PARALELO (cada una con su camino). Sacamos una. ¿Y la otra?',
         svg: circParalelo(false),
-        opts:['Sigue prendida, ni se entera','Se apaga también','Prende a la mitad','Se quema'], correcta:0,
-        explica:'En paralelo cada una tiene su propio camino hasta la pila. Que se corte uno no afecta al otro. Por eso tu casa está en paralelo: si se quema la lamparita de la cocina, no se apaga toda la casa.' },
+        opts:['Sigue encendida','Se apaga también','Enciende a la mitad','Se quema'], correcta:0,
+        explica:'En paralelo cada lámpara tiene su propio camino hasta la fuente, así que la interrupción de una rama no afecta a la otra. Por eso las instalaciones domiciliarias son en paralelo: una lámpara quemada no deja el resto de la casa sin luz.' },
 
       { type:'mc', u:5, consigna:'¿Por qué las casas se cablean en paralelo y no en serie?',
-        opts:['Para que cada cosa se prenda y se apague por separado','Porque gasta menos cable','Porque es más lindo','Porque en serie no funciona nada'], correcta:0,
-        explica:'En serie, prender el velador te obligaría a prender toda la casa, y una lamparita quemada dejaría todo a oscuras. En paralelo cada aparato es independiente. Lo mismo vale cuando conectás varios LED a una plaquita.' },
+        opts:['Para que cada artefacto funcione de forma independiente','Porque se usa menos cable','Porque es más económico de instalar','Porque en serie no circula corriente'], correcta:0,
+        explica:'En serie, encender un velador obligaría a encender toda la casa, y una lámpara quemada dejaría el resto a oscuras. En paralelo cada artefacto es independiente. El mismo criterio se aplica al conectar varios LED a una placa.' },
 
-      { type:'mc', u:5, consigna:'Conectamos un LED directo a la pila, sin nada más, y se quema al toque. ¿Qué le faltó?',
+      { type:'mc', u:5, consigna:'Conectamos un LED directamente a la pila, sin ningún otro componente, y se quema de inmediato. ¿Qué le faltó?',
         svg: LED_SIN_RESIS,
-        opts:['Una resistencia que le limite la corriente','Una pila más chica','Otro LED','Un interruptor'], correcta:0,
-        explica:'El LED no sabe frenarse: deja pasar toda la corriente que pueda hasta quemarse. La resistencia va antes y le limita el paso. Es la pieza más aburrida del cajón y la que salva todos los LED.' },
+        opts:['Una resistencia que limite la corriente','Una pila de menor voltaje','Otro LED en serie','Un interruptor'], correcta:0,
+        explica:'El LED no limita la corriente que lo atraviesa: conduce toda la que la fuente pueda entregar, hasta dañarse. La resistencia se conecta en serie con él y limita esa corriente a un valor seguro.' },
 
       { type:'mc', u:5, consigna:'Armás todo bien, con resistencia, y el LED igual no prende. Lo das vuelta y prende. ¿Por qué?',
-        opts:['El LED tiene un solo sentido: la pata larga va al +','Estaba flojo','Los LED tardan en calentarse','La resistencia estaba al revés'], correcta:0,
-        explica:'El LED es un diodo: la corriente le pasa en un solo sentido. La pata larga (ánodo) va al positivo. Al revés no se rompe, simplemente no prende. La resistencia, en cambio, va para cualquier lado.' },
+        opts:['El LED conduce en un solo sentido: la pata larga va al positivo','Hacía mal contacto','Los LED tardan en calentarse','La resistencia estaba invertida'], correcta:0,
+        explica:'El LED es un diodo: conduce la corriente en un solo sentido. La pata larga (ánodo) va al positivo. Conectado al revés no se daña, simplemente no enciende. La resistencia, en cambio, funciona en cualquier orientación.' },
 
       { type:'mc', u:5, consigna:'Ley de Ohm: V = I × R. Si tenés 9 voltios y una resistencia de 3 ohms, ¿cuánta corriente pasa?',
         opts:['3 amperes','27 amperes','12 amperes','6 amperes'], correcta:0,
-        explica:'Si V = I × R, entonces I = V ÷ R = 9 ÷ 3 = 3 amperes. Es la fórmula que usás para elegir la resistencia de un LED: sabés el voltaje y cuánta corriente querés que pase, y despejás R.' },
+        explica:'Si V = I × R, entonces I = V ÷ R = 9 ÷ 3 = 3 amperes. Es la fórmula que se usa para elegir la resistencia de un LED: se conoce el voltaje y la corriente deseada, y se despeja R.' },
 
       { type:'mc', u:5, consigna:'Con la misma pila de 9V, si ponés una resistencia MÁS GRANDE, ¿qué pasa con la corriente?',
         opts:['Pasa menos corriente','Pasa más corriente','Queda igual','La pila se descarga más rápido'], correcta:0,
-        explica:'Más resistencia = más freno = menos corriente. Es el caño angosto de la analogía del agua: misma altura de tanque, pero pasa menos caudal.' },
+        explica:'A mayor resistencia, menor corriente. Se corresponde con el caño angosto de la analogía: la misma altura de tanque, pero menos caudal.' },
 
       { type:'mc', u:5, consigna:'¿Qué es un microcontrolador?',
         svg: PLACA,
-        opts:['Una computadora chiquita que corre tu programa y tiene patas para conectar cosas','Una pila especial','Un tipo de sensor','Un cable grueso'], correcta:0,
-        explica:'Es la computadora del aparato. Corre TU programa, se entera por unas patas (entradas) y actúa por otras (salidas). Micro:bit y Arduino son microcontroladores. No tiene pantalla ni teclado: lo que hace lo decidís vos al programarlo.' },
+        opts:['Una computadora pequeña que ejecuta tu programa y tiene pines para conectar componentes','Una pila de mayor voltaje','Un tipo de sensor','Un conductor de gran sección'], correcta:0,
+        explica:'Es la computadora del aparato. Ejecuta TU programa, recibe información por unos pines (entradas) y actúa por otros (salidas). Micro:bit y Arduino son microcontroladores. No tiene pantalla ni teclado: su comportamiento lo define el programa que le cargues.' },
 
       { type:'mc', u:5, consigna:'En la plaquita, ¿qué conectarías a un pin de ENTRADA?',
         opts:['Un sensor de humedad','Una lamparita','Un motor','Un parlante'], correcta:0,
-        explica:'Por las entradas el programa SE ENTERA: van los sensores y los botones. Por las salidas el programa HACE: van lamparitas, motores y parlantes. Es la misma división de sensor/actuador, ahora en patas concretas.' },
+        explica:'Por las entradas el programa RECIBE información: allí van los sensores y los botones. Por las salidas el programa ACTÚA: allí van lámparas, motores y parlantes. Es la misma distinción entre sensor y actuador, ahora en pines concretos.' },
 
       { type:'order', u:5, consigna:'Ordená los pasos para armar y probar un LED que prende con la plaquita.',
         correcto:['conectar la resistencia al pin de salida','conectar la pata larga del LED a la resistencia','conectar la pata corta al negativo','escribir el programa que prende ese pin','probar y ver si enciende'],
-        explica:'Primero el circuito físico (y siempre la resistencia antes del LED), después el programa, y recién ahí se prueba. Si lo probás antes de terminar de cablear, no sabés si falla el circuito o el código.' },
+        explica:'Primero se arma el circuito (siempre con la resistencia antes del LED), después se escribe el programa y recién entonces se prueba. Si se prueba con el cableado incompleto, no se puede saber si la falla está en el circuito o en el código.' },
 
       { type:'bug', u:5, consigna:'Este programa tendría que hacer parpadear un LED, pero queda prendido fijo. ¿Qué línea está mal?',
         lineas:['por siempre:','    prender el LED','    esperar 1 segundo','    prender el LED','    esperar 1 segundo'],
         bug:3,
-        explica:'La línea 4 vuelve a prender un LED que ya estaba prendido. Tendría que decir "apagar el LED". Para que parpadee hace falta prender, esperar, APAGAR y esperar. Es el bug clásico del primer programa con LED.' },
+        explica:'La línea 4 vuelve a encender un LED que ya estaba encendido. Debería decir "apagar el LED". Para que parpadee hace falta encender, esperar, APAGAR y esperar. Es un error frecuente al escribir el primer programa con un LED.' },
 
       { type:'mc', u:5, consigna:'En la analogía del agua, ¿qué representa el VOLTAJE de la pila?',
         svg: AGUA,
         opts:['La altura del tanque: cuánta fuerza empuja el agua','La cantidad de agua que hay','El ancho del caño','El color del agua'], correcta:0,
-        explica:'Voltaje = la fuerza que empuja (la altura del tanque). Corriente = cuánta agua pasa por segundo (el caudal). Resistencia = qué tan angosto es el caño. Con más altura pasa más agua; con el caño más angosto, menos.' },
+        explica:'Voltaje: la fuerza que impulsa, equivalente a la altura del tanque. Corriente: cuánta agua pasa por segundo, el caudal. Resistencia: cuán angosto es el caño. A mayor altura, mayor caudal; a menor sección del caño, menor caudal.' },
     ]
   },
   {
@@ -1834,8 +1834,9 @@ const TALLERES = {
       (chocó la pared) y decide qué hacer.<br><br>
       En el videojuego pasó lo mismo: "si tocando al personaje → sumar un punto".
       Te enterabas de algo y decidías.<br><br>
-      En un aparato de verdad es igualito. En vez de tocar un color, se entera de cuánta luz
-      hay, qué temperatura hace o si la tierra está seca. <b>La lógica es la misma. Cambia lo que mide.</b></div>`},
+      En un aparato real el mecanismo es el mismo. En lugar de tocar un color, detecta cuánta luz
+      hay, qué temperatura hace o si la tierra está seca. <b>La lógica no cambia; cambia la magnitud
+      que se mide.</b></div>`},
 
     {k:'Las partes',t:'Sensores y actuadores',h:`
       <div class="idos">
@@ -1852,8 +1853,8 @@ const TALLERES = {
           <li>Una <b>bomba</b>: mueve agua</li>
           <li>Una <b>pantalla</b>: muestra</li></ul></div>
       </div>
-      <div class="idato">Regla para no equivocarse nunca: <b>el sensor se entera, el actuador hace.</b>
-      Si no se entera de nada, no es sensor. Si no cambia nada del mundo, no es actuador.</div>`},
+      <div class="idato">Criterio para distinguirlos: <b>el sensor detecta, el actuador ejecuta.</b>
+      Si no detecta ninguna magnitud, no es un sensor. Si no produce ningún efecto, no es un actuador.</div>`},
 
     {k:'Para cerrar',t:'Robots que no parecen robots',h:`
       <div class="ib">Ninguno de estos tiene patas ni cara, y los tres deciden:</div>
@@ -1862,8 +1863,8 @@ const TALLERES = {
         <div>El celu que baja el brillo cuando hay poca luz</div>
         <div>El semáforo que mide cuántos autos hay y se adapta</div>
       </div>
-      <div class="idato">Buscá uno más en tu casa y preguntate siempre lo mismo:
-      <b>¿de qué se entera? ¿qué hace? ¿decide algo, o siempre hace lo mismo?</b></div>`}
+      <div class="idato">Identificá otro en tu casa y hacete siempre las mismas tres preguntas:
+      <b>¿qué detecta? ¿qué ejecuta? ¿decide algo, o repite siempre la misma acción?</b></div>`}
     ],
     integ:[
       { type:'mc', consigna:'En la escuela quieren un cartel que avise cuando el aula está muy ruidosa. Ya tienen un micrófono y una luz. ¿Qué les falta?',
@@ -1875,16 +1876,17 @@ const TALLERES = {
     ]},
 
   /* ---------------- UNIDAD 2 ---------------- */
-  { t:'Elegir y ubicar el sensor', d:'El sensor no entiende nada: tira un número. Dónde lo ponés cambia todo.',
+  { t:'Elegir y ubicar el sensor', d:'El sensor no interpreta lo que mide: entrega un número. Su ubicación es determinante.',
     slides:[
     {k:'La idea clave',t:'Un sensor traduce el mundo a un número',h:`
       <div class="ib">Un sensor de humedad no sabe qué es la tierra. Un sensor de luz no sabe
-      qué es la noche. <b>Solo tiran un número.</b><br><br>
-      El significado se lo ponemos nosotros, cuando escribimos el programa.</div>
+      qué es la noche. <b>Solo entregan un número.</b><br><br>
+      El significado se lo asignamos nosotros al escribir el programa.</div>
       <div class="icur" style="margin-top:16px">Sensor de humedad de la huerta:<br>
       <b>0</b> = tierra seca &nbsp;·&nbsp; <b>1023</b> = tierra empapada</div>
-      <div class="idato">Si no sabés qué representa cada extremo, el número <b>no significa nada</b>.
-      120 puede ser "muy seco" o "casi lleno" según el sensor. Siempre hay que averiguarlo primero.</div>`},
+      <div class="idato">Sin saber qué representa cada extremo de la escala, el número
+      <b>no significa nada</b>: 120 puede indicar "muy seco" o "casi saturado" según el sensor.
+      Es el primer dato que hay que averiguar.</div>`},
 
     {k:'Dos familias',t:'Digital y analógico',h:`
       <div class="idos">
@@ -1902,13 +1904,13 @@ const TALLERES = {
       El sensor de humedad te da un número.</div>`},
 
     {k:'El error clásico',t:'Dónde ponés el sensor cambia todo',h:`
-      <div class="ib">Un aparato tiene que avisar si hace frío afuera. Le ponen el sensor
-      <b>adentro de la casa, al lado de la estufa</b>.<br><br>
-      ¿Qué mide? El calor de la estufa. Va a decir que hay 30 grados mientras afuera hiela.<br><br>
-      <b>El sensor mide donde está. No donde a vos te interesa.</b></div>
-      <div class="idato">Antes de conectar nada, preguntate: <b>¿el sensor está en el lugar
-      del que quiero saber?</b> La mitad de los aparatos que no funcionan fallan por acá,
-      no por el programa.</div>`},
+      <div class="ib">Un aparato debe avisar si hace frío en el exterior, pero le instalan el sensor
+      <b>dentro de la casa, junto a la estufa</b>.<br><br>
+      Lo que mide es el calor de la estufa: informará 30 grados mientras afuera hiela.<br><br>
+      <b>El sensor mide en el punto donde está instalado, no donde nos interesa saber.</b></div>
+      <div class="idato">Antes de conectar nada, verificá: <b>¿el sensor está ubicado en el lugar
+      sobre el que quiero información?</b> Buena parte de los aparatos que no funcionan fallan por
+      la ubicación del sensor y no por el programa.</div>`},
 
     {k:'Elegir bien',t:'Qué quiero saber → qué sensor pongo',h:`
       <div class="idos">
@@ -1946,28 +1948,28 @@ const TALLERES = {
         humedad = leer_sensor()<br>
         <b>si humedad &lt; 300 entonces:</b><br>
         &nbsp;&nbsp;&nbsp;&nbsp;prender la bomba</div>
-      <div class="idato">300 es el umbral. Abajo de 300 riego, arriba no. <b>El umbral lo elegís vos</b>,
-      probando: no viene con el sensor.</div>`},
+      <div class="idato">300 es el umbral: por debajo se riega, por encima no. <b>El umbral lo define
+      quien programa</b>, a partir de mediciones: no viene dado por el sensor.</div>`},
 
     {k:'Ojo acá',t:'El sentido del signo',h:`
-      <div class="ib">Este es el error que más se repite. Con el sensor de humedad,
-      <b>número BAJO = tierra SECA</b>. Es al revés de lo que uno espera.<br><br>
-      Entonces "regar cuando está seca" se escribe <b>humedad &lt; 300</b>, no mayor.<br><br>
-      Si te equivocás de signo, el aparato <b>funciona igual</b>… pero hace exactamente lo contrario:
-      riega cuando ya está mojada y no riega cuando hace falta.</div>
-      <div class="idato">Antes de dar por listo un programa, probá los dos extremos mentalmente:
-      <b>¿qué hace si el sensor marca 0? ¿y si marca 1023?</b> Si las dos respuestas tienen sentido,
-      vas bien.</div>`},
+      <div class="ib">Es el error más frecuente. En el sensor de humedad,
+      <b>un número BAJO indica tierra SECA</b>, al revés de lo que la intuición sugiere.<br><br>
+      Por eso "regar cuando está seca" se escribe <b>humedad &lt; 300</b>, y no mayor.<br><br>
+      Con el signo invertido el aparato <b>funciona igual</b>, pero hace exactamente lo contrario:
+      riega cuando la tierra ya está húmeda y no riega cuando hace falta.</div>
+      <div class="idato">Antes de dar por terminado un programa, analizá los dos extremos:
+      <b>¿qué hace si el sensor marca 0? ¿y si marca 1023?</b> Si ambas respuestas son coherentes,
+      la condición está bien planteada.</div>`},
 
     {k:'Que se entienda',t:'Convertir el número',h:`
-      <div class="ib">"El sensor marca 743" no le dice nada a nadie. Conviene traducirlo a algo
-      que se entienda, con una cuenta:</div>
+      <div class="ib">"El sensor marca 743" no es una información interpretable. Conviene
+      convertirla a una unidad comprensible mediante un cálculo:</div>
       <div class="icur" style="font-family:ui-monospace,monospace;margin-top:14px">
         humedad = 743<br>
         porcentaje = humedad * 100 / 1023<br>
         mostrar porcentaje &nbsp;&nbsp;<span style="opacity:.6">→ 72</span></div>
-      <div class="ib">Ahora sí: <b>72% de humedad</b>. Misma información, pero legible.
-      Es la misma matemática que usaste para el marcador del videojuego.</div>`},
+      <div class="ib">El resultado es <b>72 % de humedad</b>: la misma información, ahora legible.
+      Es el mismo cálculo de proporción que usaste para el marcador del videojuego.</div>`},
 
     {k:'Dos condiciones',t:'Cuando una sola no alcanza',h:`
       <div class="ib">Querés que el riego arranque <b>si la tierra está seca Y ADEMÁS no está lloviendo</b>.
@@ -1981,8 +1983,8 @@ const TALLERES = {
         <div class="b"><h4>con <b>o</b></h4><ul><li>Alcanza con que se cumpla <b>una</b></li>
           <li>Es más permisivo: pasa más veces</li></ul></div>
       </div>
-      <div class="idato">Para una alarma de heladas conviene <b>o</b> (que salte por cualquier motivo).
-      Para gastar agua, conviene <b>y</b> (que esté bien seguro).</div>`}
+      <div class="idato">Para una alarma de heladas conviene <b>o</b>: que se active ante cualquiera
+      de las condiciones. Para consumir agua conviene <b>y</b>: que se active solo si se cumplen todas.</div>`}
     ],
     integ:[
       { type:'fill', consigna:'Alarma de heladas para la huerta: tiene que avisar cuando la temperatura baja de 2 grados. Completá.',
@@ -2006,25 +2008,26 @@ const TALLERES = {
         &nbsp;&nbsp;&nbsp;&nbsp;2. convertir el número si hace falta<br>
         &nbsp;&nbsp;&nbsp;&nbsp;3. decidir con un si… entonces<br>
         &nbsp;&nbsp;&nbsp;&nbsp;4. mover el actuador</div>
-      <div class="idato">Si sabés escribir estos cuatro pasos, sabés programar cualquier aparato.
-      Lo demás son detalles del sensor que te toque.</div>`},
+      <div class="idato">Quien sabe escribir estos cuatro pasos puede programar cualquier aparato
+      de este tipo. Lo que varía después son las particularidades de cada sensor.</div>`},
 
     {k:'Por siempre',t:'¿Por qué repetir sin parar?',h:`
       <div class="ib">En Scratch usabas el bloque <b>"por siempre"</b> para que el juego siguiera
       andando. Acá es igual, y es <b>imprescindible</b>.<br><br>
-      Si el aparato se fijara <b>una sola vez</b>, mediría la humedad a las 8 de la mañana
-      y nunca más. A la tarde la tierra se seca y él ni se entera.<br><br>
-      <b>El mundo cambia todo el tiempo. Por eso hay que volver a mirar todo el tiempo.</b></div>
-      <div class="idato">Un aparato que decide es, en el fondo, un <b>bucle infinito</b>
-      que adentro tiene un <b>condicional</b>. Nada más que eso.</div>`},
+      Si el aparato midiera <b>una sola vez</b>, registraría la humedad a las 8 de la mañana
+      y nunca más. Si por la tarde la tierra se seca, no lo detectaría.<br><br>
+      <b>Las condiciones del ambiente cambian de forma continua, y por eso hay que medirlas
+      de forma continua.</b></div>
+      <div class="idato">Un aparato que decide es, en esencia, un <b>bucle infinito</b>
+      con un <b>condicional</b> adentro.</div>`},
 
     {k:'La idea grande',t:'El programa ES el aparato',h:`
       <div class="ib">Tenés una plaquita, un sensor de humedad y una bomba de agua.<br><br>
       Con <b>humedad &lt; 300 → prender la bomba</b> es un <b>regador automático</b>.<br>
       Con <b>humedad &gt; 900 → hacer sonar la alarma</b> es un <b>detector de inundación</b>.<br><br>
       Mismo sensor. Mismos cables. Misma plaquita. <b>Lo único distinto es el programa.</b></div>
-      <div class="idato">Por eso programar no es un detalle técnico del final:
-      es lo que decide <b>qué es</b> el aparato.</div>`},
+      <div class="idato">Por eso programar no es un paso técnico final: es lo que determina
+      <b>qué es</b> el aparato.</div>`},
 
     {k:'Listo',t:'Qué podrías construir',h:`
       <div class="ib">Con lo de estas cuatro unidades ya podés diseñar, en papel, cualquiera de estos:</div>
@@ -2034,8 +2037,8 @@ const TALLERES = {
         <div>Ventana del invernadero que se abre sola con el calor</div>
         <div>Luz del pasillo que se prende cuando oscurece</div>
       </div>
-      <div class="idato">Para cada uno, escribí las cuatro cosas: <b>qué sensor, qué actuador,
-      qué umbral y qué decisión.</b> Eso es el diseño completo. Después es cuestión de cablearlo.</div>`}
+      <div class="idato">Para cada uno, definí los cuatro elementos: <b>qué sensor, qué actuador,
+      qué umbral y qué decisión.</b> Eso constituye el diseño completo; después resta el armado.</div>`}
     ],
     integ:[
       { type:'bug', consigna:'Este aparato tiene que prender la luz del gallinero solo de noche, pero la prende y la apaga sin parar. ¿Qué línea está mal?',
@@ -2052,13 +2055,14 @@ const TALLERES = {
     slides:[
     {k:'Arrancamos',t:'Y esto… ¿con qué se arma?',h:`
       <div class="ib">Hasta acá diseñaste aparatos <b>en papel</b>: qué sensor, qué umbral, qué decisión.<br><br>
-      Falta la parte que se toca. Porque un programa que dice "prender la luz" no prende nada
-      si no hay una lamparita, un cable y algo que le dé corriente.<br><br>
-      Esta unidad es la <b>electrónica</b>: las cuatro o cinco ideas que hacen falta para que
-      lo que programaste exista de verdad. No hace falta ser técnico. Son menos cosas de las que parece.</div>`},
+      Falta la parte física. Un programa que ordena "prender la luz" no enciende nada si no hay
+      una lámpara, un conductor y una fuente de energía.<br><br>
+      Esta unidad trata sobre <b>electrónica</b>: los conceptos necesarios para construir
+      el aparato que diseñaste.</div>`},
 
     {k:'La idea base',t:'La electricidad se parece al agua',h:`
-      <div class="ib">Es la comparación que usa todo el mundo porque funciona:</div>
+      <div class="ib">La electricidad no se ve. Para razonar sobre ella se usa una analogía
+      con el agua, que permite anticipar qué va a pasar en un circuito.</div>
       <div class="elec">${AGUA}</div>
       <div class="idos">
         <div class="b"><h4>Los tres números</h4><ul>
@@ -2068,7 +2072,7 @@ const TALLERES = {
         <div class="b"><h4>Cómo se relacionan</h4><ul>
           <li>Más altura → pasa más agua</li>
           <li>Caño más angosto → pasa menos</li>
-          <li>Una pila de 9V empuja más que una de 1,5V</li></ul></div>
+          <li>Una pila de 9 V impulsa con más fuerza que una de 1,5 V</li></ul></div>
       </div>`},
 
     {k:'Regla de oro',t:'El circuito tiene que cerrarse',h:`
@@ -2076,58 +2080,63 @@ const TALLERES = {
       Si el camino está cortado en cualquier punto, no pasa absolutamente nada.</div>
       <div class="elec">${CIRC_ABIERTO}</div>
       <div class="elec">${CIRC_CERRADO}</div>
-      <div class="idato">Un <b>interruptor</b> no hace nada más que esto: cortar o cerrar el camino.
-      Cuando tu programa "prende una luz", en el fondo está cerrando un interruptor.</div>`},
+      <div class="idato">Un <b>interruptor</b> cumple exactamente esa función: abrir o cerrar
+      el camino. Cuando un programa enciende una luz, lo que hace es cerrar un circuito.</div>`},
 
     {k:'Las famosas',t:'Serie y paralelo',h:`
       <div class="ib">Dos formas de conectar varias cosas. La diferencia se nota cuando una falla.</div>
       <div class="elec">${circSerie(true)}</div>
-      <div class="ib"><b>En serie</b> hay un solo camino. Se corta en un lado y se corta para todas.
-      Son las guirnaldas viejas de navidad: se quemaba una y quedabas sin luces.</div>
+      <div class="ib">En una conexión <b>en serie</b> hay un único camino. Si se interrumpe en
+      cualquier punto, se interrumpe para todas. Es el caso de las guirnaldas antiguas: cuando una
+      lámpara se quemaba, se apagaba la guirnalda entera.</div>
       <div class="elec">${circParalelo(true)}</div>
-      <div class="ib"><b>En paralelo</b> cada una tiene su propio camino. Que se corte una no afecta a las otras.</div>
-      <div class="idato">Tu casa está cableada <b>en paralelo</b>. Por eso podés prender el velador sin
-      prender la cocina, y una lamparita quemada no deja todo a oscuras.</div>`},
+      <div class="ib">En una conexión <b>en paralelo</b> cada lámpara tiene su propio camino hasta
+      la fuente. La interrupción de una rama no afecta a las demás.</div>
+      <div class="idato">La instalación eléctrica de una casa es <b>en paralelo</b>. Por eso cada
+      artefacto se enciende de forma independiente y una lámpara quemada no deja el resto sin luz.</div>`},
 
     {k:'Cuidado',t:'El LED necesita una resistencia',h:`
-      <div class="ib">El LED es la lucecita que vas a usar en todo. Tiene dos mañas:</div>
+      <div class="ib">El LED es el componente luminoso que vas a usar en casi todos los proyectos.
+      Tiene dos características que conviene conocer antes de conectarlo:</div>
       <div class="elec">${LED_SIN_RESIS}</div>
-      <div class="ib"><b>1. No sabe frenarse.</b> Deja pasar toda la corriente que pueda hasta quemarse.
-      Por eso siempre va una <b>resistencia</b> antes.</div>
+      <div class="ib"><b>1. No limita la corriente que lo atraviesa.</b> Conduce toda la que la fuente
+      pueda entregar, hasta dañarse. Por eso siempre se conecta una <b>resistencia</b> en serie con él.</div>
       <div class="elec">${LED_CON_RESIS}</div>
-      <div class="ib"><b>2. Tiene un solo sentido.</b> La pata larga va al positivo. Al revés no se rompe,
-      simplemente no prende — y te vas a volver loco buscando el error.</div>
-      <div class="idato">Si un LED no enciende, probá estas dos antes que nada:
-      <b>¿está al revés? ¿tiene resistencia?</b></div>`},
+      <div class="ib"><b>2. Conduce en un solo sentido.</b> La pata larga (ánodo) va al positivo.
+      Conectado al revés no se daña, pero no enciende.</div>
+      <div class="idato">Si un LED no enciende, verificá primero estas dos cosas:
+      <b>su orientación</b> y <b>si tiene la resistencia correspondiente</b>.</div>`},
 
     {k:'La cuenta',t:'Ley de Ohm, y para qué sirve',h:`
       <div class="icur" style="text-align:center;font-size:1.3rem;font-family:ui-monospace,monospace;padding:20px">
         <b>V = I × R</b></div>
-      <div class="ib">Voltaje = corriente × resistencia. Con dos de los tres números sacás el que falta.<br><br>
-      <b>¿Para qué la vas a usar?</b> Para elegir la resistencia del LED. Sabés cuánto empuja la pila
-      y cuánta corriente aguanta el LED; despejás y te da qué resistencia poner.</div>
+      <div class="ib">Voltaje = corriente × resistencia. Conociendo dos de las tres magnitudes
+      se obtiene la tercera.<br><br>
+      <b>Para qué se usa.</b> Principalmente, para calcular la resistencia de un LED: se conoce
+      el voltaje de la fuente y la corriente máxima que el LED admite, y se despeja la resistencia
+      necesaria.</div>
       <div class="idos">
         <div class="b"><h4>Ejemplo</h4><ul>
           <li>Pila de 9V, resistencia de 3Ω</li>
           <li>I = V ÷ R = 9 ÷ 3</li>
           <li>Pasan <b>3 amperes</b></li></ul></div>
         <div class="b"><h4>Lo que hay que retener</h4><ul>
-          <li>Más resistencia → menos corriente</li>
-          <li>Más voltaje → más corriente</li>
-          <li>Es el caño angosto del tanque</li></ul></div>
+          <li>A mayor resistencia, menor corriente</li>
+          <li>A mayor voltaje, mayor corriente</li>
+          <li>Se corresponde con el caño angosto de la analogía</li></ul></div>
       </div>`},
 
     {k:'El cerebro',t:'El microcontrolador',h:`
-      <div class="ib">Es <b>la computadora del aparato</b>. Chiquita, sin pantalla ni teclado,
-      pero corre <b>tu programa</b> y tiene patas para conectarle cosas.</div>
+      <div class="ib">Es <b>la computadora del aparato</b>: pequeña, sin pantalla ni teclado,
+      pero ejecuta <b>tu programa</b> y tiene pines para conectar componentes.</div>
       <div class="elec">${PLACA}</div>
       <div class="ib">Y acá se cierra todo lo del taller:<br><br>
       Por las <b>entradas</b> se entera (van los sensores y los botones).<br>
       Adentro <b>decide</b> con el programa que escribiste vos.<br>
       Por las <b>salidas</b> hace (van los LED, los motores, los parlantes).<br><br>
       <b>Sentir, decidir, hacer</b> — lo de la unidad 1, ahora en patas concretas.</div>
-      <div class="idato">Los dos más usados en escuelas son <b>micro:bit</b> y <b>Arduino</b>.
-      Cuestan lo que un par de zapatillas y aguantan años de aula.</div>`},
+      <div class="idato">Los dos más difundidos en el ámbito escolar son <b>micro:bit</b> y
+      <b>Arduino</b>. Ambos son de bajo costo y se programan desde la computadora.</div>`},
 
     {k:'Listo',t:'Qué se puede armar con esto',h:`
       <div class="ib">Con una plaquita, un sensor, un LED y una resistencia ya alcanza para:</div>
@@ -2137,8 +2146,8 @@ const TALLERES = {
         <div>Luz que se prende cuando oscurece</div>
         <div>Cartel que avisa cuando el aula está muy ruidosa</div>
       </div>
-      <div class="ib" style="margin-top:18px">Y si querés probar circuitos <b>sin romper nada</b>,
-      hay simuladores gratis (necesitás internet):</div>
+      <div class="ib" style="margin-top:18px">Para probar circuitos sin riesgo de dañar componentes
+      existen simuladores gratuitos (requieren conexión a internet):</div>
       <div class="idos">
         <div class="b"><h4>Para circuitos</h4><ul>
           <li><a href="https://phet.colorado.edu/es/simulations/circuit-construction-kit-dc" target="_blank" rel="noopener">PhET · Kit de circuitos</a><br>
@@ -2153,10 +2162,10 @@ const TALLERES = {
     integ:[
       { type:'mc', consigna:'Querés poner tres LED en la huerta para mostrar el estado de la tierra: seca, húmeda, empapada. Solo tiene que estar prendido uno por vez. ¿Cómo los conectás?',
         opts:['En paralelo, cada uno a su propio pin de salida','En serie, todos juntos','En serie con una sola resistencia','Directo a la pila'], correcta:0,
-        explica:'En paralelo y cada uno con su pin: así el programa puede prender uno y apagar los otros de forma independiente. En serie prenderían y se apagarían siempre los tres juntos, que es justo lo que no querés. Y cada LED con su resistencia.' },
+        explica:'En paralelo y cada uno con su pin: así el programa puede encender uno y apagar los otros de forma independiente. En serie los tres se encenderían y apagarían siempre juntos. Cada LED lleva además su propia resistencia.' },
       { type:'order', consigna:'Ordená todo lo que hay que hacer para que la huerta avise que está seca, del principio al final.',
         correcto:['elegir el sensor de humedad','decidir el umbral probando la tierra','conectar el sensor a un pin de entrada','conectar el LED con su resistencia a un pin de salida','escribir el programa que compara con el umbral','probar con tierra seca y con tierra mojada'],
-        explica:'Primero se decide qué medir y desde qué número, después se cablea (entrada y salida), después se programa, y al final se prueba en los dos extremos. Probar solo un caso es el error más común: si nunca lo probaste con tierra mojada, no sabés si el "sino" funciona.' },
+        explica:'Primero se define qué medir y con qué umbral, después se conecta el circuito (entrada y salida), luego se programa y finalmente se prueba en las dos condiciones. Probar un solo caso es el error más frecuente: si no se ensaya con tierra húmeda, no hay forma de saber si el "sino" funciona.' },
     ]},
  ]}
 };

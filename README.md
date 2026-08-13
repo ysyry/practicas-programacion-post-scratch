@@ -1,85 +1,179 @@
-# Práctica de programación (post Scratch) 🚀
+# Práctica de programación (post Scratch)
 
 App educativa para **practicar conceptos de programación** leyendo pseudocódigo en
 castellano — el puente de Scratch al texto. Educación Informática, secundaria con
 orientación en turismo (Villa La Angostura, Neuquén).
 
-Se usa en **1er y 2do año**: los pibes ya trabajaron los conceptos en Scratch
-(laberinto, juego Atrapa, marcador, vidas) y acá los reconocen y practican en otra
-representación, **nombrando cada concepto**. Se le van **agregando salas** a medida
-que avanzan los cursos (mismo link para todos).
+Un único `index.html`: todo corre en el navegador, sin servidor, sin internet y sin
+dependencias. Se abre con doble clic o se comparte por link.
 
-## Introducción: ¿Qué es un robot? 🤖
-
-Antes de las salas de ejercicios hay una **introducción de 11 pantallas** para 1er año, con
-navegación adelante/atrás y puntitos para saltar. Cuenta de qué se trata todo esto antes de
-mandarlos a practicar: qué es un robot (se entera, decide, hace), que el bloque *"si tocando
-color negro"* del laberinto **ya era un sensor**, qué son sensores y actuadores, hardware y
-software, una línea de tiempo simple de Herón a hoy, tres curiosidades y robots cotidianos
-que no parecen robots.
-
-Sin tecnicismos: no menciona voltajes, pines ni Arduino. Eso queda para 3ro.
-
-## Cómo está organizado
-
-Las salas están agrupadas en **módulos temáticos**, y cada una lleva un **nivel**
-(inicial, intermedio o avanzado):
-
-| Módulo | Salas |
-|---|---|
-| Para arrancar | Introducción a la robótica · Modo Jr |
-| 1 · Fundamentos | Ordená el código · Algoritmos · Diagramas de flujo |
-| 2 · Datos y cuentas | Operadores y números · Tipos de datos · Seguí la variable |
-| 3 · Repetir y decidir | ¿Cuántas veces? · Completá el hueco · Decisiones |
-| 4 · Programas enteros | Mini programas · Cazá el error |
-| 5 · Del programa al aparato | Robots: sentir y decidir · Sensores y aparatos |
-| 6 · Crear con código | Dibujar con código · Estudio de dibujo |
-| Poner a prueba | Teoría · Repaso final · Situacionales · Desafíos · Más desafíos · Modo mezcla |
-
-Cada ejercicio muestra el nombre del concepto, es **autocorregido** y da una
-**explicación** al responder. Si te equivocás, podés **corregir y reintentar** en el
-momento (la explicación conceptual queda a la vista). Puntaje, racha y medallas.
-
-Se refuerza la idea de que **lo que se escribe es un programa** que la computadora
-ejecuta línea por línea (se ve en el escenario animado).
-
-## Modo Jr (accesibilidad / DUA) 🎈
-
-Nivel ScratchJr para estudiantes que necesitan una entrada más simple (p. ej. una
-alumna con síndrome de Down). **Sin texto para leer y sin audio** (la escuela no tiene
-parlantes): la consigna es puramente visual (`personaje ➡️ objetivo`) y el objetivo
-también se ve en la grilla. Se arma una secuencia de **flechas grandes** (⬆️➡️⬇️⬅️)
-para llevar al personaje hasta su objetivo. Botones grandes, refuerzo con emojis
-(🎉🌟👏), sin puntaje ni presión de tiempo, y el personaje nunca se cae del tablero.
-4 misiones de dificultad creciente.
-
-## Escenario animado 🎬
-
-Después de responder (o al probar tu orden en "Ordená"), un **escenario** ejecuta el
-código: un personaje se mueve/dibuja en un canvas, un **panel de variables** muestra
-cómo cambian los valores paso a paso, y una **pantalla** muestra la salida. Controles:
-▶ Ejecutar, ⏭ Paso, ↺ reiniciar. Sirve para *ver* qué hace el código, no solo leerlo.
-
-El pseudocódigo soporta: `avanzar` / `girar` / `rebotar` (movimiento), variables y
-asignaciones, operadores `+ - * / %` con precedencia y paréntesis, comparaciones
-(`> < >= <= = distinto`), lógicos (`y` `o` `no`), `repetir N veces:` y `si… sino:`
-(incluso anidados).
-
-## Cómo se usa
-
-- Es un único `index.html`: todo corre en el navegador, sin servidor ni internet.
-- Se abre con doble clic, o se comparte por link una vez publicado.
-
-## En vivo
-
-https://ysyry.github.io/practicas-programacion-post-scratch/
-
-## Extender (agregar salas para 2do)
-
-El banco de ejercicios está en la constante `SALAS` dentro de `index.html`.
-Cada ejercicio es un objeto con `type` (`order` | `mc` | `fill` | `bug`),
-`consigna`, `explica` y los datos propios del tipo. Agregar ejercicios o una
-sala nueva = sumar objetos/entradas al array `SALAS`.
+**En vivo:** https://ysyry.github.io/practicas-programacion-post-scratch/
 
 ---
+
+## Cada curso entra a lo suyo
+
+Al abrir, la app pide **año, nombre y fecha**. Según el año elegido muestra un menú
+distinto. Una sala puede estar en más de un año (el registro guarda de qué año viene
+cada resultado, así que no se mezclan).
+
+| Año | Recorrido | Contenido |
+|---|---|---|
+| **1ro** — Empezar a programar | 5 salas · 27 ejercicios | Intro a la robótica · Modo Jr · Ordená el código · Algoritmos · ¿Cuántas veces? · Dibujar con código · Estudio de dibujo · Teoría · Mezcla |
+| **2do** — Programas de verdad | Taller de robótica (4 unidades) + 14 salas · 95 ejercicios | Repaso y lectura · Datos y cuentas · Repetir y decidir · Programas enteros · Crear con código · Probate |
+| **3ro** — Del programa al aparato | 9 salas · 85 ejercicios | Poner a punto · Del programa al aparato · Resolver problemas · Probate |
+
+**1ro no ve variables ni operadores** (no los dio). Sus salas están filtradas: solo
+aparecen los ejercicios marcados con `a1:true`. El Modo mezcla también respeta el año.
+
+Para mover una sala de año se edita la constante **`ANIOS`** en `index.html`.
+
+---
+
+## Taller de robótica por unidades (2do)
+
+2do tiene, arriba de todo, un **taller de 4 unidades**. Cada unidad tiene tres partes,
+en orden:
+
+| | Qué es |
+|---|---|
+| **Teoría** | Slides para leer de corrido, con navegación adelante/atrás. Mismo formato que la intro de 1ro. La última lleva directo a los ejercicios. |
+| **Ejercicios** | Los ejercicios de esa unidad. Modo práctica: explicación, pista y reintento. |
+| **Integrador** | Los ejercicios propios de la unidad **más una muestra de todas las unidades anteriores**, y **sin revelar la respuesta**. Para ver si de verdad les sale. |
+
+| Unidad | Teoría | Ejercicios |
+|---|---|---|
+| 1 · Sentir, decidir, hacer | 5 pantallas | 7 |
+| 2 · Elegir y ubicar el sensor | 4 pantallas | 8 |
+| 3 · Decidir con un número (umbral) | 4 pantallas | 10 |
+| 4 · El programa completo | 4 pantallas | 7 |
+
+Los 32 ejercicios salen de las salas `robot1` y `sensores`, repartidos con el campo
+**`u:`** de cada ejercicio. Para agregar una unidad: sumá una entrada en `TALLERES` y
+marcá ejercicios con el `u:` que le corresponda.
+
+---
+
+## Saber qué entendieron de verdad
+
+El problema: en modo práctica se dan muchas ayudas (explicación al fallar, pista,
+reintento ilimitado). Casi todos terminan con puntaje alto, y eso **no dice si
+entendieron**.
+
+Por eso la app registra siempre **dos números distintos**:
+
+- **Practicó** — cuántas resolvió, contando reintentos y ayudas.
+- **Sin ayuda** — cuántas le salieron **bien al primer intento**. Este es el número
+  que importa.
+
+Al terminar una tanda, el alumno ve los dos. La docente los ve en el panel y en la
+planilla. Ejemplo real de una clase:
+
+| Alumno | Practicó | Sin ayuda |
+|---|---|---|
+| Ana Torres | 7/7 | **6/7** |
+| Bruno Díaz | 7/7 | **3/7** |
+| Cami Ruiz | 7/7 | **1/7** |
+
+Los tres "aprobaron" practicando. La segunda columna dice la verdad.
+
+También se registra por ejercicio: intentos, pistas pedidas, si lo salteó y segundos.
+
+### Ronda que cuenta
+
+Botón arriba del menú. Cambia el flujo para una evaluación:
+
+- un solo intento por ejercicio
+- sin explicación, sin pista, sin reintento
+- queda marcada aparte en la planilla (columna **Modo**)
+
+Se activa y se desactiva en el momento. Sirve para tomar una evaluación corta con la
+misma herramienta con la que practican.
+
+---
+
+## La planilla
+
+**Panel docente** → `Descargar planilla Excel`. Genera un `.xlsx` de verdad
+(sin librerías, sin internet) con seis solapas:
+
+| Solapa | Qué trae |
+|---|---|
+| **1ro**, **2do**, **3ro** | Una fila por tanda: fecha, alumno, sala, modo, practicó, sin ayuda, %, pistas, salteadas, minutos |
+| **Por alumno** | Consolidado de cada uno: total de ejercicios, % sin ayuda, pistas, última vez |
+| **Por concepto** | **Dónde se traba el curso.** Ordenado de peor a mejor % sin ayuda |
+| **Detalle** | Una fila por ejercicio: consigna, intentos, si le salió sin ayuda, pistas, segundos |
+
+Las fechas van como fecha real de Excel (se filtran y ordenan).
+
+### Cómo entrar al panel
+
+Botón gris **"· panel docente ·"** al pie del menú, o agregando `#docente` a la URL.
+Pide una clave: **`profe`**. Se cambia en la constante `CLAVE_DOCENTE` de `index.html`.
+
+### Juntar los datos de todas las PC
+
+Cada máquina guarda lo suyo en su propio navegador. Para consolidar:
+
+1. En cada PC: panel docente → **Descargar respaldo** (baja un `.json`).
+2. En tu máquina: panel docente → **Importar respaldo** con cada archivo.
+   No duplica nada (cada tanda tiene id único).
+3. Recién ahí: **Descargar planilla Excel**.
+
+### Privacidad
+
+Todo queda en el `localStorage` de cada máquina. **La app no manda nada a ningún
+servidor y no usa internet.** Se lo dice al alumno en la pantalla de entrada.
+
+Al abrir un día distinto, la app vuelve a pedir quién es (las PC se comparten entre
+cursos). Hay un "no soy yo" siempre visible.
+
+---
+
+## Cómo está organizado el resto
+
+Las salas se agrupan en módulos, y cada una lleva un nivel (inicial, intermedio,
+avanzado). Tipos de ejercicio: `order` (armar el programa), `mc` (opción múltiple),
+`fill` (completar el hueco), `bug` (encontrar la línea con el error).
+
+Cada ejercicio es autocorregido y da una explicación. En modo práctica podés corregir
+y reintentar en el momento.
+
+### Modo Jr (accesibilidad / DUA)
+
+Nivel ScratchJr para estudiantes que necesitan una entrada más simple. **Sin texto y
+sin audio** (la escuela no tiene parlantes): la consigna es visual y se arma una
+secuencia de flechas grandes para llevar al personaje hasta su objetivo. Sin puntaje
+ni presión de tiempo, y el personaje nunca se cae del tablero. 9 misiones.
+
+Es el único lugar donde los emojis son deliberados: ahí son el contenido.
+
+### Escenario animado
+
+Después de responder, un escenario **ejecuta el código**: el personaje se mueve o
+dibuja en un canvas, un panel muestra cómo cambian las variables paso a paso y una
+pantalla muestra la salida. Controles: ejecutar, paso a paso, reiniciar.
+
+El pseudocódigo soporta movimiento (`avanzar` / `girar` / `rebotar`), variables y
+asignaciones, operadores `+ - * / %` con precedencia y paréntesis, comparaciones,
+lógicos (`y` `o` `no`), `repetir N veces:` y `si… sino:` anidados.
+
+---
+
+## Extender
+
+Todo está en `index.html`:
+
+| Constante | Qué controla |
+|---|---|
+| `SALAS` | El banco de ejercicios. Cada ejercicio es un objeto con `type`, `consigna`, `explica` y sus datos. |
+| `ANIOS` | Qué salas ve cada año y cómo se agrupan. |
+| `TALLERES` | Las unidades con slides + ejercicios + integrador (hoy solo 2do). |
+| `NIVEL` | El nivel que se muestra en cada sala. |
+| `CLAVE_DOCENTE` | La clave del panel. |
+
+Marcas en los ejercicios: `a1:true` = apto para 1ro · `u:N` = unidad del taller.
+
+---
+
 Hecho para el aula. Software libre.

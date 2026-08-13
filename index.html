@@ -2718,6 +2718,8 @@ function finSala(){
 
   const guardado = guardarTanda(sinAyuda);
   const esUni = cur.sala._uni!==undefined;
+  const ult = DB.load().slice(-1)[0];
+  _ultimoCodigo = (guardado && ult) ? codigoDeTanda(ult) : '';
   app.innerHTML = `<div class="card final">
       <div class="med">${med}</div>
       ${cuenta ? `<div style="font-size:2.2rem;font-weight:800;color:var(--warn)">${sinAyuda} / ${total}</div>
@@ -2728,7 +2730,9 @@ function finSala(){
         </div>`}
       <div class="sub">${msg}</div>
       ${guardado?'':'<div class="sub" style="color:var(--warn);font-size:.8rem">No se pudo guardar el resultado en esta máquina.</div>'}
-      <button class="btn" onclick="${esUni?`startUnidad(${cur.sala._uni},'${cur.sala.id.endsWith('-int')?'int':'ej'}')`:`startSala('${cur.sala.id}')`}">Reintentar</button>
+      ${_ultimoCodigo?`<button class="btn" id="cpBtn" onclick="copiarResultado()">Copiar mi resultado para la profe</button>
+        <div id="cpBox"></div>`:''}
+      <button class="btn ghost" onclick="${esUni?`startUnidad(${cur.sala._uni},'${cur.sala.id.endsWith('-int')?'int':'ej'}')`:`startSala('${cur.sala.id}')`}">Reintentar</button>
       <button class="btn ghost" onclick="${esUni?`verUnidad(${cur.sala._uni})`:'menu()'}">${esUni?'← Volver a la unidad':'← Volver a las salas'}</button>
     </div>`;
 }
@@ -2910,13 +2914,17 @@ function panelDocente(f){
       </div>
       <div class="dbtns">
         <button class="dbtn pri" onclick="exportarXlsx()">Descargar planilla Excel</button>
+        <button class="dbtn" onclick="pegarCodigos()">Pegar códigos de los alumnos</button>
         <button class="dbtn" onclick="exportarJson()">Descargar respaldo</button>
-        <button class="dbtn" onclick="importarJson()">Importar respaldo de otra máquina</button>
+        <button class="dbtn" onclick="importarJson()">Importar respaldo</button>
         <button class="dbtn dan" onclick="borrarTodo()">Borrar todo</button>
       </div>
+      <div id="pegarBox"></div>
       <p class="muted" style="font-size:.79rem;line-height:1.6;margin:14px 0 0">
-        Para juntar los datos de todas las PC: en cada máquina bajá el <b>respaldo .json</b>,
-        y en la tuya usá <b>Importar</b> con cada archivo. No se duplica nada. Recién ahí exportá la planilla.</p>
+        <b>Para juntar todo en esta máquina sin pasar por las PC de los alumnos:</b> que cada uno,
+        al terminar, toque <b>“Copiar mi resultado”</b> y lo pegue en el Classroom. Después copiás
+        todos esos códigos juntos y los pegás acá con <b>Pegar códigos</b>. Recién entonces
+        descargás la planilla.</p>
     </div>
 
     <div class="card">
@@ -2938,6 +2946,49 @@ function panelDocente(f){
     </div>`;
 }
 function salirDocente(){ if(SES) menu(); else pantallaIdentidad(); }
+
+/* ============================================================
+   CÓDIGO DE RESULTADO
+   El alumno copia un código al terminar y lo pega donde la docente
+   le diga (Classroom, chat, un documento). La docente los pega
+   todos juntos en el panel y arma la planilla, sin pasar por las
+   máquinas. Es el camino que funciona sin servidor ni cuentas.
+   ============================================================ */
+function codigoDeTanda(t){
+  /* la consigna completa se recorta: es lo que más pesa y en la planilla
+     alcanza con el concepto para saber dónde falló */
+  const min={i:t.id,a:t.alumno,y:t.anio,f:t.fecha,ts:t.ts,s:t.salaNom,q:t.sala,
+    m:t.modo,n:t.total,r:t.resueltos,k:t.sinAyuda,p:t.pistas,x:t.salteadas,g:t.seg,
+    e:(t.ejs||[]).map(e=>({c:e.c,t:e.t,q:String(e.q||'').slice(0,42),
+      i:e.i,ok:e.ok,ok1:e.ok1,p:e.p,s:e.s,sg:e.sg}))};
+  return 'PPS1.'+btoa(unescape(encodeURIComponent(JSON.stringify(min))));
+}
+function tandaDeCodigo(c){
+  const m=String(c).trim().match(/PPS1\.([A-Za-z0-9+/=]+)/);
+  if(!m) return null;
+  try{
+    const o=JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+    if(!o || !o.a) return null;
+    return {id:o.i||('p'+Math.random().toString(36).slice(2,10)), alumno:o.a, anio:o.y,
+      fecha:o.f, ts:o.ts, sala:o.q||'?', salaNom:o.s, modo:o.m, total:o.n, resueltos:o.r,
+      sinAyuda:o.k, pistas:o.p, salteadas:o.x, seg:o.g, ejs:Array.isArray(o.e)?o.e:[]};
+  }catch(e){ return null; }
+}
+let _ultimoCodigo='';
+function copiarResultado(){
+  if(!_ultimoCodigo) return;
+  const fin=()=>{ const b=document.getElementById('cpBtn'); if(b) b.textContent='Copiado ✓'; };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(_ultimoCodigo).then(fin, mostrarCodigo);
+  } else mostrarCodigo();
+}
+function mostrarCodigo(){
+  const c=document.getElementById('cpBox');
+  if(c) c.innerHTML=`<p class="muted" style="font-size:.8rem;margin:12px 0 6px">
+      Copiá todo este texto y pegalo donde te indique la profe:</p>
+    <textarea class="f" rows="4" readonly onclick="this.select()"
+      style="font-family:ui-monospace,monospace;font-size:.7rem">${escapeHtml(_ultimoCodigo)}</textarea>`;
+}
 
 /* -------------------- respaldo / consolidación -------------------- */
 function bajar(blob,nombre){
@@ -2971,6 +3022,32 @@ function importarJson(){
     fr.readAsText(f);
   };
   inp.click();
+}
+function pegarCodigos(){
+  const c=document.getElementById('pegarBox'); if(!c) return;
+  c.innerHTML=`<p class="muted" style="font-size:.82rem;margin:16px 0 6px">
+      Pegá acá todos los códigos juntos (uno por línea, o todos seguidos: se separan solos).</p>
+    <textarea class="f" id="pegarTa" rows="6" placeholder="PPS1.eyJ..."
+      style="font-family:ui-monospace,monospace;font-size:.72rem"></textarea>
+    <div class="dbtns"><button class="dbtn pri" onclick="procesarCodigos()">Cargar</button>
+      <button class="dbtn" onclick="document.getElementById('pegarBox').innerHTML=''">Cancelar</button></div>`;
+  document.getElementById('pegarTa').focus();
+}
+function procesarCodigos(){
+  const ta=document.getElementById('pegarTa'); if(!ta) return;
+  const trozos=String(ta.value).match(/PPS1\.[A-Za-z0-9+/=]+/g) || [];
+  if(!trozos.length){ alert('No encontré ningún código. Tienen que empezar con PPS1.'); return; }
+  const act=DB.load(), vistos=new Set(act.map(t=>t.id));
+  let n=0, rep=0, mal=0;
+  trozos.forEach(c=>{
+    const t=tandaDeCodigo(c);
+    if(!t){ mal++; return; }
+    if(vistos.has(t.id)){ rep++; return; }
+    act.push(t); vistos.add(t.id); n++;
+  });
+  if(n && !DB.save(act)){ alert('No se pudo guardar: la memoria del navegador está llena.'); return; }
+  alert(`Cargados: ${n}\nRepetidos (ya estaban): ${rep}${mal?`\nNo se pudieron leer: ${mal}`:''}`);
+  panelDocente();
 }
 function borrarTodo(){
   if(prompt('Esto borra TODOS los resultados guardados en esta máquina.\nEscribí BORRAR para confirmar:')!=='BORRAR') return;

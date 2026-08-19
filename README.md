@@ -1,4 +1,6 @@
-# Práctica de programación (post Scratch)
+# Tecnologías para el territorio
+
+*(antes "Práctica de programación (post Scratch)". El repo y la URL no cambiaron.)*
 
 App educativa para **practicar conceptos de programación** leyendo pseudocódigo en
 castellano — el puente de Scratch al texto. Educación Informática, secundaria con

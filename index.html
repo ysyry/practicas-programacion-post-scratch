@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Práctica de programación y robótica</title>
+<title>Tecnologías para el territorio</title>
 <style>
   :root{
     --bg:#0a0c11; --surface:#121620; --surface2:#182030; --raise:#1d2434;
@@ -340,8 +340,8 @@
 <body>
 <header>
   <div class="esc">Don Jaime de Nevares · Villa La Angostura</div>
-  <h1>Práctica de programación</h1>
-  <p>Intro a la programación y robótica</p>
+  <h1>Tecnologías para el territorio</h1>
+  <p>Programación y robótica · 1ro a 3ro</p>
 </header>
 <div class="sesbar" id="sesbar"></div>
 <div class="wrap" id="app"></div>
@@ -921,27 +921,27 @@ const SALAS = [
     id:'var', nom:'Seguí la variable', desc:'Seguir el valor que va quedando en una variable',
     concepto:'Variables y traza',
     ejs:[
-      { type:'mc',
+      { type:'mc', a1:true,
         consigna:'¿Qué muestra?',
         code:'vidas = 3\nvidas = vidas - 1\nvidas = vidas - 1\nmostrar vidas',
-        opts:['3','2','1','0'], correcta:2,
+        opts:['3','2','1','0'], correcta:2, a1:true,
         explica:'Empieza en 3 y resta 1 dos veces: 3 → 2 → 1. Cada línea cambia el valor guardado.' },
-      { type:'mc',
+      { type:'mc', a1:true,
         consigna:'¿Qué muestra al final?',
         code:'puntos = 0\npuntos = puntos + 5\npuntos = puntos + 3\nmostrar puntos',
-        opts:['5','3','8','0'], correcta:2,
+        opts:['5','3','8','0'], correcta:2, a1:true,
         explica:'0 + 5 = 5, y 5 + 3 = 8. La variable va acumulando.' },
-      { type:'mc',
+      { type:'mc', a1:true,
         consigna:'¿Qué valor tiene "nombre" al final?',
         code:'nombre = "Ana"\nnombre = "Beto"\nmostrar nombre',
-        opts:['"Ana"','"Beto"','"AnaBeto"','error'], correcta:1,
+        opts:['"Ana"','"Beto"','"AnaBeto"','error'], correcta:1, a1:true,
         explica:'Cuando le asignás un valor nuevo, se pisa el anterior. Queda "Beto".' },
-      { type:'mc',
+      { type:'mc', a1:true,
         consigna:'¿Qué muestra?',
         code:'a = 4\nb = a\na = 10\nmostrar b',
-        opts:['4','10','14','0'], correcta:0,
+        opts:['4','10','14','0'], correcta:0, a1:true,
         explica:'b copió el valor de a (4) en ese momento. Aunque después a cambie a 10, b sigue valiendo 4.' },
-      { type:'mc',
+      { type:'mc', a1:true,
         consigna:'Se intercambian valores. ¿Qué muestra b?',
         code:'a = 5\nb = 3\na = a + b\nb = a - b\nmostrar b',
         opts:['3','5','8','2'], correcta:1,
@@ -1089,6 +1089,94 @@ const SALAS = [
       { type:'mc', u:4, consigna:'El mismo aparato, con el mismo cable y el mismo sensor, puede ser un regador o una alarma de heladas. ¿Por qué?',
         opts:['Porque lo que cambia es el programa','Porque se le cambia el sensor de lugar','Porque tiene dos botones','No se puede, hay que armar otro aparato'], correcta:0,
         explica:'El hardware es exactamente el mismo. Lo que cambia es el software: qué mide, con qué número lo compara y qué hace después. Mismo hardware + distinto programa = otro aparato. Esa es la idea más importante de todo esto.' },
+    ]
+  },
+  {
+    id:'caja', nom:'Armá el proyecto', desc:'Qué componentes sacarías de la caja para cada aparato',
+    concepto:'Diseño de un sistema: sensor, actuador y lo que va en el medio',
+    ejs:[
+      { type:'mc',
+        consigna:'<b>Regador automático de la huerta.</b> Tiene que darse cuenta sola de que la tierra está seca y largar agua. ¿Qué sacás de la caja?',
+        opts:['Sensor de humedad de suelo + relé + bomba de agua',
+              'Sensor de luz + LED',
+              'Sensor de temperatura + buzzer',
+              'Solo la placa y cables: el programa se da cuenta solo'],
+        correcta:0,
+        explica:'Sensar la humedad necesita el sensor de suelo. Largar agua necesita una bomba, y la bomba usa más corriente de la que la placa puede dar: por eso va el relé en el medio. Ningún programa se entera de nada sin un sensor.' },
+      { type:'mc',
+        consigna:'<b>Alarma de helada.</b> En Villa La Angostura hiela seguido y quema los plantines. Querés que avise de noche cuando la temperatura baja de 2 grados.',
+        opts:['Sensor de humedad + servo',
+              'Sensor de temperatura + buzzer (y un LED, para verlo si no hay nadie escuchando)',
+              'Sensor de luz + relé',
+              'Sensor de distancia + bomba'],
+        correcta:1,
+        explica:'Lo que se mide es temperatura, así que el sensor no se discute. Como el aviso tiene que llegar de noche y a lo mejor no hay nadie cerca, conviene que sea sonoro y visual a la vez.' },
+      { type:'mc',
+        consigna:'<b>¿Dónde conviene plantar?</b> Querés medir durante una semana cuánto sol recibe cada rincón del patio, para decidir dónde va la huerta.',
+        opts:['Sensor de humedad, porque donde hay sol la tierra se seca',
+              'Sensor de luz (LDR), y guardar el valor cada tanto',
+              'Un servo que gire siguiendo al sol',
+              'Sensor de temperatura, porque donde da el sol hace más calor'],
+        correcta:1,
+        explica:'Lo que querés medir es luz, así que medí luz. Las otras dos son consecuencias indirectas del sol y las ensucian mil cosas más: el viento, el riego, la sombra de una pared. Medí la magnitud que te importa, no una parecida.' },
+      { type:'mc',
+        consigna:'<b>Compuerta del invernadero.</b> Si adentro pasa de 30 grados hay que abrir una ventanita chica para que salga el calor.',
+        opts:['Sensor de temperatura + servo',
+              'Sensor de temperatura + LED',
+              'Sensor de humedad + relé',
+              'Sensor de luz + buzzer'],
+        correcta:0,
+        explica:'Un servo va a un ángulo exacto y se queda ahí: es justo lo que necesita una tapa que abre y cierra. Un motor común giraría sin parar y no sabrías dónde quedó.' },
+      { type:'mc',
+        consigna:'<b>Contador de visitas al stand del Paseo.</b> Querés saber cuánta gente pasó por adelante durante la feria.',
+        opts:['Sensor de humedad',
+              'Sensor de distancia (ultrasónico) + una variable que vaya sumando',
+              'Sensor de temperatura + buzzer',
+              'Un servo que cuente'],
+        correcta:1,
+        explica:'El sensor de distancia detecta que algo se puso adelante. Lo que cuenta no es el hardware: es una variable en el programa que suma uno cada vez. Ojo con contar dos veces a la misma persona si se queda parada.' },
+      { type:'mc',
+        consigna:'Tu placa trabaja con 5 voltios. La bomba de agua que conseguiste es de 220 voltios, la de enchufe. ¿Qué ponés en el medio?',
+        opts:['Un cable más grueso','Una resistencia grande','Un relé','Otro sensor'],
+        correcta:2,
+        explica:'El relé es un interruptor que se acciona eléctricamente: la placa lo controla con sus 5V y él abre y cierra el circuito de 220V, sin que los dos mundos se toquen. Sin relé, la placa se destruye — y 220V es peligroso, esa parte la conecta una persona adulta.' },
+      { type:'mc',
+        consigna:'Armaste el circuito, el programa está bien, y el LED no prende nunca. Revisás y el único cable que falta es el que va al pin <b>GND</b>. ¿Importa?',
+        opts:['No, el GND es opcional',
+              'Sí: sin GND el circuito no se cierra y no circula corriente',
+              'No, pero conviene por prolijidad',
+              'Sí, porque el GND es el que alimenta el LED'],
+        correcta:1,
+        explica:'La corriente sale, hace su trabajo y tiene que volver. El GND es el camino de vuelta. Es el error número uno de los que arrancan: conectan la señal y se olvidan la tierra.' },
+      { type:'mc',
+        consigna:'Vas a conectar un LED a un pin de la placa. ¿Qué le agregás?',
+        opts:['Una resistencia en serie','Otro LED en paralelo','Un capacitor','Nada, va directo'],
+        correcta:0,
+        explica:'Un LED solo toma toda la corriente que puede y se quema en segundos. La resistencia es el caño angosto que lo cuida. Es el componente más barato de la caja y el que más aparatos salva.' },
+      { type:'mc',
+        consigna:'El sensor de humedad de suelo devuelve un valor que va cambiando dentro de un rango, no solo prendido o apagado. ¿A qué pin lo conectás?',
+        opts:['A un pin digital','A un pin analógico','Al pin de 5V','Directo al GND'],
+        correcta:1,
+        explica:'Los pines digitales solo distinguen dos estados: hay señal o no hay. Para leer un valor dentro de un rango hace falta un pin analógico, que tiene un ADC detrás y te devuelve ese número entre 0 y 1023.' },
+      { type:'mc',
+        consigna:'<b>Cartel del stand que se prende de noche.</b> Cuando baja la luz, se enciende solo.',
+        opts:['Sensor de luz (LDR) + tira de LEDs + resistencia',
+              'Sensor de temperatura + servo',
+              'Sensor de humedad + buzzer',
+              'Solo una tira de LEDs con un timer'],
+        correcta:0,
+        explica:'La opción del timer también funcionaría, pero prende siempre a la misma hora aunque el día esté nublado o cambie la estación. Con el LDR el cartel se entera de verdad, y eso lo convierte de automatismo en algo que decide.' },
+      { type:'mc',
+        consigna:'Tu aparato tiene que funcionar todo el día en la huerta, lejos de un enchufe y de la computadora. ¿Cuál es el primer problema a resolver?',
+        opts:['El lenguaje de programación','La alimentación: de dónde saca la energía',
+              'El color de los cables','La velocidad del procesador'],
+        correcta:1,
+        explica:'Mientras está enchufado al USB de la computadora se alimenta de ahí. Afuera no: necesita batería o panel solar, y eso cambia todo el diseño — cuánto consume, cada cuánto mide, si duerme entre medición y medición.' },
+      { type:'mc',
+        consigna:'Dos parejas diseñaron aparatos distintos. La A: <i>"si la tierra está seca, regá"</i>. La B: <i>"regá todos los días a las 8"</i>. ¿Cuál de los dos es un robot?',
+        opts:['Los dos','Ninguno','El A: se entera de algo y decide','El B: es más confiable'],
+        correcta:2,
+        explica:'El B no se entera de nada: repite. Es un automatismo, como el timer del riego de una plaza. El A percibe, decide y actúa, y por eso es un robot aunque no se mueva de lugar. Ojo: el B puede ser mejor solución en algunos casos. Ser robot no es ser mejor.' },
     ]
   },
   {
@@ -1295,7 +1383,7 @@ const SALAS = [
     ejs:[
       { type:'mc', a1:true, consigna:'¿Qué es un algoritmo?', opts:['Una serie de pasos ordenados para resolver un problema','Una computadora','Un lenguaje de programación','Un error'], correcta:0, explica:'Pasos en orden y sin ambigüedad para resolver algo. Una receta también es un algoritmo.' },
       { type:'mc', a1:true, consigna:'¿Qué es un programa?', opts:['Un algoritmo escrito para que la computadora lo ejecute','Una foto','Una página web','Un cable'], correcta:0, explica:'Es el algoritmo escrito en un lenguaje que la compu entiende y ejecuta.' },
-      { type:'mc', consigna:'¿Qué es una variable?', opts:['Un espacio donde el programa guarda un valor','Un tipo de bucle','Un error del código','Un dibujo'], correcta:0, explica:'Una "cajita" con nombre que guarda un dato (puntos, vidas, nombre…).' },
+      { type:'mc', a1:true, consigna:'¿Qué es una variable?', opts:['Un espacio donde el programa guarda un valor','Un tipo de bucle','Un error del código','Un dibujo'], correcta:0, explica:'Una "cajita" con nombre que guarda un dato (puntos, vidas, nombre…).' },
       { type:'mc', a1:true, consigna:'¿Para qué sirve un bucle (repetir)?', opts:['Para repetir pasos sin escribirlos de nuevo','Para tomar decisiones','Para guardar datos','Para borrar el programa'], correcta:0, explica:'Repite una parte del programa muchas veces.' },
       { type:'mc', a1:true, consigna:'¿Qué hace un condicional (si… entonces)?', opts:['Ejecuta algo solo si se cumple una condición','Repite siempre lo mismo','Guarda un número','Dibuja una figura'], correcta:0, explica:'Decide: si la condición es verdadera hace una cosa; si no, otra.' },
       { type:'mc', a1:true, consigna:'¿Qué es depurar (debugging)?', opts:['Buscar y arreglar los errores de un programa','Escribir un programa nuevo','Apagar la computadora','Guardar el archivo'], correcta:0, explica:'Encontrar el error (bug) y corregirlo.' },
@@ -1796,13 +1884,376 @@ function introHome(){ verSlides(INTRO1, 'menu()', 'Ir a las misiones →'); }
    ejercicios con el u: que le corresponda.
    ============================================================ */
 const TALLERES = {
+ /* ---------------- 3er año ---------------- */
+ '3ro': {
+  nom:'Teoría del cuatrimestre',
+  sub:'Lo que hay que entender antes y después de cada clase.',
+  salas:['caja','sensores','electro'],
+  us:[
+  /* ---------------- UNIDAD 1 · 19/08 ---------------- */
+  { t:'Del umbral a la banda', d:'Decidir con un número no alcanza. Cómo decidir con dos condiciones a la vez.',
+    slides:[
+    {k:'Arrancamos',t:'Ya lograron que decida',h:`
+      <div class="ib">Hasta acá su aparato hace tres cosas: <b>se entera</b> de la humedad,
+      <b>decide</b> qué hacer y <b>actúa</b>.<br><br>
+      Y decide de verdad, no repite. Por eso deja de ser una máquina y pasa a ser un robot,
+      aunque no se mueva de lugar. Un brazo de fábrica tampoco se mueve de lugar.<br><br>
+      Pero decide con <b>un solo número</b>: <code>si el porcentaje es menor a 30</code>.
+      Hoy vamos a ver por qué eso casi nunca alcanza.</div>`},
+
+    {k:'El problema',t:'Una planta no quiere un mínimo',h:`
+      <div class="ib">Pensalo desde la lechuga, no desde el programa.<br><br>
+      Si la tierra está <b>muy seca</b>, se marchita.<br>
+      Si la tierra está <b>encharcada</b>, se le pudren las raíces.<br><br>
+      O sea que la lechuga no quiere "más de 40". Quiere <b>estar entre 40 y 70</b>.
+      No hay un límite: hay <b>dos</b>.</div>
+      <div class="i3">
+        <div class="n a"><div class="t">MENOS DE 40</div><div class="d">seca · hay que regar</div></div>
+        <div class="n b"><div class="t">ENTRE 40 Y 70</div><div class="d">justo · no tocar nada</div></div>
+        <div class="n c"><div class="t">MÁS DE 70</div><div class="d">encharcada · alarma</div></div>
+      </div>`},
+
+    {k:'La idea',t:'Un umbral parte en dos. Una banda parte en tres',h:`
+      <div class="ib">Con <b>un</b> número el mundo queda partido en dos pedazos: abajo y arriba.
+      Es lo que venían haciendo.<br><br>
+      Con <b>dos</b> números queda partido en tres: abajo, en el medio, arriba.
+      Y el pedazo del medio, el que antes no existía, casi siempre es el que importa —
+      es donde todo está bien y el aparato <b>no tiene que hacer nada</b>.</div>
+      <div class="icur"><b>En matemática ya lo vieron.</b> Pasar de <i>x &lt; 30</i> a
+      <i>40 &lt; x &lt; 70</i> es pasar de una desigualdad simple a un <b>intervalo</b>.
+      Es exactamente el mismo salto.</div>`},
+
+    {k:'La herramienta',t:'and — las dos cosas a la vez',h:`
+      <div class="ib">Para preguntar por dos cosas al mismo tiempo se usa <code>and</code>:</div>
+      <div class="icur" style="font-family:ui-monospace,monospace">
+      if porcentaje &gt; 40 <b>and</b> porcentaje &lt; 70:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;prender(6)</div>
+      <div class="ib"><code>and</code> es cierto <b>solo si las dos</b> lo son. Si una falla, falla todo.<br><br>
+      Podés escribirlo en castellano si te sale más natural: <code>y</code> funciona igual.<br><br>
+      <b>Ojo con un error clásico:</b> no se puede escribir <code>40 &lt; porcentaje &lt; 70</code>
+      de un saque en la mayoría de los lenguajes. Hay que decir las dos condiciones enteras,
+      cada una con su nombre de variable.</div>`},
+
+    {k:'La otra',t:'or — alcanza con una',h:`
+      <div class="ib"><code>or</code> es lo contrario: alcanza con que <b>una sola</b> sea cierta.</div>
+      <div class="icur" style="font-family:ui-monospace,monospace">
+      if porcentaje &lt; 20 <b>or</b> porcentaje &gt; 85:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;prender(9)&nbsp;&nbsp;# el buzzer</div>
+      <div class="ib">Ese programa suena si la tierra está <b>muy seca</b> o si está <b>empapada</b>.
+      Dos problemas distintos, una sola alarma.<br><br>
+      En castellano: <code>o</code>.</div>`},
+
+    {k:'La regla',t:'Alarmas con or, permisos con and',h:`
+      <div class="idos">
+        <div class="b"><h4>or → alarmas</h4>
+        <ul><li>Suena si pasa <b>cualquiera</b> de las cosas malas</li>
+        <li>Cuantas más condiciones agregás, <b>más fácil</b> es que salte</li>
+        <li><i>"avisá si está muy seca o hace mucho frío"</i></li></ul></div>
+        <div class="b"><h4>and → permisos</h4>
+        <ul><li>Se da si se cumplen <b>todas</b> las condiciones</li>
+        <li>Cuantas más agregás, <b>más difícil</b> es que se cumpla</li>
+        <li><i>"regá solo si está seca y no está por helar"</i></li></ul></div>
+      </div>
+      <div class="ib">Si te trabás, probá decir la regla en voz alta en castellano.
+      Si en la frase decís <b>"y"</b>, va <code>and</code>. Si decís <b>"o"</b>, va <code>or</code>.
+      Funciona casi siempre.</div>`},
+
+    {k:'La pregunta',t:'¿Y quién eligió el 40 y el 70?',h:`
+      <div class="ib">Esta es la pregunta que va a quedar abierta hasta septiembre.<br><br>
+      El 30 de la misión anterior lo inventamos nosotros. El 40 y el 70 también.
+      <b>No los sabe el programador.</b> Los sabe quien cuida la huerta, que la mira todos los días
+      desde hace años.<br><br>
+      Eso tiene nombre en informática: se llama <b>requerimiento</b>, y salir a buscarlo
+      es parte del trabajo, no un paso previo al trabajo.</div>
+      <div class="icur"><b>El 9 de septiembre vamos a la huerta a preguntarlo.</b>
+      Cada pareja vuelve con una necesidad concreta, dicha por una persona.
+      Ese va a ser el aparato que construyan.</div>`}
+    ],
+    ejs:[
+      { type:'mc',
+        consigna:'La lechuga quiere la tierra entre 40% y 70%. ¿Cuál de estas condiciones es la correcta?',
+        opts:['if porcentaje > 40 or porcentaje < 70:',
+              'if porcentaje > 40 and porcentaje < 70:',
+              'if porcentaje > 40 and porcentaje > 70:',
+              'if porcentaje < 40 and porcentaje > 70:'],
+        correcta:1,
+        explica:'Tienen que cumplirse las dos: mayor que 40 Y menor que 70. Con or se cumpliría casi siempre (cualquier número es mayor a 40 o menor a 70). Y la última es imposible: ningún número es a la vez menor que 40 y mayor que 70.' },
+      { type:'mc',
+        consigna:'¿Para cuántos valores de porcentaje es cierta esta condición?',
+        code:'si porcentaje > 40 o porcentaje < 70',
+        opts:['Solo entre 40 y 70','Para ninguno','Para todos','Solo por debajo de 40'],
+        correcta:2,
+        explica:'Este es el error más común con or. Tomá cualquier número: 10 es menor que 70, así que cumple. 90 es mayor que 40, así que cumple. 50 cumple las dos. No existe ningún número que falle. La condición es siempre cierta y el if no filtra nada.' },
+      { type:'mc',
+        consigna:'Querés que el buzzer suene si la tierra está muy seca (menos de 20%) o encharcada (más de 85%). ¿Qué usás?',
+        opts:['and','or','Dos if separados, y da lo mismo','Un elif'],
+        correcta:1,
+        explica:'Es una alarma: suena si pasa cualquiera de las dos cosas malas. Con and no sonaría nunca, porque ningún valor puede ser menor a 20 y mayor a 85 al mismo tiempo. Dos if separados también funcionaría, pero repite código.' },
+      { type:'mc',
+        consigna:'La regla es: "regá solo si la tierra está seca <b>y</b> la temperatura está arriba de 5 grados, porque si va a helar no conviene mojar". ¿Qué pasa si cambiás el and por un or?',
+        opts:['Nada, es lo mismo',
+              'Riega también cuando hace frío, que es justo lo que había que evitar',
+              'No riega nunca',
+              'Riega solo cuando hace calor'],
+        correcta:1,
+        explica:'Con or alcanza con que se cumpla una. Un día helado con la tierra seca cumple la primera condición y riega igual, que es exactamente el daño que la regla quería evitar. En un permiso, cambiar and por or lo vuelve inútil.' },
+      { type:'mc',
+        consigna:'¿Qué prende este programa si el sensor marca 50%?',
+        code:'apagar(4)\napagar(6)\nsi porcentaje > 40 y porcentaje < 70:\n    prender(6)\nsino:\n    prender(4)',
+        opts:['El pin 4','El pin 6','Los dos','Ninguno'],
+        correcta:1,
+        explica:'50 es mayor que 40 y también menor que 70, así que las dos condiciones se cumplen y entra por la primera rama. El apagar( ) del principio es lo que evita que quede prendido el LED de la vuelta anterior.' },
+      { type:'mc',
+        consigna:'¿Cuál de estos aparatos necesita una banda y no un umbral?',
+        opts:['Una luz que se prende cuando oscurece',
+              'Un invernadero que abre la ventana si hace calor y la cierra si hace frío',
+              'Una alarma que suena si alguien abre la puerta',
+              'Un cartel que se prende a las 8 de la mañana'],
+        correcta:1,
+        explica:'El invernadero tiene tres estados: mucho calor (abrir), mucho frío (cerrar) y un rango en el medio donde está bien y no hay que tocar nada. Los otros tres son decisiones de dos estados, o directamente ni siquiera sensan.' },
+      { type:'mc',
+        consigna:'Decidiste que el aparato riegue por debajo de 30%. ¿De dónde tendría que salir ese número?',
+        opts:['De lo que diga la IA',
+              'De quien cuida la huerta, que la conoce',
+              'Del programador: es una decisión técnica',
+              'Es indistinto, cualquiera sirve'],
+        correcta:1,
+        explica:'Ese número no es una decisión técnica: es lo que el sistema tiene que lograr, y eso lo define quien lo va a usar. Se llama requerimiento. El programador decide cómo se implementa, no qué tiene que hacer.' },
+    ],
+    integ:[
+      { type:'mc',
+        consigna:'Un aparato tiene que avisar si la tierra está fuera del rango 40-70. ¿Cuál de estas dos condiciones sirve?',
+        code:'A)  si porcentaje < 40 o porcentaje > 70\nB)  si porcentaje < 40 y porcentaje > 70',
+        opts:['La A','La B','Las dos','Ninguna'],
+        correcta:0 },
+      { type:'mc',
+        consigna:'¿Qué le falta a este programa para que la barra no arrastre los LEDs de la vuelta anterior?',
+        code:'porcentaje = crudo * 100 / 1023\nsi porcentaje > 66:\n    prender(6)\nsi porcentaje > 33:\n    prender(5)\nsi porcentaje > 0:\n    prender(4)',
+        opts:['Apagar los tres antes de empezar','Usar elif en vez de tres si',
+              'Nada, está bien','Cambiar el orden de los si'],
+        correcta:0 },
+      { type:'mc',
+        consigna:'Un aparato con sensor que hace siempre lo mismo pase lo que pase, ¿qué es?',
+        opts:['Un robot, porque tiene sensor','Un automatismo: percibe pero no decide',
+              'Un agente inteligente','Depende de si se mueve'],
+        correcta:1 },
+    ]
+  },
+
+  /* ---------------- UNIDAD 2 · 26/08 y 02/09 ---------------- */
+  { t:'Del programa al aparato', d:'Qué es un microcontrolador y por qué el mismo programa se escribe distinto en cada lugar.',
+    slides:[
+    {k:'El salto',t:'Del simulador a una placa de verdad',h:`
+      <div class="ib">Todo lo que escribieron corrió en una placa <b>dibujada</b>.
+      Sirvió para aprender sin pelearse con cables, pero el aparato de la huerta va a ser real.<br><br>
+      La buena noticia: <b>la lógica no cambia nada.</b> Sensar, decidir, actuar y repetir es igual
+      en el simulador y en el aparato. Lo que cambia son <b>los nombres de las órdenes</b>.</div>`},
+
+    {k:'La placa',t:'Un microcontrolador es una computadora desnuda',h:`
+      <div class="ib">No tiene pantalla, ni teclado, ni sistema operativo, ni ventanas.
+      Tiene lo mínimo para correr <b>un</b> programa: procesador, memoria, y patitas para
+      entrar y salir al mundo.<br><br>
+      Y eso lo vuelve la mejor forma de ver qué hay adentro de <b>cualquier</b> computadora,
+      porque acá no hay nada tapando.</div>
+      <div class="i3">
+        <div class="n a"><div class="t">CPU</div><div class="d">ejecuta tu programa, una orden por vez</div></div>
+        <div class="n b"><div class="t">MEMORIA</div><div class="d">ahí vive el programa y las variables</div></div>
+        <div class="n c"><div class="t">PINES</div><div class="d">entradas y salidas al mundo físico</div></div>
+      </div>`},
+
+    {k:'Los idiomas',t:'El mismo programa, escrito de cuatro formas',h:`
+      <div class="ib">Prender una luz un segundo y apagarla, en cuatro lenguajes:</div>
+      <div class="icur" style="font-family:ui-monospace,monospace;line-height:1.9">
+      <b>Bloques (Scratch):</b> un bloque que dice "prender" y otro "esperar"<br>
+      <b>Pseudocódigo:</b> prender la luz · esperar 1 segundo · apagar la luz<br>
+      <b>Acá:</b> prender(13) · esperar(1) · apagar(13)<br>
+      <b>MicroPython:</b> led.value(1) · time.sleep(1) · led.value(0)</div>
+      <div class="ib">Los cuatro dicen exactamente lo mismo. Cambia la <b>sintaxis</b>, o sea cómo se
+      escribe. No cambia la <b>semántica</b>, o sea qué significa.<br><br>
+      Por eso aprender a programar no es aprender un lenguaje: cuando entendés bucle, variable
+      y condicional, el lenguaje siguiente se aprende leyendo.</div>`},
+
+    {k:'Los pines',t:'Digital y analógico',h:`
+      <div class="idos">
+        <div class="b"><h4>Pin digital</h4>
+        <ul><li>Dos estados: prendido o apagado</li>
+        <li>Para LEDs, buzzers, relés</li>
+        <li>El programa manda un 1 o un 0</li></ul></div>
+        <div class="b"><h4>Pin analógico</h4>
+        <ul><li>Un valor dentro de un rango</li>
+        <li>Para sensores que miden</li>
+        <li>El programa recibe un número</li></ul></div>
+      </div>
+      <div class="ib">Por eso el sensor de humedad va sí o sí a un pin analógico: no alcanza con
+      saber si hay tierra o no, hace falta saber <b>cuánta</b> humedad hay.</div>`},
+
+    {k:'El número',t:'De dónde sale el 0 a 1023',h:`
+      <div class="ib">El sensor no manda un número: manda un <b>voltaje</b>. Adentro de la placa hay
+      una pieza llamada <b>ADC</b> (conversor analógico-digital) que traduce ese voltaje a un número.<br><br>
+      Y el rango no es caprichoso. Ese ADC trabaja con <b>10 bits</b>:</div>
+      <div class="icur" style="text-align:center;font-size:1.15rem">
+      2<sup>10</sup> = 1024 valores posibles<br>
+      <span style="font-size:.9rem">y como el primero es el cero, el último es el <b>1023</b></span></div>
+      <div class="ib">Un ADC de 12 bits daría de 0 a 4095. Uno de 8 bits, de 0 a 255.
+      El rango de un sensor te está diciendo, sin que se lo preguntes, con cuántos bits trabaja la placa.</div>`}
+    ],
+    ejs:[
+      { type:'mc',
+        consigna:'¿Qué hace el ADC de una placa?',
+        opts:['Amplifica la señal del sensor','Convierte un voltaje en un número que el programa puede leer',
+              'Guarda las mediciones','Convierte corriente alterna en continua'],
+        correcta:1,
+        explica:'ADC quiere decir conversor analógico-digital. Es el que produce ese número entre 0 y 1023 a partir del voltaje que le manda el sensor.' },
+      { type:'mc',
+        consigna:'Un sensor conectado a una placa devuelve valores entre 0 y 4095. ¿Qué te dice eso?',
+        opts:['Que el sensor está roto','Que el ADC de esa placa es de 12 bits',
+              'Que el sensor mide más rápido','Que hay que dividir por 4'],
+        correcta:1,
+        explica:'2 elevado a la 12 es 4096, y contando desde cero el último es 4095. El rango te delata la cantidad de bits del conversor. Con 10 bits llegarías a 1023 y con 8 bits a 255.' },
+      { type:'mc',
+        consigna:'El mismo programa escrito en Scratch, en pseudocódigo y en MicroPython. ¿Qué es lo que cambia?',
+        opts:['La lógica','La sintaxis, o sea cómo se escribe','Lo que hace el programa','El resultado'],
+        correcta:1,
+        explica:'Cambia la forma de escribirlo, no lo que significa. Por eso cuando entendés bucle, variable y condicional, el lenguaje siguiente se aprende leyendo.' },
+      { type:'mc',
+        consigna:'¿Por qué un microcontrolador sirve para entender qué hay adentro de una computadora?',
+        opts:['Porque es más rápido','Porque tiene lo mínimo y nada tapando: procesador, memoria y pines',
+              'Porque es más barato','Porque usa el mismo sistema operativo'],
+        correcta:1,
+        explica:'No tiene sistema operativo ni ventanas ni capas de software encima. Lo que ves es lo que hay: la CPU ejecutando tu programa, la memoria guardando las variables y los pines conectando con el mundo.' },
+      { type:'mc',
+        consigna:'Querés conectar un LED y un sensor de humedad. ¿Cómo van?',
+        opts:['Los dos a pines digitales','Los dos a pines analógicos',
+              'El LED a digital y el sensor a analógico','El LED a analógico y el sensor a digital'],
+        correcta:2,
+        explica:'El LED solo necesita estar prendido o apagado: digital alcanza. El sensor entrega un valor dentro de un rango, y para leerlo hace falta un pin analógico con su ADC detrás.' },
+    ],
+    integ:[
+      { type:'mc',
+        consigna:'Tu programa anda perfecto en el simulador y en la placa real no hace nada. ¿Cuál es la primera cosa a revisar?',
+        opts:['El lenguaje','Las conexiones: alimentación y GND','La velocidad de la CPU','La cantidad de bits del ADC'],
+        correcta:1 },
+      { type:'mc',
+        consigna:'Si el ADC fuera de 8 bits en vez de 10, ¿qué cambiaría en tu programa de porcentaje?',
+        opts:['Nada','Habría que dividir por 255 en vez de por 1023','Dejaría de funcionar el if','Habría que usar otro sensor'],
+        correcta:1 },
+    ]
+  },
+
+  /* ---------------- UNIDAD 3 · 09/09 ---------------- */
+  { t:'Preguntarle al cliente', d:'De dónde salen los números y las reglas que programás. El trabajo que viene antes del código.',
+    slides:[
+    {k:'La pregunta',t:'¿Quién decide qué tiene que hacer el aparato?',h:`
+      <div class="ib">Veníamos inventando los números: 30, 40, 70. Estaban bien para aprender,
+      pero no salieron de ningún lado.<br><br>
+      En cualquier proyecto real, <b>quien decide qué tiene que hacer el sistema no es quien lo programa.</b>
+      Es quien lo va a usar. Y averiguar eso es la primera etapa del trabajo, no un trámite previo.</div>`},
+
+    {k:'El nombre',t:'Eso se llama requerimiento',h:`
+      <div class="ib">Un <b>requerimiento</b> es una cosa que el sistema tiene que lograr, escrita
+      de forma que después se pueda verificar si se cumplió o no.<br><br>
+      <b>Mal:</b> <i>"que ande bien"</i> — no se puede verificar.<br>
+      <b>Bien:</b> <i>"que avise cuando la tierra baja del 40% de humedad"</i> — se puede probar.</div>
+      <div class="icur">La prueba del algodón: si no se te ocurre cómo probar que se cumplió,
+      todavía no es un requerimiento. Es una intención.</div>`},
+
+    {k:'Dos tipos',t:'Funcionales y no funcionales',h:`
+      <div class="idos">
+        <div class="b"><h4>Funcionales — qué hace</h4>
+        <ul><li>"Avisa cuando la humedad baja de 40%"</li>
+        <li>"Muestra el valor en una pantalla"</li>
+        <li>"Riega durante 30 segundos"</li></ul></div>
+        <div class="b"><h4>No funcionales — cómo tiene que ser</h4>
+        <ul><li>"Tiene que aguantar la lluvia"</li>
+        <li>"Lo tiene que poder usar alguien que no sabe de esto"</li>
+        <li>"Tiene que durar todo el día con una batería"</li></ul></div>
+      </div>
+      <div class="ib">Los no funcionales son los que se olvidan y los que hunden proyectos.
+      Un aparato perfecto que se moja y muere el primer día no sirve para nada.</div>`},
+
+    {k:'Cómo',t:'Cómo se averigua lo que alguien necesita',h:`
+      <div class="i3">
+        <div class="n a"><div class="t">ENTREVISTA</div><div class="d">preguntar y escuchar</div></div>
+        <div class="n b"><div class="t">OBSERVAR</div><div class="d">mirar cómo lo hace hoy</div></div>
+        <div class="n c"><div class="t">PROTOTIPO</div><div class="d">mostrar algo y ver qué corrige</div></div>
+      </div>
+      <div class="ib"><b>Consejo para el miércoles 9:</b> no preguntes <i>"¿qué querés que te haga?"</i>,
+      porque te van a contestar con una solución ya pensada, casi siempre la que vieron en la tele.<br><br>
+      Preguntá <b>qué problema tienen</b> y <b>cómo lo resuelven hoy</b>. La solución es trabajo de ustedes.</div>`},
+
+    {k:'La sorpresa',t:'Ustedes ya hicieron esto en marzo',h:`
+      <div class="ib">La línea de investigación social armó <b>guiones de entrevista</b> para hablar
+      con gente sobre la huerta.<br><br>
+      Eso es exactamente <b>obtención de requerimientos</b>. Lo hicieron sin que nadie les dijera
+      cómo se llamaba.<br><br>
+      Pasa seguido en esta materia: primero lo hacen y después se enteran de que tenía nombre
+      y de que hay libros enteros sobre eso.</div>`},
+
+    {k:'El ciclo',t:'Dónde estamos parados',h:`
+      <div class="ib">Todo proyecto de software recorre las mismas cinco etapas.
+      No es una fila: se vuelve para atrás todo el tiempo.</div>
+      <div class="icur" style="line-height:2">
+      <b>1 · Especificar</b> — qué tiene que hacer &nbsp;← <b>el 9 de septiembre están acá</b><br>
+      <b>2 · Diseñar</b> — cómo lo van a hacer &nbsp;<span style="opacity:.7">(16/09)</span><br>
+      <b>3 · Implementar</b> — construirlo &nbsp;<span style="opacity:.7">(23/09 y 30/09)</span><br>
+      <b>4 · Validar</b> — probar que sirve &nbsp;<span style="opacity:.7">(el Paseo)</span><br>
+      <b>5 · Evolucionar</b> — arreglarlo y mejorarlo &nbsp;<span style="opacity:.7">(28/10)</span></div>`}
+    ],
+    ejs:[
+      { type:'mc',
+        consigna:'¿Cuál de estos es un requerimiento bien escrito?',
+        opts:['Que el aparato sea bueno','Que avise cuando la humedad baja del 40%',
+              'Que use Python','Que quede lindo en el stand'],
+        correcta:1,
+        explica:'Es el único que se puede verificar: ponés la tierra al 35% y mirás si avisa. Los otros no tienen forma de probarse. Y "que use Python" no es un requerimiento del cliente: es una decisión técnica de ustedes.' },
+      { type:'mc',
+        consigna:'"El aparato tiene que aguantar la lluvia." ¿Qué tipo de requerimiento es?',
+        opts:['Funcional, porque dice algo que hace','No funcional: no es qué hace, es cómo tiene que ser',
+              'No es un requerimiento','Es un requerimiento del programador'],
+        correcta:1,
+        explica:'No describe una función del sistema sino una cualidad que tiene que tener. Los no funcionales son los que más se olvidan y los que más proyectos hunden: un aparato perfecto que se moja el primer día no sirve.' },
+      { type:'mc',
+        consigna:'Vas a la huerta. ¿Cuál es la mejor primera pregunta?',
+        opts:['¿Querés que te haga un riego automático?',
+              '¿Qué problema tenés y cómo lo resolvés hoy?',
+              '¿Preferís Arduino o ESP32?',
+              '¿De qué color lo querés?'],
+        correcta:1,
+        explica:'Si preguntás por una solución te contestan con una solución, casi siempre la que vieron en algún lado, y te perdés el problema real. Averiguá el problema: la solución la diseñan ustedes.' },
+      { type:'mc',
+        consigna:'Los guiones de entrevista que armó la línea social en marzo, ¿qué eran en realidad?',
+        opts:['Una encuesta de opinión','Obtención de requerimientos',
+              'Un diseño','Una validación'],
+        correcta:1,
+        explica:'Preguntarle a la gente qué necesita, para después construir algo que responda a eso, es exactamente obtención de requerimientos. Lo hicieron antes de saber cómo se llamaba.' },
+      { type:'mc',
+        consigna:'El 16 de septiembre van a hacer el diagrama del aparato. ¿En qué etapa del ciclo de vida es eso?',
+        opts:['Especificar','Diseñar','Implementar','Validar'],
+        correcta:1,
+        explica:'Especificar es decidir qué tiene que hacer, y eso se cierra el 9 en la huerta. Diseñar es decidir cómo se va a hacer: qué sensor, qué actuador, qué regla. Implementar recién viene después.' },
+    ],
+    integ:[
+      { type:'mc',
+        consigna:'El Paseo Don Jaime, dentro del ciclo de vida del proyecto, ¿qué etapa es?',
+        opts:['Especificación','Diseño','Validación: probar el sistema con usuarios reales','Evolución'],
+        correcta:2 },
+      { type:'mc',
+        consigna:'Quien cuida la huerta te dice que riega a ojo, tocando la tierra con la mano. ¿Qué hacés con ese dato?',
+        opts:['Lo ignoro, es poco preciso','Es información clave: me dice qué está reemplazando el aparato y contra qué se lo va a comparar',
+              'Le explico que está mal','Le pregunto qué sensor prefiere'],
+        correcta:1 },
+    ]
+  }
+ ],
+ },
+
  '2do': {
   nom:'Taller de robótica',
   sub:'Programar algo que pase en el mundo real, no en la pantalla.',
-  salas:['robot1','sensores','electro'],
+  salas:['robot1','sensores','caja','electro'],
   us:[
   /* ---------------- UNIDAD 1 ---------------- */
-  { t:'Sentir, decidir, hacer', d:'Qué es un robot y qué no. Las tres cosas que hace siempre.',
+  { tomaU:1, t:'Sentir, decidir, hacer', d:'Qué es un robot y qué no. Las tres cosas que hace siempre.',
     slides:[
     {k:'Arrancamos',t:'De la pantalla al mundo',h:`
       <div class="ib">Todo lo que programaste hasta ahora pasa <b>adentro de la pantalla</b>:
@@ -1876,7 +2327,7 @@ const TALLERES = {
     ]},
 
   /* ---------------- UNIDAD 2 ---------------- */
-  { t:'Elegir y ubicar el sensor', d:'El sensor no interpreta lo que mide: entrega un número. Su ubicación es determinante.',
+  { tomaU:2, t:'Elegir y ubicar el sensor', d:'El sensor no interpreta lo que mide: entrega un número. Su ubicación es determinante.',
     slides:[
     {k:'La idea clave',t:'Un sensor traduce el mundo a un número',h:`
       <div class="ib">Un sensor de humedad no sabe qué es la tierra. Un sensor de luz no sabe
@@ -1938,7 +2389,7 @@ const TALLERES = {
     ]},
 
   /* ---------------- UNIDAD 3 ---------------- */
-  { t:'Decidir con un número', d:'El umbral: el número que parte el mundo en dos.',
+  { tomaU:3, t:'Decidir con un número', d:'El umbral: el número que parte el mundo en dos.',
     slides:[
     {k:'La idea clave',t:'El umbral',h:`
       <div class="ib">El sensor te da un número cualquiera. Vos tenés que decidir <b>una sola cosa</b>:
@@ -1998,7 +2449,7 @@ const TALLERES = {
     ]},
 
   /* ---------------- UNIDAD 4 ---------------- */
-  { t:'El programa completo', d:'Los cuatro pasos, el repetir para siempre y por qué el programa es el aparato.',
+  { tomaU:4, t:'El programa completo', d:'Los cuatro pasos, el repetir para siempre y por qué el programa es el aparato.',
     slides:[
     {k:'La estructura',t:'Siempre los mismos cuatro pasos',h:`
       <div class="ib">Todo aparato con sensor hace esto, en este orden, sin parar:</div>
@@ -2051,7 +2502,7 @@ const TALLERES = {
     ]},
 
   /* ---------------- UNIDAD 5 ---------------- */
-  { t:'Electricidad y circuitos', d:'Cómo es la parte física: pilas, cables, lamparitas y la plaquita que corre tu programa.',
+  { tomaU:5, t:'Electricidad y circuitos', d:'Cómo es la parte física: pilas, cables, lamparitas y la plaquita que corre tu programa.',
     slides:[
     {k:'Arrancamos',t:'Y esto… ¿con qué se arma?',h:`
       <div class="ib">Hasta acá diseñaste aparatos <b>en papel</b>: qué sensor, qué umbral, qué decisión.<br><br>
@@ -2173,11 +2624,13 @@ const TALLERES = {
 /* ejercicios de práctica de una unidad (los marcados con u:N) */
 function ejsUnidad(curso, ui){
   const T=TALLERES[curso]; if(!T) return [];
-  return T.salas.flatMap(id=>{
+  const u=(T.us||[])[ui]||{};
+  const propios=(u.ejs||[]).map(e=>Object.assign({},e,{concepto:u.t}));
+  return propios.concat((T.salas||[]).flatMap(id=>{
     const s=SALAS.find(x=>x.id===id); if(!s) return [];
-    return s.ejs.filter(e=>e.u===ui+1)
+    return s.ejs.filter(e=>e.u===(u.tomaU||-1))
       .map(e=>Object.assign({},e,{concepto:s.concepto, sinResultado:!!s.sinResultado}));
-  });
+  }));
 }
 /* integrador: los propios de la unidad + una muestra de todo lo anterior,
    y sin revelar la respuesta (para que lo piensen, no lo adivinen) */
@@ -2256,7 +2709,7 @@ function tallerHTML(){
     <div class="grid" style="grid-template-columns:1fr">${items}</div></section>`;
 }
 
-const NIVEL={sec:1,alg:1,flow:1,ope:1,tip:1,buc:1,con:1,dib:1,robot1:1,
+const NIVEL={sec:1,alg:1,flow:1,ope:1,tip:1,buc:1,con:1,dib:1,robot1:1,caja:2,
              var:2,dec:2,miniprog:2,bug:2,sensores:2,teoria:2,repaso:2,
              situac:3,desafios:3,desafios2:3};
 const NIVELN=['','Inicial','Intermedio','Avanzado'];
@@ -2285,6 +2738,8 @@ const ANIOS = {
     ids:[{id:'sec',tag:'a1'},{id:'alg',tag:'a1'}]},
    {t:'2 · Repetir y dibujar', d:'Repetir sin escribir todo de nuevo, y hacer arte con eso.',
     ids:[{id:'buc',tag:'a1'},'dib'], esp:['estudio']},
+   {t:'3 · Guardar valores', d:'Un nombre que guarda un número que va cambiando.',
+    ids:[{id:'var',tag:'a1'}]},
    {t:'Probate', d:'Para cuando ya recorriste lo de arriba.',
     ids:[{id:'teoria',tag:'a1'}], esp:['mezcla']}
  ]},
@@ -2303,10 +2758,12 @@ const ANIOS = {
     ids:['teoria','repaso'], esp:['mezcla']}
  ]},
  '3ro':{ nom:'3er año', sub:'Del programa al aparato', mods:[
+   {t:'Programá la placa', d:'Lo principal del cuatrimestre: escribís el código y el aparato reacciona.',
+    esp:['misiones']},
    {t:'1 · Poner a punto', d:'Repaso rápido de lo que hace falta tener firme antes de seguir.',
     ids:['var','dec','bug']},
    {t:'2 · Del programa al aparato', d:'Cuando el programa sale de la pantalla y hace algo en el mundo.',
-    ids:['robot1','sensores']},
+    ids:['robot1','sensores','caja','electro']},
    {t:'3 · Resolver problemas', d:'Situaciones completas donde hay que combinar todo.',
     ids:['situac','desafios','desafios2']},
    {t:'Probate', d:'Para cuando ya recorriste los módulos de arriba.',
@@ -2333,7 +2790,8 @@ const ESPECIALES={
  intro:{n:'Introducción a la robótica', d:'Qué es un robot, de dónde viene y cómo está hecho. Once pantallas para leer de corrido.', fn:'introHome()', wide:true, dest:true},
  jr:   {n:'Modo Jr', d:'Nivel más simple, sin texto para leer: llevá al personaje hasta su objetivo con flechas.', fn:'jrMission(0)', lvl:0},
  estudio:{n:'Estudio de dibujo', d:'Modo libre: movés las perillas y la tortuga dibuja en vivo.', fn:'estudio()'},
- mezcla:{n:'Modo mezcla', d:'Ocho ejercicios tomados al azar de las salas de tu año.', fn:"startSala('mezcla')", wide:true}
+ mezcla:{n:'Modo mezcla', d:'Ocho ejercicios tomados al azar de las salas de tu año.', fn:"startSala('mezcla')", wide:true},
+ misiones:{n:'Misiones: programá la placa', d:'Escribís código de verdad y la placa reacciona: se prenden las luces, suena el buzzer, se mueve el servo y el sensor te da un número. Se abren de a una.', fn:'misHome()', wide:true, dest:true}
 };
 
 function itemHTML(o){
@@ -3311,6 +3769,679 @@ function boot(){
   menu();
 }
 boot();
+
+/* ============================================================
+   MISIONES DE PROGRAMACION — placa simulada (3ro)
+   Portado desde la app "Explorando datos" el 18/08/2026.
+   Es aditivo: no toca nada de lo que ya andaba.
+   El progreso usa la misma clave que la otra app (mismo origen
+   en github.io), asi que lo que ya hicieron aparece tildado.
+   ============================================================ */
+
+/* ===== MISIONES: placa simulada y editor (3ro) ===== */
+(function(){const s=document.createElement("style");s.textContent=`
+  .mgrid{display:grid;gap:10px;margin-top:4px}
+  .mrow{display:flex;align-items:center;gap:12px;background:var(--surface2);border-radius:var(--r);
+    padding:13px 15px;cursor:pointer;border:2px solid transparent;transition:.15s}
+  .mrow:hover{border-color:var(--accent)}
+  .mrow.lock{opacity:.4;cursor:not-allowed} .mrow.lock:hover{border-color:transparent}
+  .mnum{width:30px;height:30px;flex:none;border-radius:50%;background:var(--bg);display:grid;
+    place-items:center;font-weight:800;font-size:.9rem;color:var(--muted)}
+  .mrow.done .mnum{background:var(--good);color:#06281d}
+  .mrow .mt{flex:1;font-weight:700;font-size:.98rem}
+  .mrow .mc{font-size:.75rem;color:var(--muted);font-weight:600}
+  .board{background:var(--bg);border:1px solid var(--line2);border-radius:14px;padding:16px;margin:12px 0}
+  .pins{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-bottom:6px}
+  .mpin{text-align:center;width:62px}
+  .mbulb{width:30px;height:30px;border-radius:50%;margin:0 auto 5px;background:var(--surface2);
+    border:2px solid var(--line2);transition:.12s}
+  .mbulb.on{box-shadow:0 0 16px 4px currentColor;background:currentColor;border-color:currentColor}
+  .mpin .pl{font-size:.68rem;color:var(--muted);line-height:1.25}
+  .mpin .pn{font-family:ui-monospace,monospace;font-size:.8rem;font-weight:700}
+  .sensorbox{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+  .sensorbox input[type=range]{width:100%;accent-color:var(--accent)}
+  .sread{display:flex;justify-content:space-between;font-family:ui-monospace,monospace;
+    font-size:.85rem;margin-top:4px;color:var(--muted)}
+  .sread b{color:var(--accent)}
+  .ed{width:100%;min-height:200px;background:var(--bg);color:var(--txt);border:1px solid var(--line2);
+    border-radius:var(--r);padding:12px;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:.95rem;line-height:1.6;resize:vertical;tab-size:4;white-space:pre;overflow-x:auto}
+  .ed:focus{outline:none;border-color:var(--accent)}
+  .runbar{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .runbar .btn{width:auto;flex:1;margin-top:0;min-width:118px}
+  .monitor{background:#06101f;border:1px solid var(--line2);border-radius:10px;padding:10px 12px;
+    margin-top:10px;font-family:ui-monospace,monospace;font-size:.84rem;max-height:130px;
+    overflow:auto;color:var(--good);white-space:pre-wrap}
+  .monitor .ph{color:var(--faint)}
+  .vars{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:10px}
+  .vpill{background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:4px 10px;
+    font-family:ui-monospace,monospace;font-size:.8rem}
+  .vpill b{color:var(--violet)}
+  .merr{background:rgba(240,138,138,.12);border-left:3px solid var(--bad);color:#fecaca;
+    border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.87rem}
+  .teoria{background:var(--accent-dim);border:1px solid var(--line2);border-radius:var(--r);
+    padding:13px 15px;margin:10px 0;font-size:.9rem;line-height:1.65}
+  .teoria code{background:var(--bg);padding:1px 6px;border-radius:5px;font-size:.86rem;color:var(--accent)}
+  .mconsigna{background:var(--surface2);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
+  .mconsigna .mcl{font-size:.72rem;color:var(--warn);font-weight:800;letter-spacing:.5px}
+  .mconsigna p{margin:6px 0 0;font-size:1rem;line-height:1.5}
+  .mverdict{border-radius:var(--r);padding:12px 14px;margin-top:10px;font-weight:600;line-height:1.5}
+  .mverdict.ok{background:rgba(84,207,148,.13);border:1px solid var(--good);color:#bdf0d8}
+  .mverdict.no{background:rgba(232,182,84,.12);border:1px solid var(--warn);color:#f3ddb0}
+  .mrowrap{max-width:820px;margin:0 auto}
+`;document.head.appendChild(s)})();
+
+function tk(line,ln){
+  const T=[];let i=0;
+  const isD=c=>c>="0"&&c<="9", isA=c=>/[A-Za-z_]/.test(c), isAN=c=>/[A-Za-z0-9_]/.test(c);
+  while(i<line.length){
+    const c=line[i];
+    if(c===" "||c==="\t"){i++;continue}
+    if(c==="#")break;
+    if(isD(c)||(c==="."&&isD(line[i+1]))){let j=i;while(j<line.length&&/[0-9.]/.test(line[j]))j++;
+      T.push({t:"num",v:parseFloat(line.slice(i,j)),ln});i=j;continue}
+    if(isA(c)){let j=i;while(j<line.length&&isAN(line[j]))j++;T.push({t:"name",v:line.slice(i,j),ln});i=j;continue}
+    if(c==='"'||c==="'"){const q=c;let j=i+1,s="";while(j<line.length&&line[j]!==q){s+=line[j];j++}
+      if(j>=line.length)throw{ln,msg:"Te faltó cerrar la comilla"};T.push({t:"str",v:s,ln});i=j+1;continue}
+    const two=line.slice(i,i+2);
+    if(["==","!=","<=",">=","//"].includes(two)){T.push({t:"op",v:two,ln});i+=2;continue}
+    if("+-*/%<>=(),:".includes(c)){T.push({t:"op",v:c,ln});i++;continue}
+    throw{ln,msg:`No entiendo el símbolo "${c}"`};
+  }
+  return T;
+}
+function P(T,ln){
+  let i=0;
+  const peek=()=>T[i], eat=v=>{if(T[i]&&T[i].v===v){i++;return true}return false};
+  const expect=v=>{if(!eat(v))throw{ln,msg:`Esperaba "${v}" acá`}};
+  function or_(){let l=and_();while(peek()&&(peek().v==="or"||peek().v==="o")){i++;l={k:"log",op:"or",l,r:and_()}}return l}
+  function and_(){let l=not_();while(peek()&&(peek().v==="and"||peek().v==="y")){i++;l={k:"log",op:"and",l,r:not_()}}return l}
+  function not_(){if(peek()&&(peek().v==="not"||peek().v==="no")){i++;return{k:"not",e:not_()}}return cmp_()}
+  function cmp_(){let l=add_();while(peek()&&["==","!=","<=",">=","<",">"].includes(peek().v)){const o=T[i++].v;l={k:"cmp",op:o,l,r:add_()}}return l}
+  function add_(){let l=mul_();while(peek()&&(peek().v==="+"||peek().v==="-")){const o=T[i++].v;l={k:"bin",op:o,l,r:mul_()}}return l}
+  function mul_(){let l=un_();while(peek()&&["*","/","%","//"].includes(peek().v)){const o=T[i++].v;l={k:"bin",op:o,l,r:un_()}}return l}
+  function un_(){if(peek()&&peek().v==="-"){i++;return{k:"neg",e:un_()}}return pri_()}
+  function pri_(){
+    const t=peek();
+    if(!t)throw{ln,msg:"La línea quedó incompleta"};
+    if(t.t==="num"){i++;return{k:"num",v:t.v}}
+    if(t.t==="str"){i++;return{k:"str",v:t.v}}
+    if(t.v==="("){i++;const e=or_();expect(")");return e}
+    if(t.t==="name"){i++;
+      if(peek()&&peek().v==="("){i++;const args=[];
+        if(!(peek()&&peek().v===")")){args.push(or_());while(eat(","))args.push(or_())}
+        expect(")");return{k:"call",n:t.v,args,ln}}
+      return{k:"var",n:t.v,ln}}
+    throw{ln,msg:`No esperaba "${t.v}" acá`};
+  }
+  const e=or_();
+  if(i<T.length)throw{ln,msg:`Sobra "${T[i].v}" al final de la línea`};
+  return e;
+}
+function parsePy(src){
+  const raw=src.replace(/\r/g,"").split("\n");
+  const L=[];
+  raw.forEach((s,k)=>{const noC=s.split("#")[0];
+    if(!noC.trim())return;
+    L.push({ind:(s.match(/^[ \t]*/)[0].replace(/\t/g,"    ")).length,txt:noC.trim(),ln:k+1})});
+  let p=0;
+  function block(minInd){
+    const out=[];
+    while(p<L.length&&L[p].ind>=minInd){
+      if(L[p].ind>minInd)throw{ln:L[p].ln,msg:"Esta línea tiene demasiada sangría"};
+      out.push(stmt(minInd));
+    }
+    return out;
+  }
+  function body(cur,ln){
+    if(p>=L.length||L[p].ind<=cur)throw{ln,msg:"Después de los dos puntos falta el bloque indentado (4 espacios)"};
+    return block(L[p].ind);
+  }
+  function stmt(cur){
+    const l=L[p], t=l.txt, ln=l.ln;
+    const head=(kw)=>t===kw||t.startsWith(kw+" ")||t.startsWith(kw+"(");
+    if(head("if")||head("while")){
+      const kw=head("if")?"if":"while";
+      if(!t.endsWith(":"))throw{ln,msg:`Al final del ${kw} falta los dos puntos ":"`};
+      const cond=P(tk(t.slice(kw.length,-1),ln),ln);p++;
+      const b=body(cur,ln);
+      if(kw==="while")return{k:"while",cond,b,ln};
+      const node={k:"if",arms:[{cond,b}],els:null,ln};
+      while(p<L.length&&L[p].ind===cur&&(L[p].txt.startsWith("elif ")||L[p].txt==="else:"||L[p].txt.startsWith("else:"))){
+        const e=L[p];
+        if(e.txt.startsWith("elif")){
+          if(!e.txt.endsWith(":"))throw{ln:e.ln,msg:'Al final del elif falta los dos puntos ":"'};
+          const c2=P(tk(e.txt.slice(4,-1),e.ln),e.ln);p++;node.arms.push({cond:c2,b:body(cur,e.ln)});
+        }else{p++;node.els=body(cur,e.ln);break}
+      }
+      return node;
+    }
+    if(head("for")){
+      const m=t.match(/^for\s+([A-Za-z_]\w*)\s+in\s+range\((.+)\)\s*:$/);
+      if(!m)throw{ln,msg:'El for se escribe así:  for i in range(5):'};
+      const n=P(tk(m[2],ln),ln);p++;return{k:"for",v:m[1],n,b:body(cur,ln),ln};
+    }
+    if(t.startsWith("else")||t.startsWith("elif"))throw{ln,msg:`"${t.split(" ")[0]}" sin un if arriba`};
+    const eq=t.search(/(?<![=!<>])=(?!=)/);
+    if(eq>0&&/^[A-Za-z_]\w*\s*$/.test(t.slice(0,eq))){
+      const name=t.slice(0,eq).trim(), e=P(tk(t.slice(eq+1),ln),ln);p++;return{k:"set",n:name,e,ln};
+    }
+    const e=P(tk(t,ln),ln);p++;
+    if(e.k!=="call")throw{ln,msg:"Esta línea no hace nada. ¿Te faltó una orden o un = ?"};
+    return{k:"exp",e,ln};
+  }
+  const prog=block(0);
+  if(p<L.length)throw{ln:L[p].ln,msg:"No entiendo la sangría de esta línea"};
+  return prog;
+}
+
+/* ---------- placa simulada ---------- */
+const LEDS=[{p:4,c:"#f87171",l:"rojo"},{p:5,c:"#fbbf24",l:"amarillo"},{p:6,c:"#34d399",l:"verde"},
+            {p:8,c:"#38bdf8",l:"bomba"},{p:9,c:"#f472b6",l:"buzzer"},{p:13,c:"#e2e8f0",l:"LED placa"}];
+let SIM={pins:{},an:{A0:512},out:[],vars:{},trans:0,servo:null};
+let RUN={stop:true,live:false};
+function simReset(keepAn){const a=keepAn?SIM.an:{A0:512};SIM={pins:{},an:a,out:[],vars:{},trans:0,servo:null}}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+async function execPy(prog,ctx){
+  const env=ctx.env;
+  let steps=0, vt=0;
+  const bump=()=>{if(++steps>ctx.maxSteps)throw{ln:0,msg:"El programa hizo demasiadas cosas. ¿Un bucle sin esperar()?"}};
+  async function ev(n){
+    bump();
+    switch(n.k){
+      case "num":return n.v;
+      case "str":return n.v;
+      case "var":{
+        if(/^A[0-5]$/.test(n.n))return n.n;
+        if(n.n==="True")return true; if(n.n==="False")return false;
+        if(!(n.n in env))throw{ln:n.ln,msg:`La variable "${n.n}" todavía no existe. ¿La escribiste distinto arriba?`};
+        return env[n.n]}
+      case "neg":return -(await ev(n.e));
+      case "not":return !(await ev(n.e));
+      case "log":{const l=await ev(n.l);
+        if(n.op==="and")return l?await ev(n.r):l; return l?l:await ev(n.r)}
+      case "cmp":{const a=await ev(n.l),b=await ev(n.r);
+        switch(n.op){case "==":return a===b;case "!=":return a!==b;case "<":return a<b;
+          case ">":return a>b;case "<=":return a<=b;case ">=":return a>=b}}
+      case "bin":{const a=await ev(n.l),b=await ev(n.r);
+        switch(n.op){case "+":return (typeof a==="string"||typeof b==="string")?String(a)+String(b):a+b;
+          case "-":return a-b;case "*":return a*b;
+          case "/":{if(b===0)throw{ln:n.ln,msg:"No se puede dividir por cero"};return a/b}
+          case "//":return Math.floor(a/b);case "%":return a%b}}
+      case "call":return await call(n);
+    }
+  }
+  async function call(n){
+    const a=[];for(const x of n.args)a.push(await ev(x));
+    const need=(k)=>{if(a.length<k)throw{ln:n.ln,msg:`A ${n.n}() le faltan datos adentro del paréntesis`}};
+    switch(n.n){
+      case "prender":{need(1);const p=+a[0];if(SIM.pins[p]!==1)SIM.trans++;SIM.pins[p]=1;ctx.paint();return null}
+      case "apagar":{need(1);const p=+a[0];if(SIM.pins[p]===1)SIM.trans++;SIM.pins[p]=0;ctx.paint();return null}
+      case "leer":{need(1);const p=a[0];const v=SIM.an[p];
+        if(v===undefined)throw{ln:n.ln,msg:`No hay ningún sensor en ${p}. Probá con A0`};return v}
+      case "mostrar":{need(1);SIM.out.push(String(typeof a[0]==="number"?Math.round(a[0]*100)/100:a[0]));
+        if(SIM.out.length>200)SIM.out.shift();ctx.paint();return null}
+      case "servo":{need(2);SIM.servo=+a[1];ctx.paint();return null}
+      case "esperar":{need(1);const s=Math.max(0,+a[0]);
+        if(ctx.live){await sleep(Math.min(s,3)*1000)}else{vt+=s;if(vt>ctx.maxVT)throw{stopok:true}}
+        return null}
+      case "redondear":{need(1);return Math.round(a[0])}
+      case "range":throw{ln:n.ln,msg:"range() solo se usa adentro de un for"};
+      default:throw{ln:n.ln,msg:`No conozco la orden "${n.n}()". Mirá la lista de órdenes abajo.`};
+    }
+  }
+  async function block(b){for(const s of b){if(RUN.stop&&ctx.live)throw{stopok:true};await run1(s)}}
+  async function run1(s){
+    bump();
+    switch(s.k){
+      case "set":{env[s.n]=await ev(s.e);SIM.vars=Object.assign({},env);ctx.paint();return}
+      case "exp":await ev(s.e);return;
+      case "if":{for(const arm of s.arms){if(await ev(arm.cond))return await block(arm.b)}
+        if(s.els)return await block(s.els);return}
+      case "while":{let guard=0;
+        while(await ev(s.cond)){
+          await block(s.b);
+          if(ctx.live){await sleep(0)}else{vt+=0.001;if(vt>ctx.maxVT)throw{stopok:true}}
+          if(RUN.stop&&ctx.live)throw{stopok:true};
+          if(++guard>ctx.maxLoop)throw{stopok:true};
+        }return}
+      case "for":{const n=Math.min(+(await ev(s.n)),ctx.maxLoop);
+        for(let k=0;k<n;k++){env[s.v]=k;SIM.vars=Object.assign({},env);await block(s.b);
+          if(ctx.live){await sleep(0)}
+          if(RUN.stop&&ctx.live)throw{stopok:true}}
+        return}
+    }
+  }
+  await block(prog);
+}
+
+/* corre el código; devuelve {err, pins, out, trans, servo} */
+async function misRunCode(code,opt){
+  opt=opt||{};
+  const live=!!opt.live;
+  simReset(!!opt.keepAn);
+  if(opt.an)SIM.an=Object.assign({},SIM.an,opt.an);
+  const ctx={env:{},live,paint:live?misPaint:()=>{},maxSteps:live?4e6:2e5,maxVT:opt.maxVT||14,maxLoop:live?1e9:4000};
+  RUN.stop=false;RUN.live=live;
+  let err=null;
+  try{
+    const prog=parsePy(code);
+    if(!prog.length)err={ln:0,msg:"Todavía no escribiste ninguna orden."};
+    else await execPy(prog,ctx);
+  }catch(e){ if(!e||!e.stopok) err=(e&&e.msg)?e:{ln:0,msg:"Algo salió mal: "+(e&&e.message||e)} }
+  RUN.stop=true;
+  if(live)misPaint();
+  return {err,pins:Object.assign({},SIM.pins),out:SIM.out.slice(),trans:SIM.trans,servo:SIM.servo};
+}
+
+/* ===================== MISIONES ===================== */
+const RKEY="vla_robotica_v1";
+let RDONE=(()=>{try{return JSON.parse(localStorage.getItem(RKEY))||[]}catch(e){return[]}})();
+const rsave=()=>{try{localStorage.setItem(RKEY,JSON.stringify(RDONE))}catch(e){}};
+const mpct=v=>v*100/1023;
+
+const MIS=[
+{t:"Prendé la luz",c:"Instrucción",
+ g:"Hacé que se prenda el LED del pin 13.",
+ th:`Un <b>programa</b> es una lista de órdenes. La placa las lee de arriba hacia abajo y las hace una por una.<br>
+     <code>prender(13)</code> le manda corriente al pin 13 y el LED se enciende.`,
+ s:"# Escribí tu orden acá abajo\n",
+ chk:async r=>{const x=await r({});return{ok:x.pins[13]===1,
+   msg:x.pins[13]===1?"El LED del pin 13 quedó prendido.":"El LED del pin 13 sigue apagado."}}},
+
+{t:"Prendé y apagá",c:"esperar()",
+ g:"Prendé el LED del pin 13, esperá 1 segundo y apagalo.",
+ th:`<code>esperar(1)</code> frena el programa un segundo. Sin eso, la placa prende y apaga tan rápido
+     que el ojo no lo ve: para la computadora un segundo es una eternidad.`,
+ s:"prender(13)\n",
+ chk:async r=>{const x=await r({});
+   if(x.trans<2)return{ok:false,msg:"Faltó prender y después apagar."};
+   return{ok:x.pins[13]===0,msg:x.pins[13]===0?"Prendió y apagó.":"Quedó prendido al final: te faltó el apagar(13)."}}},
+
+{t:"Que parpadee para siempre",c:"while (bucle)",
+ g:"Hacé que el LED del pin 13 parpadee sin parar.",
+ th:`<code>while True:</code> quiere decir "repetí esto para siempre". Todo lo que va <b>indentado</b>
+     (con 4 espacios) abajo del <code>while</code> es lo que se repite.<br>
+     Ojo: si adentro del bucle no hay ningún <code>esperar()</code>, va tan rápido que no se ve nada.`,
+ s:"while True:\n    prender(13)\n",
+ chk:async r=>{const x=await r({});
+   return{ok:x.trans>=4,msg:x.trans>=4?`Parpadeó ${x.trans} veces.`:"No llegó a parpadear. ¿Prendés y apagás adentro del while, con esperar() en el medio?"}}},
+
+{t:"¿Cuánto mide el sensor?",c:"variable · leer()",
+ g:"Leé el sensor A0, guardá el valor en una variable y mostralo. Probá mover el deslizador y volver a ejecutar.",
+ th:`Una <b>variable</b> es un nombre que guarda un valor para usarlo después.<br>
+     <code>humedad = leer(A0)</code> le pide el número al sensor y lo guarda con el nombre <i>humedad</i>.<br>
+     <code>mostrar(humedad)</code> lo escribe en el monitor. El sensor devuelve un número entre <b>0 y 1023</b>.`,
+ s:"humedad = leer(A0)\n",
+ chk:async r=>{
+   for(const v of [200,800]){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     const last=[...x.out].reverse().find(o=>!isNaN(parseFloat(o)));
+     if(last===undefined)return{ok:false,msg:"No mostraste nada. Te falta mostrar( )."};
+     if(Math.abs(parseFloat(last)-v)>0.5)return{ok:false,msg:`Con el sensor en ${v} mostraste ${last}. Tiene que mostrar lo que mide el sensor.`}}
+   return{ok:true,msg:"Leíste el sensor y lo mostraste."}}},
+
+{t:"De número raro a porcentaje",c:"cuenta · función lineal",
+ g:"El sensor da un número entre 0 y 1023. Mostralo como un porcentaje entre 0 y 100.",
+ th:`Nadie entiende "el sensor marca 743". Hay que <b>convertirlo</b>.<br>
+     Si 1023 es el 100%, entonces: <code>porcentaje = crudo * 100 / 1023</code><br>
+     Esto que acabás de escribir es una <b>función lineal</b>: la misma de Matemática, con su pendiente.
+     En programación se le dice <i>escalar</i> o <i>mapear</i> un valor.`,
+ s:"crudo = leer(A0)\n",
+ chk:async r=>{
+   for(const v of [150,700]){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     const last=[...x.out].reverse().find(o=>!isNaN(parseFloat(o)));
+     if(last===undefined)return{ok:false,msg:"No mostraste nada todavía."};
+     if(Math.abs(parseFloat(last)-mpct(v))>1.5)
+       return{ok:false,msg:`Con el sensor en ${v} el porcentaje tendría que dar ${mpct(v).toFixed(1)} y mostraste ${last}.`}}
+   return{ok:true,msg:"Convertiste el valor crudo a porcentaje."}}},
+
+{t:"Que decida solo",c:"if / else",
+ g:"Si la tierra está seca (menos de 30%), prendé el LED del pin 13. Si no, apagalo.",
+ th:`El <b>condicional</b> es la primera decisión que tu programa toma sin vos.<br>
+     <code>if porcentaje < 30:</code> y abajo, indentado, lo que pasa si es cierto.<br>
+     <code>else:</code> y abajo lo que pasa si no. Los dos puntos y la sangría no son adorno: marcan qué está adentro.`,
+ s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
+ chk:async r=>{
+   const seco=await r({an:{A0:100}}); if(seco.err)return{ok:false,msg:""};
+   if(seco.pins[13]!==1)return{ok:false,msg:"Con la tierra seca (10%) el LED tendría que prenderse."};
+   const hum=await r({an:{A0:900}}); if(hum.err)return{ok:false,msg:""};
+   if(hum.pins[13]===1)return{ok:false,msg:"Con la tierra húmeda (88%) el LED tendría que estar apagado."};
+   return{ok:true,msg:"Tu programa decide solo según lo que mide."}}},
+
+{t:"Semáforo de la huerta",c:"elif",
+ g:"Tres casos. Menos de 30% → pin 4 (rojo). Entre 30 y 70 → pin 5 (amarillo). Más de 70 → pin 6 (verde). Solo uno prendido a la vez.",
+ th:`<code>elif</code> es "si no, probá con esto otro". Encadena decisiones: la placa prueba una por una y
+     se queda con la <b>primera</b> que sea cierta.<br>
+     Truco: apagá los tres al principio y después prendé el que corresponde.`,
+ s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
+ chk:async r=>{
+   const casos=[[100,4],[500,5],[900,6]];
+   for(const [v,on] of casos){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     for(const p of [4,5,6]){
+       const debe=p===on?1:0, es=x.pins[p]===1?1:0;
+       if(debe!==es)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% tendría que estar prendido solo el pin ${on}.`}}}
+   return{ok:true,msg:"Los tres casos funcionan. Ya podés programar cualquiera de los aparatos."}}},
+
+/* ===== desafíos nuevos — del umbral a la banda ===== */
+
+{t:"Ni muy seca ni muy mojada",c:"and · dos condiciones",
+ g:"La lechuga quiere la tierra entre 40% y 70%. Si está en ese rango, prendé el verde (pin 6). Si está fuera, prendé el rojo (pin 4). Solo uno prendido a la vez.",
+ th:`Hasta ahora decidiste siempre con <b>una</b> condición. Casi ningún aparato real alcanza con eso.<br>
+     <code>if porcentaje > 40 and porcentaje < 70:</code><br>
+     <code>and</code> es cierto solo si <b>las dos</b> cosas lo son. <code>or</code> alcanza con que una lo sea.
+     También podés escribirlos en castellano: <code>y</code> y <code>o</code>.<br>
+     Fijate lo que cambió: una planta no quiere un <b>mínimo</b>, quiere estar <b>entre dos valores</b>.
+     Eso no es un umbral, es una <b>banda</b>.`,
+ s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
+ chk:async r=>{
+   const casos=[[550,6],[150,4],[950,4],[450,6]];
+   for(const [v,on] of casos){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     const off=on===6?4:6;
+     if(x.pins[on]!==1)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% tendría que estar prendido el pin ${on}.`}
+     if(x.pins[off]===1)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% el pin ${off} tendría que estar apagado. Solo uno a la vez.`}}
+   return{ok:true,msg:"Pasaste del umbral a la banda. Eso es lo que pide una planta de verdad."}}},
+
+{t:"Avisá si algo anda mal",c:"or · alguna de las dos",
+ g:"Prendé el buzzer (pin 9) si la tierra está MUY seca (menos de 20%) O MUY mojada (más de 85%). En cualquier otro caso, apagalo.",
+ th:`<code>or</code> es lo contrario de <code>and</code>: alcanza con que <b>una sola</b> de las dos sea cierta.<br>
+     <code>if porcentaje < 20 or porcentaje > 85:</code><br>
+     Una alarma casi siempre se escribe con <code>or</code>: suena si pasa <b>cualquiera</b> de las cosas malas.
+     Un permiso casi siempre se escribe con <code>and</code>: se da si se cumplen <b>todas</b> las condiciones.`,
+ s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
+ chk:async r=>{
+   const casos=[[100,1],[950,1],[500,0],[700,0]];
+   for(const [v,debe] of casos){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     const es=x.pins[9]===1?1:0;
+     if(es!==debe)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% el buzzer tendría que estar ${debe?"sonando":"apagado"}.`}}
+   return{ok:true,msg:"Alarma lista. Con or alcanza con que una sola cosa ande mal."}}},
+
+{t:"Parpadeá exactamente 5 veces",c:"for · repetir una cantidad",
+ g:"Hacé que el LED del pin 13 parpadee 5 veces y después pare. Ni una más ni una menos.",
+ th:`<code>while True</code> repite <b>para siempre</b>. Cuando sabés cuántas veces querés repetir, se usa <code>for</code>:<br>
+     <code>for i in range(5):</code> y abajo, indentado, lo que se repite.<br>
+     La variable <code>i</code> va tomando 0, 1, 2, 3, 4. Podés usarla o ignorarla.`,
+ s:"",
+ chk:async r=>{
+   const x=await r({an:{A0:512}});
+   if(x.err)return{ok:false,msg:""};
+   if(x.trans===0)return{ok:false,msg:"El LED nunca se prendió."};
+   if(x.trans<10)return{ok:false,msg:`Parpadeó ${Math.floor(x.trans/2)} veces y tendrían que ser 5. ¿Le pusiste el apagar( ) adentro del for?`};
+   if(x.trans>10)return{ok:false,msg:`Parpadeó de más (${Math.floor(x.trans/2)} veces). Si usaste while True, cambialo por for i in range(5).`};
+   return{ok:true,msg:"Cinco parpadeos justos. Ese es el for."}}},
+
+{t:"Promediá varias lecturas",c:"acumulador · sumar dentro de un for",
+ g:"Leé el sensor 5 veces sumando los valores. Mostrá primero la SUMA y después el PROMEDIO.",
+ th:`Un sensor real no da siempre el mismo número: <b>salta</b>. La forma más simple de estabilizarlo es
+     leerlo varias veces y promediar.<br>
+     Necesitás una variable que vaya <b>acumulando</b>:<br>
+     <code>suma = 0</code><br><code>for i in range(5):</code><br>
+     <code>&nbsp;&nbsp;&nbsp;&nbsp;suma = suma + leer(A0)</code><br>
+     Y al final <code>mostrar(suma)</code> y <code>mostrar(suma / 5)</code>.<br>
+     <i>Acá el simulador da siempre lo mismo, así que el promedio va a coincidir con la lectura.
+     En el aparato de verdad no, y por eso esto sirve.</i>`,
+ s:"suma = 0\n",
+ chk:async r=>{
+   for(const v of [300,800]){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     const nums=x.out.map(parseFloat).filter(n=>!isNaN(n));
+     if(nums.length<2)return{ok:false,msg:"Tenés que mostrar dos cosas: primero la suma y después el promedio."};
+     const suma=nums[nums.length-2], prom=nums[nums.length-1];
+     if(Math.abs(suma-v*5)>1)return{ok:false,msg:`Con el sensor en ${v} la suma de 5 lecturas tendría que dar ${v*5} y mostraste ${suma}.`};
+     if(Math.abs(prom-v)>1)return{ok:false,msg:`El promedio tendría que dar ${v} y mostraste ${prom}. Es la suma dividida 5.`}}
+   return{ok:true,msg:"Acumulaste dentro de un bucle. Así se estabiliza un sensor que salta."}}},
+
+{t:"Que no titile",c:"banda de seguridad (histéresis)",
+ g:"Prendé la bomba (pin 8) cuando la humedad baje de 28%. Apagala cuando pase de 32%. Entre 28 y 32 no la toques: dejala como está.",
+ th:`Este es un problema real. Si prendés a menos de 30 y apagás a más de 30, cuando el valor queda
+     justo en el borde el aparato se <b>prende y apaga sin parar</b> y se rompe.<br>
+     La solución es usar <b>dos números</b> en vez de uno y dejar una zona muerta en el medio:<br>
+     <code>if porcentaje < 28:</code> prender<br>
+     <code>elif porcentaje > 32:</code> apagar<br>
+     Sin <code>else</code>: si está en el medio, el programa no hace nada.<br>
+     Esto se llama <b>histéresis</b>, y lo tiene adentro cualquier termostato del mundo.`,
+ s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
+ chk:async r=>{
+   for(const [v,debe] of [[250,1],[500,0]]){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     const es=x.pins[8]===1?1:0;
+     if(es!==debe)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% la bomba tendría que estar ${debe?"prendida":"apagada"}.`}}
+   const z=await r({an:{A0:307}});
+   if(z.err)return{ok:false,msg:""};
+   if(z.pins[8]!==undefined)return{ok:false,msg:"Con el sensor al 30% estás en la zona muerta: ahí el programa NO tiene que tocar la bomba, ni prenderla ni apagarla. Fijate que no te haya quedado un else, o un apagar( ) suelto arriba de todo."};
+   return{ok:true,msg:"Dos números en vez de uno, y una zona en el medio donde no hacés nada. Eso es lo que hace que un termostato no se vuelva loco."}}},
+
+{t:"Abrí la compuerta",c:"servo · mover algo",
+ g:"Si la temperatura pasa de 60%, abrí la compuerta del invernadero: servo(9, 90). Si no, cerrala: servo(9, 0).",
+ th:`Un <b>servo</b> es un motor que va a un ángulo exacto y se queda ahí. Es la forma más barata
+     de que un aparato <b>mueva</b> algo sin volverse un robot con ruedas.<br>
+     <code>servo(9, 90)</code> lo lleva a 90 grados. <code>servo(9, 0)</code> lo vuelve a cero.<br>
+     Con esto ya podés hacer una compuerta, un dispensador o un cartel que gira.`,
+ s:"crudo = leer(A0)\ntemperatura = crudo * 100 / 1023\n",
+ chk:async r=>{
+   const casos=[[900,90],[200,0],[700,90]];
+   for(const [v,ang] of casos){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     if(x.servo===null)return{ok:false,msg:"Todavía no moviste el servo. Usá servo(9, 90) o servo(9, 0)."};
+     if(x.servo!==ang)return{ok:false,msg:`Con la temperatura al ${mpct(v).toFixed(0)}% el servo tendría que estar en ${ang} grados y está en ${x.servo}.`}}
+   return{ok:true,msg:"Tu aparato ahora mueve algo. Ya podés construir una compuerta."}}},
+
+/* ===== visuales: que el código se vea pasar ===== */
+
+{t:"La luz que corre",c:"for + secuencia",
+ g:"Hacé que la luz recorra los tres LEDs: prendé el 4 y apagalo, después el 5 y apagalo, después el 6 y apagalo. Y que todo eso se repita 3 veces con un for.",
+ th:`Acá no aprendés nada nuevo: <b>combinás</b> lo que ya sabés y se ve lindo.<br>
+     <code>for i in range(3):</code> y adentro, los seis pasos del recorrido.<br>
+     Poné un <code>esperar(0.15)</code> entre medio o va tan rápido que no lo ves.`,
+ s:"for i in range(3):\n",
+ chk:async r=>{
+   const x=await r({an:{A0:512}});
+   if(x.err)return{ok:false,msg:""};
+   if(x.trans===0)return{ok:false,msg:"No se prendió ningún LED."};
+   if(x.trans!==18)return{ok:false,msg:`Contá: 3 vueltas x 3 luces x (prender + apagar) son 18 cambios, y tu programa hizo ${x.trans}. Fijate que apagues cada LED antes de prender el siguiente.`};
+   return{ok:true,msg:"La luz corre. Eso es un for con una secuencia adentro."}}},
+
+{t:"La barra de nivel",c:"if / elif que se acumulan",
+ g:"Mostrá la humedad como una barra: menos de 33% prendé solo el 4. Entre 33 y 66 prendé el 4 y el 5. Más de 66 prendé los tres (4, 5 y 6).",
+ th:`Es como las rayitas de la señal del celular. Fijate que los LEDs se van <b>sumando</b>,
+     no se reemplazan.<br>
+     El truco de siempre: <b>apagá los tres al principio</b> y después prendé los que correspondan.
+     Si no, te quedan encendidos los de la vuelta anterior.`,
+ s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\napagar(4)\napagar(5)\napagar(6)\n",
+ chk:async r=>{
+   const casos=[[200,[1,0,0]],[500,[1,1,0]],[900,[1,1,1]]];
+   for(const [v,e] of casos){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     const got=[4,5,6].map(p=>x.pins[p]===1?1:0);
+     if(got.join()!==e.join())return{ok:false,msg:`Al ${mpct(v).toFixed(0)}% tendrían que estar prendidos ${e.reduce((a,b)=>a+b,0)} LED(s) y tenés ${got.reduce((a,b)=>a+b,0)}.`}}
+   return{ok:true,msg:"Una barra de nivel hecha con tres if. Así funciona la señal del celular."}}},
+
+{t:"Cuenta regresiva",c:"for + mostrar",
+ g:"Mostrá 5, 4, 3, 2, 1 (uno por vez, en ese orden) y recién ahí prendé el LED del pin 13.",
+ th:`<code>range(5)</code> te da 0, 1, 2, 3, 4 — en ese orden, de menor a mayor.<br>
+     Si querés que baje, hacé la cuenta vos: si <code>i</code> vale 0, entonces <code>5 - i</code> vale 5.<br>
+     <code>for i in range(5):</code><br><code>&nbsp;&nbsp;&nbsp;&nbsp;mostrar(5 - i)</code>`,
+ s:"for i in range(5):\n",
+ chk:async r=>{
+   const x=await r({an:{A0:512}});
+   if(x.err)return{ok:false,msg:""};
+   const n=x.out.map(parseFloat).filter(v=>!isNaN(v));
+   if(n.length<5)return{ok:false,msg:`Mostraste ${n.length} número(s) y tienen que ser 5.`};
+   const u=n.slice(-5);
+   if(u.join()!=="5,4,3,2,1")return{ok:false,msg:`Mostraste ${u.join(", ")} y tendría que ser 5, 4, 3, 2, 1.`};
+   if(x.pins[13]!==1)return{ok:false,msg:"La cuenta está bien, pero al final falta prender el LED del pin 13."};
+   return{ok:true,msg:"Contaste para atrás usando la variable del for. Ese es el truco."}}},
+
+{t:"El servo sigue al sensor",c:"escalar a otro rango",
+ g:"Movés el sensor y el servo acompaña. El sensor va de 0 a 1023 y el servo de 0 a 180 grados. Convertí y mandá: servo(9, angulo).",
+ th:`Ya escalaste de 0-1023 a 0-100 para el porcentaje. Ahora el destino es otro: <b>0 a 180</b>.<br>
+     <code>angulo = crudo * 180 / 1023</code><br>
+     Es <b>la misma función lineal</b> con otra pendiente: antes 100/1023, ahora 180/1023.
+     Cambiar el rango de llegada es cambiar la pendiente, nada más.<br>
+     Usá <code>redondear( )</code> para que quede un ángulo entero.`,
+ s:"crudo = leer(A0)\n",
+ chk:async r=>{
+   for(const v of [0,512,1023,300]){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     if(x.servo===null)return{ok:false,msg:"Todavía no moviste el servo."};
+     const esp=v*180/1023;
+     if(Math.abs(x.servo-esp)>1.5)return{ok:false,msg:`Con el sensor en ${v} el servo tendría que ir a ${esp.toFixed(0)} grados y fue a ${x.servo}.`}}
+   return{ok:true,msg:"La misma función lineal, otra pendiente. El servo ahora sigue al sensor."}}},
+
+{t:"El aparato completo",c:"integrador",
+ g:"Juntá todo. Leé el sensor y pasalo a porcentaje. Si está por debajo de 30 prendé la bomba (8) y el rojo (4). Si está entre 30 y 70 prendé solo el verde (6). Si pasa de 70 prendé el amarillo (5) y el buzzer (9) porque se está encharcando. Un solo estado a la vez, y mostrá el porcentaje.",
+ th:`No hay nada nuevo acá: es <b>tu aparato</b>, con todo lo que aprendiste.<br>
+     Variable, cuenta, <code>if / elif / else</code>, y varias órdenes adentro de cada rama.<br>
+     Empezá apagando todo, así no te quedan luces de la vuelta anterior.<br>
+     Cuando esto ande, ya sabés programar cualquiera de los aparatos que diseñaron.`,
+ s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\napagar(4)\napagar(5)\napagar(6)\napagar(8)\napagar(9)\n",
+ chk:async r=>{
+   const casos=[[200,{8:1,4:1,6:0,5:0,9:0}],[500,{6:1,8:0,4:0,5:0,9:0}],[900,{5:1,9:1,8:0,4:0,6:0}]];
+   for(const [v,e] of casos){const x=await r({an:{A0:v}});
+     if(x.err)return{ok:false,msg:""};
+     for(const p of Object.keys(e)){
+       const es=x.pins[p]===1?1:0;
+       if(es!==e[p])return{ok:false,msg:`Al ${mpct(v).toFixed(0)}% el pin ${p} tendría que estar ${e[p]?"prendido":"apagado"}.`}}
+     const nums=x.out.map(parseFloat).filter(n=>!isNaN(n));
+     if(!nums.length)return{ok:false,msg:"Te falta mostrar el porcentaje."};
+     if(Math.abs(nums[nums.length-1]-mpct(v))>1.5)return{ok:false,msg:`Estás mostrando ${nums[nums.length-1]} y el porcentaje es ${mpct(v).toFixed(1)}.`}}
+   return{ok:true,msg:"Está completo: sensa, decide entre tres casos, actúa sobre cuatro salidas y avisa. Eso es el aparato."}}}
+];
+
+/* ---------- pantallas del track ---------- */
+function misHome(){
+  cur=null;
+  const rows=MIS.map((m,i)=>{
+    const done=RDONE.includes(i), lock=i>0&&!RDONE.includes(i-1)&&!done;
+    return `<div class="mrow ${done?"done":""} ${lock?"lock":""}" ${lock?"":`onclick="misGo(${i})"`}>
+      <div class="mnum">${done?"✓":i+1}</div>
+      <div class="mt">${m.t}<div class="mc">${m.c}</div></div>
+      <div class="muted">${lock?"cerrada":"→"}</div></div>`}).join("");
+  const hechas=RDONE.length;
+  app.innerHTML=`
+    <div class="topbar"><button class="backb" onclick="menu()">← Menú</button>
+      <div class="progtext">${hechas} de ${MIS.length} misiones</div></div>
+    <div class="card">
+      <div class="concepto big">Programá la placa</div>
+      <h2 style="margin-top:0">Misiones</h2>
+      <p class="muted" style="margin:0 0 4px;line-height:1.6">Escribís código de verdad y la placa de abajo
+      reacciona: se prenden las luces, se mueve el servo, el sensor te da un número.
+      Cada misión se abre cuando terminás la anterior.</p>
+    </div>
+    <div class="card">
+      <div class="mgrid">${rows}</div>
+      <button class="btn ghost" onclick="misGo(-1)" style="margin-top:14px">Modo libre — probar sin consigna</button>
+    </div>`;
+  window.scrollTo(0,0);
+}
+function misGo(i){
+  RM=i; simReset(false);
+  const m=i>=0?MIS[i]:{t:"Modo libre",c:"probá lo que quieras",g:"Escribí lo que se te ocurra y ejecutá. Acá no hay consigna ni corrección.",th:"",s:"# probá lo que quieras\n"};
+  const saved=localStorage.getItem(RKEY+"_code_"+i);
+  app.innerHTML=`<div class="mrowrap"><div class="card">
+    <div class="mconsigna"><div class="mcl">${i>=0?"CONSIGNA":"LIBRE"} · ${m.c}</div><p>${m.g}</p></div>
+    ${m.th?`<details class="teoria" ${RDONE.includes(i)?"":"open"}><summary style="cursor:pointer;font-weight:700">Cómo funciona</summary>
+      <div style="margin-top:8px">${m.th}</div></details>`:""}
+    <textarea class="ed" id="mised" spellcheck="false" onkeydown="misEdKeys(event)">${saved!==null?saved:m.s}</textarea>
+    <div class="runbar">
+      <button class="btn" onclick="misRun()">▶ Ejecutar</button>
+      <button class="btn ghost" onclick="misStop()">■ Detener</button>
+      ${i>=0?`<button class="btn" onclick="misCheck()" style="background:linear-gradient(90deg,var(--good),var(--accent))">Comprobar</button>`:""}
+    </div>
+    <div id="misfb"></div>
+    ${misBoardHTML()}
+    <details class="teoria"><summary style="cursor:pointer;font-weight:700">Órdenes que entiende la placa</summary>
+      <div style="margin-top:8px;line-height:2">
+      <code>prender(13)</code> prende el pin ·
+      <code>apagar(13)</code> lo apaga ·
+      <code>esperar(1)</code> frena 1 segundo ·
+      <code>leer(A0)</code> devuelve lo que mide el sensor (0 a 1023) ·
+      <code>mostrar(x)</code> escribe en el monitor ·
+      <code>servo(9, 90)</code> mueve el servo a 90 grados<br>
+      Estructuras: <code>if / elif / else</code> · <code>while True:</code> · <code>for i in range(5):</code>
+      </div></details>
+    <button class="btn ghost" onclick="misHome()">← Volver a las misiones</button>
+  </div></div>`;
+  misPaint();
+}
+function misBoardHTML(){
+  return `<div class="board">
+    <div class="pins" id="mispins"></div>
+    <div class="sensorbox">
+      <label style="margin-top:0">Sensor conectado en A0 — movelo para simular la tierra</label>
+      <input type="range" id="misan" min="0" max="1023" value="${SIM.an.A0}" oninput="misAnMove(this.value)">
+      <div class="sread"><span>seco</span><span>crudo: <b id="misanv">${SIM.an.A0}</b> &nbsp; = &nbsp; <b id="misanp">${mpct(SIM.an.A0).toFixed(0)}%</b></span><span>mojado</span></div>
+    </div>
+    <div class="monitor" id="mismon"><span class="ph">El monitor muestra lo que escribas con mostrar( )</span></div>
+    <div class="vars" id="misvars"></div>
+  </div>`;
+}
+function misAnMove(v){SIM.an.A0=+v;
+  const a=document.getElementById("misanv"),b=document.getElementById("misanp");
+  if(a)a.textContent=v; if(b)b.textContent=mpct(+v).toFixed(0)+"%";}
+function misPaint(){
+  const P=document.getElementById("mispins");
+  if(P)P.innerHTML=LEDS.map(l=>`<div class="mpin">
+      <div class="mbulb ${SIM.pins[l.p]===1?"on":""}" style="color:${l.c}"></div>
+      <div class="pn">${l.p}</div><div class="pl">${l.l}</div></div>`).join("")+
+    (SIM.servo!==null?`<div class="mpin"><div class="mbulb on" style="color:#a78bfa;transform:rotate(${SIM.servo}deg)"></div>
+      <div class="pn">servo</div><div class="pl">${SIM.servo}°</div></div>`:"");
+  const M=document.getElementById("mismon");
+  if(M)M.innerHTML=SIM.out.length?SIM.out.slice(-40).join("\n"):`<span class="ph">El monitor muestra lo que escribas con mostrar( )</span>`;
+  if(M)M.scrollTop=M.scrollHeight;
+  const V=document.getElementById("misvars");
+  if(V)V.innerHTML=Object.keys(SIM.vars).map(k=>`<span class="vpill"><b>${k}</b> = ${
+    typeof SIM.vars[k]==="number"?Math.round(SIM.vars[k]*100)/100:SIM.vars[k]}</span>`).join("");
+}
+function misEdKeys(e){
+  const ta=e.target;
+  if(e.key==="Tab"){e.preventDefault();const s=ta.selectionStart;
+    ta.value=ta.value.slice(0,s)+"    "+ta.value.slice(ta.selectionEnd);ta.selectionStart=ta.selectionEnd=s+4;return}
+  if(e.key==="Enter"){e.preventDefault();
+    const s=ta.selectionStart,before=ta.value.slice(0,s);
+    const line=before.slice(before.lastIndexOf("\n")+1);
+    let ind=(line.match(/^[ \t]*/)||[""])[0];
+    if(/:\s*$/.test(line))ind+="    ";
+    const ins="\n"+ind;
+    ta.value=before+ins+ta.value.slice(ta.selectionEnd);
+    ta.selectionStart=ta.selectionEnd=s+ins.length;}
+}
+function misEdCode(){const e=document.getElementById("mised");if(e)localStorage.setItem(RKEY+"_code_"+RM,e.value);return e?e.value:""}
+function misFb(html){const f=document.getElementById("misfb");if(f)f.innerHTML=html}
+function misErrHTML(e){return `<div class="merr"><b>${e.ln?`Línea ${e.ln}: `:""}</b>${e.msg}</div>`}
+
+async function misRun(){
+  const code=misEdCode();
+  misFb(`<div class="muted" style="margin-top:8px">Ejecutando… <span class="run-dots"></span></div>`);
+  const r=await misRunCode(code,{live:true,keepAn:true});
+  misFb(r.err?misErrHTML(r.err):"");
+}
+function misStop(){RUN.stop=true}
+async function misCheck(){
+  const code=misEdCode(), m=MIS[RM];
+  misFb(`<div class="muted" style="margin-top:8px">Comprobando… <span class="run-dots"></span></div>`);
+  let firstErr=null;
+  const runner=async o=>{const r=await misRunCode(code,Object.assign({live:false},o));if(r.err&&!firstErr)firstErr=r.err;return r};
+  let res;
+  try{res=await m.chk(runner)}catch(e){res={ok:false,msg:"No pude comprobarlo."}}
+  if(firstErr){misFb(misErrHTML(firstErr));return}
+  if(res.ok){
+    if(!RDONE.includes(RM)){RDONE.push(RM);rsave()}
+    misFb(`<div class="mverdict ok">¡Listo! ${res.msg}</div>
+        ${RM+1<MIS.length?`<button class="btn" onclick="misGo(${RM+1})">Siguiente misión →</button>`
+          :`<button class="btn" onclick="misHome()">Terminaste todas las misiones. Volver</button>`}`);
+  }else{
+    misFb(`<div class="mverdict no">Todavía no. ${res.msg}</div>`);
+  }
+  simReset(true);misPaint();
+}
+
+
 </script>
 </body>
 </html>

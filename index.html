@@ -298,6 +298,9 @@
   .ronda.on{background:rgba(232,182,84,.07);border-color:rgba(232,182,84,.35)}
   .ronda.on .tx b{color:var(--warn)}
   .ronda.on button:hover{border-color:var(--line2);color:var(--txt)}
+  .ronda .modos{display:flex;gap:6px;flex-wrap:wrap}
+  .ronda .modos button.sel{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+  .ronda .modos button.sel:hover{border-color:var(--accent);color:var(--accent)}
   body.cuenta header{border-bottom-color:rgba(232,182,84,.3)}
   .cchip{background:rgba(232,182,84,.16);color:var(--warn);border-radius:5px;padding:2px 7px;
     font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
@@ -2715,7 +2718,7 @@ function startUnidad(ui, tipo){
                nom:`U${ui+1} ${u.t} · ${tipo==='int'?'integrador':'ejercicios'}`,
                concepto:u.t, _uni:ui };
   cur={sala, ejs, i:0, puntos:0, streak:0, answered:false,
-    modo: RONDA.on ? 'cuenta' : 'practica', tEj: Date.now(),
+    modo: MODO.id, tEj: Date.now(),
     reg: ejs.map(e=>({concepto:e.concepto, tipo:e.type||'mc', consigna:txtPlano(e.consigna),
                       intentos:0, ok:false, ok1:false, pistas:0, salteado:false, seg:0}))};
   render();
@@ -2839,12 +2842,13 @@ function menu(){
   if(!SES) return pantallaIdentidad();
   recalcDone(); pintarSesbar();
   const A = ANIOS[SES.anio];
-  let h = `<div class="ronda${RONDA.on?' on':''}">
-      <div class="tx">${RONDA.on
-        ? '<b>Ronda que cuenta.</b> Un solo intento por ejercicio, sin pistas y sin explicación.'
-        : '<b>Modo práctica.</b> Si te equivocás podés pedir una pista y volver a intentar.'}</div>
-      <button onclick="toggleRonda()">${RONDA.on?'Volver a práctica':'Activar ronda que cuenta'}</button>
+  let h = `<div class="ronda${MODO.id==='desafio'?' on':''}">
+      <div class="tx"><b>Modo ${MODOS[MODO.id].n}.</b> ${MODOS[MODO.id].d}<br>
+        <span style="font-size:.8rem">Los tres quedan registrados igual. Elegí el que te sirva ahora.</span></div>
+      <div class="modos">${Object.keys(MODOS).map(k=>
+        `<button class="${k===MODO.id?'sel':''}" onclick="setModo('${k}')">${MODOS[k].n}</button>`).join('')}</div>
     </div>`;
+  h += mapaHTML();
   h += tallerHTML();
   A.mods.forEach(m=>{
     let items = '';
@@ -2876,7 +2880,7 @@ function startSala(id){
     ejs = shuffle(ejsDeSala(ent));
   }
   cur = {sala, ejs, i:0, puntos:0, streak:0, answered:false,
-    modo: RONDA.on ? 'cuenta' : 'practica',
+    modo: MODO.id,
     tEj: Date.now(),
     reg: ejs.map(e=>({concepto:e.concepto, tipo:e.type||'mc', consigna:txtPlano(e.consigna),
                       intentos:0, ok:false, ok1:false, pistas:0, salteado:false, seg:0}))};
@@ -2890,7 +2894,9 @@ function render(){
   const volver = cur.sala._uni!==undefined ? `verUnidad(${cur.sala._uni})` : 'menu()';
   let h = `<div class="topbar">
       <button class="backb" onclick="${volver}">← ${cur.sala._uni!==undefined?'Unidad':'Salas'}</button>
-      <div class="progtext">${cur.modo==='cuenta'?'<span class="cchip">cuenta</span> &nbsp;':''}${cur.i+1}/${n} · <span class="score">${cur.puntos} pts</span></div>
+      <div class="progtext">${cur.modo==='desafio'?'<span class="cchip">desafío</span> &nbsp;':''}${
+      cur.modo==='presenta'?`<span class="cchip" style="background:var(--accent-dim);color:var(--accent)">intento ${(cur.reg[cur.i]&&cur.reg[cur.i].intentos||0)+1}</span> &nbsp;`:''
+      }${cur.i+1}/${n} · <span class="score">${cur.puntos} pts</span></div>
     </div>
     <div class="bar"><i style="width:${pct}%"></i></div>
     <div class="card">
@@ -3021,35 +3027,49 @@ function feedback(good, explica){
   const ej=cur.ejs[cur.i];
   const fb=document.getElementById('fb');
   const last = cur.i+1>=cur.ejs.length;
-  /* ronda que cuenta: un intento, sin explicación, sin pista, sin escenario */
-  if(cur.modo==='cuenta'){
-    fb.innerHTML = `<div class="fb ${good?'good':'bad'}"><span class="t">${good?'Correcto':'Incorrecta'}</span>${
-      good?'Seguimos.':'Esta la vemos después, entre todos. Seguimos.'}</div>
-      <button class="btn" onclick="next()">${last?'Terminar':'Siguiente →'}</button>`;
+  const modo = cur.modo;
+  const irSiguiente = `<button class="btn" onclick="next()">${last?'Ver resultado':'Siguiente →'}</button>`;
+
+  /* ---- DESAFÍO: un intento, sin pistas. La explicación solo si acertó ---- */
+  if(modo==='desafio'){
+    fb.innerHTML = good
+      ? `<div class="fb good"><span class="t">Correcto</span>${explica}</div>${irSiguiente}`
+      : `<div class="fb bad"><span class="t">No es esa</span>Queda anotada. Cuando termines la ronda
+           podés volver a hacer la sala en modo práctica y ver por qué.</div>${irSiguiente}`;
     fb.scrollIntoView({behavior:'smooth', block:'nearest'});
     return;
   }
+
+  /* ---- resuelto: acá llega la explicación, en los dos modos ---- */
   if(good){
     const racha = cur.streak>=3 ? `<div class="streak">Racha de ${cur.streak}</div>` : '';
-    fb.innerHTML = `<div class="fb good"><span class="t">Correcto</span>${explica}${racha}</div>
-      <div id="stageWrap"></div>
-      <button class="btn" onclick="next()">${last?'Ver resultado':'Siguiente →'}</button>`;
+    const cuantos = (r && r.intentos>1) ? `<div class="streak" style="background:none;color:var(--muted);padding-left:0">Te llevó ${r.intentos} intentos.</div>` : '';
+    fb.innerHTML = `<div class="fb good"><span class="t">Correcto</span>${explica}${cuantos}${racha}</div>
+      <div id="stageWrap"></div>${irSiguiente}`;
     if(runnableStage(ej) && ej.type!=='order'){
       const sw=document.getElementById('stageWrap');
       sw.innerHTML='<div class="sttitle" style="margin-top:14px">Cómo corre este código</div><div class="stage" id="stgFb"></div>';
       mountStage(document.getElementById('stgFb'), getRunLines(ej), {autoplay:true});
     }
-  } else if(ej.sinResultado){
-    // NO revelar el resultado: que lo piensen. Como máximo, una pista si la piden.
-    fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no</span>Revisalo con calma y volvé a intentar. Pensalo, no adivines.</div>
+    fb.scrollIntoView({behavior:'smooth', block:'nearest'});
+    return;
+  }
+
+  /* ---- error ---- */
+  const reintentar = `<button class="btn" onclick="retry()">Corregir y reintentar</button>
+      <button class="btn ghost" onclick="saltear()">${last?'Ver resultado':'Saltear sin corregir →'}</button>`;
+
+  if(modo==='presenta' && !ej.sinResultado){
+    /* presentación: la explicación se ve enseguida, para leerla entre todos */
+    fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no — leé esto y volvé a intentar:</span>${explica}</div>
+      <div id="stageWrap"></div>${reintentar}`;
+  } else {
+    /* práctica: la explicación no aparece hasta que lo resuelva. Solo pista si la pide */
+    fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no</span>Revisalo con calma y volvé a intentar.
+        Pensalo, no adivines.</div>
       <button class="btn ghost" onclick="showHint()">Ver una pista</button>
       <div id="hintBox"></div>
-      <button class="btn" onclick="retry()">Intentar de nuevo</button>`;
-  } else {
-    fb.innerHTML = `<div class="fb bad"><span class="t">Todavía no — leé esto y volvé a intentar:</span>${explica}</div>
-      <div id="stageWrap"></div>
-      <button class="btn" onclick="retry()">Corregir y reintentar</button>
-      <button class="btn ghost" onclick="saltear()">${last?'Ver resultado':'Saltear sin corregir →'}</button>`;
+      ${reintentar}`;
   }
   fb.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
@@ -3197,7 +3217,7 @@ function finSala(){
   const total=cur.ejs.length, pts=cur.puntos;
   const sinAyuda = cur.reg.filter(r=>r.ok1).length;
   const ratio = sinAyuda/total;
-  const cuenta = cur.modo==='cuenta';
+  const cuenta = cur.modo==='desafio';
   let med,msg;
   if(ratio===1){ med='Impecable'; msg='Te salieron todas de una, sin ayuda. Eso es entenderlo.'; }
   else if(ratio>=0.7){ med='Muy bien'; msg='Casi todas de una. Mirá las que necesitaron una segunda vuelta.'; }
@@ -3255,7 +3275,24 @@ const DB={
   add(t){ const a=this.load(); a.push(t); return this.save(a); }
 };
 let SES = LS.get(K_SES, null);
-const RONDA = {on:false};
+/* Tres modos. Los tres registran igual; cambia cuanta ayuda dan.
+     presenta → pistas, reintentos y explicacion en el momento. Para proyectar en clase.
+     practica → pistas y reintentos, pero la explicacion recien aparece al resolverlo.
+     desafio  → sin pistas, un intento, y explicacion solo si acerto. */
+const MODOS = {
+  presenta:{n:'Presentación', d:'Pistas, reintentos y la explicación en el momento. Se ve cuántos intentos llevás.'},
+  practica:{n:'Práctica',     d:'Pistas y reintentos. La explicación aparece recién cuando lo resolvés.'},
+  desafio: {n:'Desafío',      d:'Sin pistas y un solo intento. La explicación aparece solo si acertaste.'}
+};
+const MODO = {id:'practica'};
+/* etiqueta para el panel y la planilla. 'cuenta' es como se llamaba
+   el desafio antes de que hubiera tres modos: se mantiene para que los
+   registros viejos sigan leyendose bien. */
+function nombreModo(m){
+  if(m==='desafio' || m==='cuenta') return 'Desafío';
+  if(m==='presenta') return 'Presentación';
+  return 'Práctica';
+}
 let docenteOk = false;
 
 function txtPlano(s){ return String(s==null?'':s).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim(); }
@@ -3270,7 +3307,7 @@ function mins(seg){ return Math.round((seg||0)/6)/10; }
 /* -------------------- pantalla de identificación -------------------- */
 let _idTmp={anio:null};
 function pantallaIdentidad(pre){
-  cur=null; RONDA.on=false; document.body.classList.remove('cuenta');
+  cur=null; MODO.id='practica'; document.body.classList.remove('cuenta');
   const sb=document.getElementById('sesbar'); if(sb) sb.innerHTML='';
   pre = pre || {};
   _idTmp = {anio: pre.anio || (SES&&SES.anio) || null};
@@ -3313,10 +3350,10 @@ function pintarSesbar(){
     <span>${fechaCorta(SES.fecha)}</span>
     <button onclick="cambiarAlumno()">no soy yo</button>`;
 }
-function toggleRonda(){
-  if(!RONDA.on && !confirm('Ronda que cuenta\n\n· un solo intento por ejercicio\n· sin explicación y sin pistas\n· queda registrada aparte de la práctica\n\n¿Activar?')) return;
-  RONDA.on=!RONDA.on;
-  document.body.classList.toggle('cuenta', RONDA.on);
+function setModo(id){
+  if(!MODOS[id]) return;
+  MODO.id=id;
+  document.body.classList.toggle('cuenta', id==='desafio');
   menu();
 }
 
@@ -3382,7 +3419,7 @@ function panelDocente(f){
     const p=pct(t.sinAyuda,t.total);
     return `<tr><td>${fechaCorta(t.fecha)}</td><td>${escapeHtml(t.alumno)}</td>
       <td>${t.anio}</td><td>${escapeHtml(t.salaNom||t.sala)}</td>
-      <td>${t.modo==='cuenta'?'<span class="cchip">cuenta</span>':'práctica'}</td>
+      <td>${(t.modo==='cuenta'||t.modo==='desafio')?'<span class="cchip">desafío</span>':nombreModo(t.modo).toLowerCase()}</td>
       <td class="n">${t.resueltos}/${t.total}</td>
       <td class="n"><span class="pct ${pctCls(p)}">${t.sinAyuda}/${t.total}</span></td>
       <td class="n">${p}%</td><td class="n">${t.pistas}</td><td class="n">${t.salteadas}</td>
@@ -3709,13 +3746,13 @@ function armarHojas(){
   const all=DB.load().slice().sort((a,b)=>String(a.ts||'').localeCompare(String(b.ts||'')));
   const H=[];
   const colTanda=[
-    {t:'Fecha',w:11,tipo:'fecha'},{t:'Alumno',w:26},{t:'Sala',w:24},{t:'Modo',w:10},
+    {t:'Fecha',w:11,tipo:'fecha'},{t:'Alumno',w:26},{t:'Sala',w:24},{t:'Modo',w:13},
     {t:'Ejercicios',w:11,tipo:'num'},{t:'Practicó (con ayuda)',w:19,tipo:'num'},
     {t:'Sin ayuda',w:11,tipo:'num'},{t:'% sin ayuda',w:12,tipo:'num'},
     {t:'Pistas',w:8,tipo:'num'},{t:'Salteadas',w:10,tipo:'num'},{t:'Minutos',w:9,tipo:'num'}];
   ANIOS_ORDEN.forEach(a=>H.push({nom:a, cols:colTanda,
     rows: all.filter(t=>t.anio===a).map(t=>[
-      t.fecha, t.alumno, t.salaNom||t.sala, t.modo==='cuenta'?'Cuenta':'Práctica',
+      t.fecha, t.alumno, t.salaNom||t.sala, nombreModo(t.modo),
       t.total, t.resueltos, t.sinAyuda, pct(t.sinAyuda,t.total),
       t.pistas, t.salteadas, mins(t.seg)])}));
 
@@ -4067,8 +4104,35 @@ async function misRunCode(code,opt){
 
 /* ===================== MISIONES ===================== */
 const RKEY="vla_robotica_v1";
-let RDONE=(()=>{try{return JSON.parse(localStorage.getItem(RKEY))||[]}catch(e){return[]}})();
-const rsave=()=>{try{localStorage.setItem(RKEY,JSON.stringify(RDONE))}catch(e){}};
+/* El progreso de misiones va por alumno, no por maquina. Antes era una sola
+   lista global: dos chicos en la misma PC compartian los tildes y el segundo
+   veia todo hecho. rkeyMisiones() esta definida abajo, con el mapa. */
+let RDONE=[];
+function rload(){ try{ const a=JSON.parse(localStorage.getItem(rkeyMisiones())); RDONE=Array.isArray(a)?a:[] }catch(e){ RDONE=[] } }
+const rsave=()=>{try{localStorage.setItem(rkeyMisiones(),JSON.stringify(RDONE))}catch(e){}};
+rload();
+
+/* ---- registro: cada mision resuelta queda como una tanda de un ejercicio,
+   con la misma forma que usan las salas. Cae sola en la planilla del buzon
+   y en las seis hojas del Excel, sin tocar el Apps Script. ---- */
+let MIS_T0=0, MIS_TRIES=0;
+function guardarMision(i){
+  if(typeof SES==='undefined' || !SES || typeof DB==='undefined') return false;
+  const m=MIS[i];
+  const seg=MIS_T0 ? Math.max(1, Math.round((Date.now()-MIS_T0)/1000)) : 0;
+  const ok1 = MIS_TRIES<=1;
+  const concepto = `Misión ${i+1} · ${m.c}`;
+  const guardado = DB.add({
+    id:'m'+Date.now().toString(36)+Math.random().toString(36).slice(2,7),
+    alumno:SES.nombre, anio:SES.anio, fecha:SES.fecha, ts:new Date().toISOString(),
+    sala:'misiones', salaNom:'Misiones · programá la placa', modo:(typeof MODO!=='undefined'?MODO.id:'practica'),
+    total:1, resueltos:1, sinAyuda: ok1?1:0,
+    pistas:0, salteadas:0, seg:seg,
+    ejs:[{c:concepto, t:'mision', q:m.t, i:MIS_TRIES, ok:true, ok1:ok1, p:0, s:false, sg:seg}]
+  });
+  if(guardado && typeof enviarPendientes==='function') enviarPendientes();
+  return guardado;
+}
 const mpct=v=>v*100/1023;
 
 const MIS=[
@@ -4349,7 +4413,7 @@ const MIS=[
 
 /* ---------- pantallas del track ---------- */
 function misHome(){
-  cur=null;
+  cur=null; rload();
   const rows=MIS.map((m,i)=>{
     const done=RDONE.includes(i), lock=i>0&&!RDONE.includes(i-1)&&!done;
     return `<div class="mrow ${done?"done":""} ${lock?"lock":""}" ${lock?"":`onclick="misGo(${i})"`}>
@@ -4375,9 +4439,9 @@ function misHome(){
   window.scrollTo(0,0);
 }
 function misGo(i){
-  RM=i; simReset(false);
+  RM=i; simReset(false); rload(); MIS_T0=Date.now(); MIS_TRIES=0;
   const m=i>=0?MIS[i]:{t:"Modo libre",c:"probá lo que quieras",g:"Escribí lo que se te ocurra y ejecutá. Acá no hay consigna ni corrección.",th:"",s:"# probá lo que quieras\n"};
-  const saved=localStorage.getItem(RKEY+"_code_"+i);
+  const saved=localStorage.getItem(rkeyMisiones()+"_code_"+i);
   app.innerHTML=`<div class="mrowrap"><div class="card">
     <div class="mconsigna"><div class="mcl">${i>=0?"CONSIGNA":"LIBRE"} · ${m.c}</div><p>${m.g}</p></div>
     ${m.th?`<details class="teoria" ${RDONE.includes(i)?"":"open"}><summary style="cursor:pointer;font-weight:700">Cómo funciona</summary>
@@ -4446,7 +4510,7 @@ function misEdKeys(e){
     ta.value=before+ins+ta.value.slice(ta.selectionEnd);
     ta.selectionStart=ta.selectionEnd=s+ins.length;}
 }
-function misEdCode(){const e=document.getElementById("mised");if(e)localStorage.setItem(RKEY+"_code_"+RM,e.value);return e?e.value:""}
+function misEdCode(){const e=document.getElementById("mised");if(e)localStorage.setItem(rkeyMisiones()+"_code_"+RM,e.value);return e?e.value:""}
 function misFb(html){const f=document.getElementById("misfb");if(f)f.innerHTML=html}
 function misErrHTML(e){return `<div class="merr"><b>${e.ln?`Línea ${e.ln}: `:""}</b>${e.msg}</div>`}
 
@@ -4459,6 +4523,7 @@ async function misRun(){
 function misStop(){RUN.stop=true}
 async function misCheck(){
   const code=misEdCode(), m=MIS[RM];
+  MIS_TRIES++;
   misFb(`<div class="muted" style="margin-top:8px">Comprobando… <span class="run-dots"></span></div>`);
   let firstErr=null;
   const runner=async o=>{const r=await misRunCode(code,Object.assign({live:false},o));if(r.err&&!firstErr)firstErr=r.err;return r};
@@ -4466,7 +4531,7 @@ async function misCheck(){
   try{res=await m.chk(runner)}catch(e){res={ok:false,msg:"No pude comprobarlo."}}
   if(firstErr){misFb(misErrHTML(firstErr));return}
   if(res.ok){
-    if(!RDONE.includes(RM)){RDONE.push(RM);rsave()}
+    if(!RDONE.includes(RM)){RDONE.push(RM);rsave();guardarMision(RM)}
     misFb(`<div class="mverdict ok">${res.msg}</div>
       <div class="runbar" style="margin-top:12px">
         ${RM+1<MIS.length?`<button class="btn" onclick="misGo(${RM+1})">Ir a la siguiente →</button>`:``}
@@ -4480,6 +4545,119 @@ async function misCheck(){
   simReset(true);misPaint();
 }
 
+
+
+/* ===== MAPA DEL RECORRIDO (3ro) ===== */
+(function(){const s=document.createElement("style");s.textContent=`
+  .mapa{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);
+    padding:18px 18px 14px;margin-bottom:18px}
+  .mapa .mh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:4px}
+  .mapa .mh b{font-size:1.02rem;color:var(--txt)}
+  .mapa .mh span{font-size:.84rem;color:var(--muted)}
+  .mapa .scroll{overflow-x:auto;padding:14px 2px 6px;margin:0 -4px}
+  .via{display:flex;align-items:stretch;gap:0;min-width:min-content}
+  .tramo{display:flex;flex-direction:column;gap:8px;padding:0 14px;border-left:1px dashed var(--line2)}
+  .tramo:first-child{border-left:none;padding-left:2px}
+  .tramo .tn{font-size:.63rem;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);
+    font-weight:700;white-space:nowrap}
+  .est{display:flex;gap:9px;align-items:flex-start;background:none;border:0;padding:5px 7px;
+    border-radius:9px;text-align:left;color:inherit;font:inherit;cursor:default;min-width:172px;
+    max-width:210px;transition:.13s}
+  .est.link{cursor:pointer}
+  .est.link:hover{background:var(--surface2)}
+  .est .pt{width:11px;height:11px;border-radius:50%;flex:none;margin-top:5px;
+    border:2px solid var(--line2);background:transparent}
+  .est .tx{font-size:.83rem;line-height:1.35;color:var(--muted)}
+  .est .tx i{display:block;font-style:normal;font-size:.68rem;color:var(--faint);margin-top:1px}
+  .est.pas .pt{background:var(--line2);border-color:var(--line2)}
+  .est.pas .tx{color:var(--muted)}
+  .est.hoy{background:var(--accent-dim)}
+  .est.hoy .pt{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-dim)}
+  .est.hoy .tx{color:var(--txt);font-weight:650}
+  .est.hoy .tx i{color:var(--accent)}
+  .est.vie .pt{border-style:dashed}
+  .est.vie .tx{color:var(--faint)}
+  .mapa .pie{font-size:.78rem;color:var(--faint);margin:8px 0 0;line-height:1.5}
+`;document.head.appendChild(s)})();
+
+/* Estaciones del recorrido de 3ro. `ok` decide si ya esta recorrida.
+   Las del primer cuatrimestre pasaron fuera de la app, asi que van fijas.
+   Va como funcion y no como const: boot() dibuja el menu antes de llegar
+   a esta linea del archivo, y una const todavia no existiria. */
+function via3(){ return [
+ {tn:'El primer cuatrimestre · los datos', es:[
+   {t:'Un dato no es una opinión', i:'marzo', ok:()=>true},
+   {t:'De lo desordenado a una tabla', i:'abril', ok:()=>true},
+   {t:'Preguntarle cosas a una tabla', i:'mayo a julio · filtrar, contar, agrupar', ok:()=>true},
+   {t:'Mapear el territorio', i:'mayo · dron y OpenStreetMap', ok:()=>true},
+ ]},
+ {tn:'La bisagra', es:[
+   {t:'Un sensor es una máquina de producir datos', i:'5 de agosto',
+    ok:()=>true, fn:"verUnidad(0)"},
+ ]},
+ {tn:'Ahora · el aparato', es:[
+   {t:'Sensar, decidir, actuar', i:'qué es un robot y qué no', ok:()=>true, fn:"verUnidad(0)"},
+   {t:'Dar una orden', i:'misión 1 y 2', ok:h=>h.includes(1), fn:"misGo(0)"},
+   {t:'Repetir', i:'misión 3 · while', ok:h=>h.includes(2), fn:"misGo(2)"},
+   {t:'Enterarse de algo', i:'misión 4 · variable y sensor', ok:h=>h.includes(3), fn:"misGo(3)"},
+   {t:'Traducir el número', i:'misión 5 · escalar', ok:h=>h.includes(4), fn:"misGo(4)"},
+   {t:'Decidir', i:'misiones 6 y 7 · if, elif', ok:h=>h.includes(6), fn:"misGo(5)"},
+   {t:'Decidir con dos condiciones', i:'misiones 8 y 9 · and, or', ok:h=>h.includes(8), fn:"misGo(7)"},
+   {t:'Que sea confiable', i:'misiones 10 a 12', ok:h=>h.includes(11), fn:"misGo(9)"},
+   {t:'Que mueva algo', i:'misión 13 · servo', ok:h=>h.includes(12), fn:"misGo(12)"},
+ ]},
+ {tn:'Lo que viene', es:[
+   {t:'Preguntarle a quien cuida la huerta', i:'9 de septiembre', ok:()=>false, fn:"verUnidad(2)"},
+   {t:'Diseñar y armar el aparato', i:'septiembre', ok:()=>false},
+   {t:'Que funcione en el Paseo', i:'octubre', ok:()=>false},
+   {t:'Publicarlo para que otro lo use', i:'noviembre', ok:()=>false},
+ ]},
+]; }
+
+/* clave del progreso de misiones: una por alumno y año.
+   Va como funcion para que exista desde el arranque del script. */
+function rkeyMisiones(){
+  const s=(typeof SES!=='undefined' && SES)
+    ? SES.anio+'|'+String(SES.nombre||'').trim().toLowerCase() : 'anon';
+  return 'vla_robotica_v1.'+s;
+}
+
+/* misiones resueltas, leidas directo del navegador.
+   No usa RDONE a proposito: se declara mas abajo y todavia no existe
+   cuando boot() dibuja el menu por primera vez. */
+function misionesHechas(){
+  try{ const a=JSON.parse(localStorage.getItem(rkeyMisiones())); return Array.isArray(a)?a:[] }
+  catch(e){ return [] }
+}
+
+function mapaHTML(){
+  if(!SES || SES.anio!=='3ro') return '';
+  const hechas = misionesHechas();
+  let primeraPendiente=true;
+  const tramos = via3().map(tr=>{
+    const es = tr.es.map(e=>{
+      const hecho = !!e.ok(hechas);
+      let cls='pas';
+      if(!hecho){
+        if(primeraPendiente && tr.tn.indexOf('viene')<0){ cls='hoy'; primeraPendiente=false; }
+        else cls='vie';
+      }
+      const cuerpo = `<span class="pt"></span><span class="tx">${e.t}<i>${e.i}</i></span>`;
+      return e.fn
+        ? `<button class="est ${cls} link" onclick="${e.fn}">${cuerpo}</button>`
+        : `<div class="est ${cls}">${cuerpo}</div>`;
+    }).join('');
+    return `<div class="tramo"><div class="tn">${tr.tn}</div>${es}</div>`;
+  }).join('');
+  return `<div class="mapa">
+    <div class="mh"><b>Por dónde vienen</b>
+      <span>Lo que está lleno ya lo recorriste. Podés volver a cualquier estación.</span></div>
+    <div class="scroll"><div class="via">${tramos}</div></div>
+    <p class="pie">Cada cosa que aprendieron apareció porque hacía falta para la siguiente.
+    Si mirás el recorrido de punta a punta, el hilo es el mismo: primero miraron datos que había
+    medido otro, y ahora están construyendo la máquina que los produce.</p>
+  </div>`;
+}
 
 </script>
 </body>

@@ -2848,7 +2848,9 @@ function menu(){
       <div class="modos">${Object.keys(MODOS).map(k=>
         `<button class="${k===MODO.id?'sel':''}" onclick="setModo('${k}')">${MODOS[k].n}</button>`).join('')}</div>
     </div>`;
-  h += mapaHTML();
+  /* mapa del recorrido: apagado hasta rehacer el diseño. La serpentina se
+     colapsaba a una sola columna. El codigo queda mas abajo, intacto. */
+  // h += mapaHTML();
   h += tallerHTML();
   A.mods.forEach(m=>{
     let items = '';
@@ -2866,7 +2868,7 @@ function menu(){
   });
   h += `<button class="tolink" onclick="pedirDocente()">· panel docente ·</button>`;
   app.innerHTML = h;
-  dibujarSendero();
+  // dibujarSendero();
 }
 
 /* -------------------- ARRANCAR SALA -------------------- */

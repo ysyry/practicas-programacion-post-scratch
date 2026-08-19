@@ -1891,83 +1891,97 @@ const TALLERES = {
   salas:['caja','sensores','electro'],
   us:[
   /* ---------------- UNIDAD 1 · 19/08 ---------------- */
-  { t:'Del umbral a la banda', d:'Decidir con un número no alcanza. Cómo decidir con dos condiciones a la vez.',
+  { t:'Del umbral a la banda', d:'Un aparato que decide con un solo número. Qué pasa cuando eso no alcanza.',
     slides:[
-    {k:'Arrancamos',t:'Ya lograron que decida',h:`
-      <div class="ib">Hasta acá su aparato hace tres cosas: <b>se entera</b> de la humedad,
-      <b>decide</b> qué hacer y <b>actúa</b>.<br><br>
-      Y decide de verdad, no repite. Por eso deja de ser una máquina y pasa a ser un robot,
-      aunque no se mueva de lugar. Un brazo de fábrica tampoco se mueve de lugar.<br><br>
-      Pero decide con <b>un solo número</b>: <code>si el porcentaje es menor a 30</code>.
-      Hoy vamos a ver por qué eso casi nunca alcanza.</div>`},
+    {k:'Para empezar',t:'Cinco preguntas, ninguna para contestar hoy',h:`
+      <div class="ipreg">
+        <p>El nivel del Nahuel Huapi se mide todos los días. ¿Quién lo mide, y con qué?</p>
+        <p>Cuando avisan que va a helar, ese aviso salió de un aparato puesto en un lugar concreto.
+           ¿Dónde estará ese aparato?</p>
+        <p>¿Cuántas cosas hay en esta escuela que ahora mismo estén decidiendo algo solas?</p>
+        <p>Antes de que existiera un sensor de humedad, ¿cómo hacía la gente para saber si había que regar?</p>
+        <p>¿Qué se podría medir en Villa La Angostura que hoy no mide nadie?</p>
+      </div>
+      <div class="ib">La última no tiene respuesta conocida. Es la que va a estar dando vueltas
+      todo el cuatrimestre.</div>`},
 
-    {k:'El problema',t:'Una planta no quiere un mínimo',h:`
-      <div class="ib">Pensalo desde la lechuga, no desde el programa.<br><br>
-      Si la tierra está <b>muy seca</b>, se marchita.<br>
-      Si la tierra está <b>encharcada</b>, se le pudren las raíces.<br><br>
-      O sea que la lechuga no quiere "más de 40". Quiere <b>estar entre 40 y 70</b>.
-      No hay un límite: hay <b>dos</b>.</div>
-      <div class="i3">
-        <div class="n a"><div class="t">MENOS DE 40</div><div class="d">seca · hay que regar</div></div>
-        <div class="n b"><div class="t">ENTRE 40 Y 70</div><div class="d">justo · no tocar nada</div></div>
-        <div class="n c"><div class="t">MÁS DE 70</div><div class="d">encharcada · alarma</div></div>
-      </div>`},
+    {k:'Dónde están',t:'Lo que su programa ya hace',h:`
+      <div class="ib">El programa que escribieron lee un número del sensor, lo convierte y decide
+      qué prender. Hace tres cosas: se entera, decide, actúa.<br><br>
+      Decide con <b>un</b> número: <code>si el porcentaje es menor a 30</code>.
+      Ese número parte el mundo en dos pedazos, y para cada pedazo hay una respuesta.</div>
+      <div class="icur">Un aparato que hace siempre lo mismo pase lo que pase no decide nada,
+      aunque tenga sensores. La puerta del supermercado se entera de que te acercás, pero
+      no elige: siempre abre.</div>`},
 
-    {k:'La idea',t:'Un umbral parte en dos. Una banda parte en tres',h:`
-      <div class="ib">Con <b>un</b> número el mundo queda partido en dos pedazos: abajo y arriba.
-      Es lo que venían haciendo.<br><br>
-      Con <b>dos</b> números queda partido en tres: abajo, en el medio, arriba.
-      Y el pedazo del medio, el que antes no existía, casi siempre es el que importa —
-      es donde todo está bien y el aparato <b>no tiene que hacer nada</b>.</div>
-      <div class="icur"><b>En matemática ya lo vieron.</b> Pasar de <i>x &lt; 30</i> a
-      <i>40 &lt; x &lt; 70</i> es pasar de una desigualdad simple a un <b>intervalo</b>.
-      Es exactamente el mismo salto.</div>`},
+    {k:'La situación',t:'La lechuga',h:`
+      <div class="ib">Una lechuga con la tierra seca se marchita.<br>
+      Una lechuga con la tierra encharcada se pudre por las raíces.<br><br>
+      Escribí en la carpeta, antes de seguir, la regla del riego como se la dirías a alguien
+      que no programa. En castellano, una sola oración.</div>
+      <div class="icur">Cuando la tengas escrita, contá cuántos números aparecen en tu oración.
+      Después mirá el programa que escribiste el otro día y contá cuántos hay ahí.</div>`},
 
-    {k:'La herramienta',t:'and — las dos cosas a la vez',h:`
-      <div class="ib">Para preguntar por dos cosas al mismo tiempo se usa <code>and</code>:</div>
+    {k:'Dos a la vez',t:'and',h:`
+      <div class="ib">Para preguntar por dos cosas al mismo tiempo:</div>
       <div class="icur" style="font-family:ui-monospace,monospace">
       if porcentaje &gt; 40 <b>and</b> porcentaje &lt; 70:<br>
       &nbsp;&nbsp;&nbsp;&nbsp;prender(6)</div>
-      <div class="ib"><code>and</code> es cierto <b>solo si las dos</b> lo son. Si una falla, falla todo.<br><br>
-      Podés escribirlo en castellano si te sale más natural: <code>y</code> funciona igual.<br><br>
-      <b>Ojo con un error clásico:</b> no se puede escribir <code>40 &lt; porcentaje &lt; 70</code>
-      de un saque en la mayoría de los lenguajes. Hay que decir las dos condiciones enteras,
-      cada una con su nombre de variable.</div>`},
+      <div class="ib">Es cierto solo cuando las dos lo son. Si una falla, falla la condición entera.<br><br>
+      En castellano también funciona: <code>y</code>.<br><br>
+      Una advertencia: <code>40 &lt; porcentaje &lt; 70</code> no se puede escribir así de corrido.
+      Hay que decir las dos condiciones completas, cada una con su variable.</div>`},
 
-    {k:'La otra',t:'or — alcanza con una',h:`
-      <div class="ib"><code>or</code> es lo contrario: alcanza con que <b>una sola</b> sea cierta.</div>
+    {k:'Una alcanza',t:'or',h:`
+      <div class="ib">Y para preguntar si pasa alguna de las dos:</div>
       <div class="icur" style="font-family:ui-monospace,monospace">
       if porcentaje &lt; 20 <b>or</b> porcentaje &gt; 85:<br>
       &nbsp;&nbsp;&nbsp;&nbsp;prender(9)&nbsp;&nbsp;# el buzzer</div>
-      <div class="ib">Ese programa suena si la tierra está <b>muy seca</b> o si está <b>empapada</b>.
-      Dos problemas distintos, una sola alarma.<br><br>
-      En castellano: <code>o</code>.</div>`},
+      <div class="ib">Ese buzzer suena por dos motivos que no tienen nada que ver entre sí:
+      tierra reseca o tierra empapada.<br><br>
+      En castellano: <code>o</code>.</div>
+      <div class="icur">Si estás parado al lado del aparato y suena, no sabés cuál de las dos cosas pasó.
+      ¿Se te ocurre cómo resolverlo?</div>`},
 
-    {k:'La regla',t:'Alarmas con or, permisos con and',h:`
+    {k:'Para no confundirlas',t:'Decila en voz alta',h:`
       <div class="idos">
-        <div class="b"><h4>or → alarmas</h4>
-        <ul><li>Suena si pasa <b>cualquiera</b> de las cosas malas</li>
-        <li>Cuantas más condiciones agregás, <b>más fácil</b> es que salte</li>
-        <li><i>"avisá si está muy seca o hace mucho frío"</i></li></ul></div>
-        <div class="b"><h4>and → permisos</h4>
-        <ul><li>Se da si se cumplen <b>todas</b> las condiciones</li>
-        <li>Cuantas más agregás, <b>más difícil</b> es que se cumpla</li>
-        <li><i>"regá solo si está seca y no está por helar"</i></li></ul></div>
+        <div class="b"><h4>Si en tu frase decís «y»</h4>
+        <ul><li>Van las dos condiciones juntas: <code>and</code></li>
+        <li>Cuantas más agregás, más difícil es que se cumpla</li>
+        <li><i>«regá si está seca y no está por helar»</i></li></ul></div>
+        <div class="b"><h4>Si en tu frase decís «o»</h4>
+        <ul><li>Alcanza con una: <code>or</code></li>
+        <li>Cuantas más agregás, más fácil es que salte</li>
+        <li><i>«avisá si está muy seca o hace mucho frío»</i></li></ul></div>
       </div>
-      <div class="ib">Si te trabás, probá decir la regla en voz alta en castellano.
-      Si en la frase decís <b>"y"</b>, va <code>and</code>. Si decís <b>"o"</b>, va <code>or</code>.
-      Funciona casi siempre.</div>`},
+      <div class="ib">Casi siempre funciona. Cuando no estés seguro, decí la regla en voz alta
+      y escuchá qué palabra usás.</div>`},
 
-    {k:'La pregunta',t:'¿Y quién eligió el 40 y el 70?',h:`
-      <div class="ib">Esta es la pregunta que va a quedar abierta hasta septiembre.<br><br>
-      El 30 de la misión anterior lo inventamos nosotros. El 40 y el 70 también.
-      <b>No los sabe el programador.</b> Los sabe quien cuida la huerta, que la mira todos los días
-      desde hace años.<br><br>
-      Eso tiene nombre en informática: se llama <b>requerimiento</b>, y salir a buscarlo
-      es parte del trabajo, no un paso previo al trabajo.</div>
-      <div class="icur"><b>El 9 de septiembre vamos a la huerta a preguntarlo.</b>
-      Cada pareja vuelve con una necesidad concreta, dicha por una persona.
-      Ese va a ser el aparato que construyan.</div>`}
+    {k:'La pregunta',t:'¿De dónde salió el 30?',h:`
+      <div class="ib">Ese número lo pusimos nosotros para que el programa anduviera.
+      El 40 y el 70 también.<br><br>
+      Nadie que sepa de lechugas los revisó.</div>
+      <div class="ipreg">
+        <p>¿Quién sabría cuál es el número correcto?</p>
+        <p>¿Cómo lo aprendió esa persona?</p>
+        <p>¿Y si el número correcto no es el mismo en enero que en julio?</p>
+      </div>
+      <div class="ib">El 9 de septiembre vamos a la huerta a preguntar. Cada pareja vuelve con
+      una necesidad concreta, dicha por alguien que la cuida. De ahí sale el aparato que construyan.</div>`},
+
+    {k:'Lo que queda',t:'Usar, configurar, crear',h:`
+      <div class="i3">
+        <div class="n a"><div class="t">USAR</div><div class="d">apretás algo que armó otro</div></div>
+        <div class="n b"><div class="t">CONFIGURAR</div><div class="d">elegís entre las opciones que dejó otro</div></div>
+        <div class="n c"><div class="t">CREAR</div><div class="d">escribís una regla que antes no existía</div></div>
+      </div>
+      <div class="ib">La regla que escribieron hoy no existía esta mañana. La inventaron ustedes,
+      y decidieron cada número que tiene adentro.<br><br>
+      Y queda <b>escrita</b>: otra persona la puede leer, correrla y cambiarla. Eso es distinto
+      de apretar un botón. Es la diferencia entre estar del lado de los que usan la tecnología
+      y estar del lado de los que la hacen.</div>
+      <div class="icur">En este pueblo casi toda la tecnología que se usa la hizo alguien lejos,
+      que no conoce el lugar. Vale la pena preguntarse qué cosas convendría hacer acá.</div>`}
     ],
     ejs:[
       { type:'mc',
@@ -4080,7 +4094,7 @@ const MIS=[
      const last=[...x.out].reverse().find(o=>!isNaN(parseFloat(o)));
      if(last===undefined)return{ok:false,msg:"No mostraste nada. Te falta mostrar( )."};
      if(Math.abs(parseFloat(last)-v)>0.5)return{ok:false,msg:`Con el sensor en ${v} mostraste ${last}. Tiene que mostrar lo que mide el sensor.`}}
-   return{ok:true,msg:"Leíste el sensor y lo mostraste."}}},
+   return{ok:true,msg:"El número del monitor cambia cuando movés el sensor. Antes tu programa no se enteraba de nada."}}},
 
 {t:"De número raro a porcentaje",c:"cuenta · función lineal",
  g:"El sensor da un número entre 0 y 1023. Mostralo como un porcentaje entre 0 y 100.",
@@ -4096,7 +4110,7 @@ const MIS=[
      if(last===undefined)return{ok:false,msg:"No mostraste nada todavía."};
      if(Math.abs(parseFloat(last)-mpct(v))>1.5)
        return{ok:false,msg:`Con el sensor en ${v} el porcentaje tendría que dar ${mpct(v).toFixed(1)} y mostraste ${last}.`}}
-   return{ok:true,msg:"Convertiste el valor crudo a porcentaje."}}},
+   return{ok:true,msg:"El mismo dato, dicho de otra manera. Fijate qué número te queda cuando el sensor marca la mitad."}}},
 
 {t:"Que decida solo",c:"if / else",
  g:"Si la tierra está seca (menos de 30%), prendé el LED del pin 13. Si no, apagalo.",
@@ -4109,7 +4123,7 @@ const MIS=[
    if(seco.pins[13]!==1)return{ok:false,msg:"Con la tierra seca (10%) el LED tendría que prenderse."};
    const hum=await r({an:{A0:900}}); if(hum.err)return{ok:false,msg:""};
    if(hum.pins[13]===1)return{ok:false,msg:"Con la tierra húmeda (88%) el LED tendría que estar apagado."};
-   return{ok:true,msg:"Tu programa decide solo según lo que mide."}}},
+   return{ok:true,msg:"El programa ya no hace siempre lo mismo: hace una cosa u otra según lo que mide."}}},
 
 {t:"Semáforo de la huerta",c:"elif",
  g:"Tres casos. Menos de 30% → pin 4 (rojo). Entre 30 y 70 → pin 5 (amarillo). Más de 70 → pin 6 (verde). Solo uno prendido a la vez.",
@@ -4124,18 +4138,17 @@ const MIS=[
      for(const p of [4,5,6]){
        const debe=p===on?1:0, es=x.pins[p]===1?1:0;
        if(debe!==es)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% tendría que estar prendido solo el pin ${on}.`}}}
-   return{ok:true,msg:"Los tres casos funcionan. Ya podés programar cualquiera de los aparatos."}}},
+   return{ok:true,msg:"Tres casos, tres respuestas distintas. Probá dejar el sensor justo en el borde entre dos y mirá qué pasa."}}},
 
 /* ===== desafíos nuevos — del umbral a la banda ===== */
 
 {t:"Ni muy seca ni muy mojada",c:"and · dos condiciones",
  g:"La lechuga quiere la tierra entre 40% y 70%. Si está en ese rango, prendé el verde (pin 6). Si está fuera, prendé el rojo (pin 4). Solo uno prendido a la vez.",
- th:`Hasta ahora decidiste siempre con <b>una</b> condición. Casi ningún aparato real alcanza con eso.<br>
+ th:`<code>and</code> junta dos condiciones y es cierto solo cuando las dos lo son:<br>
      <code>if porcentaje > 40 and porcentaje < 70:</code><br>
-     <code>and</code> es cierto solo si <b>las dos</b> cosas lo son. <code>or</code> alcanza con que una lo sea.
-     También podés escribirlos en castellano: <code>y</code> y <code>o</code>.<br>
-     Fijate lo que cambió: una planta no quiere un <b>mínimo</b>, quiere estar <b>entre dos valores</b>.
-     Eso no es un umbral, es una <b>banda</b>.`,
+     En castellano también anda: <code>y</code>.<br>
+     Ojo con una trampa de escritura: <code>40 < porcentaje < 70</code> no se puede poner así de corrido.
+     Hay que escribir las dos condiciones enteras, cada una con su variable.`,
  s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
  chk:async r=>{
    const casos=[[550,6],[150,4],[950,4],[450,6]];
@@ -4144,14 +4157,15 @@ const MIS=[
      const off=on===6?4:6;
      if(x.pins[on]!==1)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% tendría que estar prendido el pin ${on}.`}
      if(x.pins[off]===1)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% el pin ${off} tendría que estar apagado. Solo uno a la vez.`}}
-   return{ok:true,msg:"Pasaste del umbral a la banda. Eso es lo que pide una planta de verdad."}}},
+   return{ok:true,msg:"Ahora hay tres zonas donde antes había dos, y la del medio es la única donde el aparato no hace nada."}}},
 
 {t:"Avisá si algo anda mal",c:"or · alguna de las dos",
  g:"Prendé el buzzer (pin 9) si la tierra está MUY seca (menos de 20%) O MUY mojada (más de 85%). En cualquier otro caso, apagalo.",
- th:`<code>or</code> es lo contrario de <code>and</code>: alcanza con que <b>una sola</b> de las dos sea cierta.<br>
+ th:`<code>or</code> alcanza con que una sola de las dos sea cierta:<br>
      <code>if porcentaje < 20 or porcentaje > 85:</code><br>
-     Una alarma casi siempre se escribe con <code>or</code>: suena si pasa <b>cualquiera</b> de las cosas malas.
-     Un permiso casi siempre se escribe con <code>and</code>: se da si se cumplen <b>todas</b> las condiciones.`,
+     En castellano: <code>o</code>.<br>
+     Cuando termines, probá cambiar el <code>or</code> por <code>and</code> y ejecutá otra vez.
+     Anotá qué pasa antes de volver a dejarlo como estaba.`,
  s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
  chk:async r=>{
    const casos=[[100,1],[950,1],[500,0],[700,0]];
@@ -4159,13 +4173,14 @@ const MIS=[
      if(x.err)return{ok:false,msg:""};
      const es=x.pins[9]===1?1:0;
      if(es!==debe)return{ok:false,msg:`Con el sensor al ${mpct(v).toFixed(0)}% el buzzer tendría que estar ${debe?"sonando":"apagado"}.`}}
-   return{ok:true,msg:"Alarma lista. Con or alcanza con que una sola cosa ande mal."}}},
+   return{ok:true,msg:"El buzzer suena por dos motivos distintos. ¿Cómo haría alguien para saber cuál de los dos fue?"}}},
 
 {t:"Parpadeá exactamente 5 veces",c:"for · repetir una cantidad",
  g:"Hacé que el LED del pin 13 parpadee 5 veces y después pare. Ni una más ni una menos.",
- th:`<code>while True</code> repite <b>para siempre</b>. Cuando sabés cuántas veces querés repetir, se usa <code>for</code>:<br>
+ th:`<code>while True</code> repite sin final. Para repetir una cantidad conocida de veces:<br>
      <code>for i in range(5):</code> y abajo, indentado, lo que se repite.<br>
-     La variable <code>i</code> va tomando 0, 1, 2, 3, 4. Podés usarla o ignorarla.`,
+     Mientras corre, <code>i</code> va valiendo 0, 1, 2, 3 y 4. Podés usar ese valor o ignorarlo.
+     Probá poner <code>mostrar(i)</code> adentro para verlo.`,
  s:"",
  chk:async r=>{
    const x=await r({an:{A0:512}});
@@ -4173,7 +4188,7 @@ const MIS=[
    if(x.trans===0)return{ok:false,msg:"El LED nunca se prendió."};
    if(x.trans<10)return{ok:false,msg:`Parpadeó ${Math.floor(x.trans/2)} veces y tendrían que ser 5. ¿Le pusiste el apagar( ) adentro del for?`};
    if(x.trans>10)return{ok:false,msg:`Parpadeó de más (${Math.floor(x.trans/2)} veces). Si usaste while True, cambialo por for i in range(5).`};
-   return{ok:true,msg:"Cinco parpadeos justos. Ese es el for."}}},
+   return{ok:true,msg:"Parpadea cinco veces y se detiene. Probá cambiar el 5 y volvé a ejecutar."}}},
 
 {t:"Promediá varias lecturas",c:"acumulador · sumar dentro de un for",
  g:"Leé el sensor 5 veces sumando los valores. Mostrá primero la SUMA y después el PROMEDIO.",
@@ -4194,7 +4209,7 @@ const MIS=[
      const suma=nums[nums.length-2], prom=nums[nums.length-1];
      if(Math.abs(suma-v*5)>1)return{ok:false,msg:`Con el sensor en ${v} la suma de 5 lecturas tendría que dar ${v*5} y mostraste ${suma}.`};
      if(Math.abs(prom-v)>1)return{ok:false,msg:`El promedio tendría que dar ${v} y mostraste ${prom}. Es la suma dividida 5.`}}
-   return{ok:true,msg:"Acumulaste dentro de un bucle. Así se estabiliza un sensor que salta."}}},
+   return{ok:true,msg:"Acá el promedio da igual que la lectura, porque el sensor simulado no se mueve solo. Con el sensor de verdad no va a dar igual."}}},
 
 {t:"Que no titile",c:"banda de seguridad (histéresis)",
  g:"Prendé la bomba (pin 8) cuando la humedad baje de 28%. Apagala cuando pase de 32%. Entre 28 y 32 no la toques: dejala como está.",
@@ -4214,7 +4229,7 @@ const MIS=[
    const z=await r({an:{A0:307}});
    if(z.err)return{ok:false,msg:""};
    if(z.pins[8]!==undefined)return{ok:false,msg:"Con el sensor al 30% estás en la zona muerta: ahí el programa NO tiene que tocar la bomba, ni prenderla ni apagarla. Fijate que no te haya quedado un else, o un apagar( ) suelto arriba de todo."};
-   return{ok:true,msg:"Dos números en vez de uno, y una zona en el medio donde no hacés nada. Eso es lo que hace que un termostato no se vuelva loco."}}},
+   return{ok:true,msg:"Entre 28 y 32 el programa no toca nada. La bomba se queda como estaba. Esa zona vacía es lo que evita que titile."}}},
 
 {t:"Abrí la compuerta",c:"servo · mover algo",
  g:"Si la temperatura pasa de 60%, abrí la compuerta del invernadero: servo(9, 90). Si no, cerrala: servo(9, 0).",
@@ -4229,7 +4244,7 @@ const MIS=[
      if(x.err)return{ok:false,msg:""};
      if(x.servo===null)return{ok:false,msg:"Todavía no moviste el servo. Usá servo(9, 90) o servo(9, 0)."};
      if(x.servo!==ang)return{ok:false,msg:`Con la temperatura al ${mpct(v).toFixed(0)}% el servo tendría que estar en ${ang} grados y está en ${x.servo}.`}}
-   return{ok:true,msg:"Tu aparato ahora mueve algo. Ya podés construir una compuerta."}}},
+   return{ok:true,msg:"El servo se queda en el ángulo que le mandaste hasta que le mandes otro. Movelo despacio con el deslizador y mirá cuándo cambia."}}},
 
 /* ===== visuales: que el código se vea pasar ===== */
 
@@ -4244,7 +4259,7 @@ const MIS=[
    if(x.err)return{ok:false,msg:""};
    if(x.trans===0)return{ok:false,msg:"No se prendió ningún LED."};
    if(x.trans!==18)return{ok:false,msg:`Contá: 3 vueltas x 3 luces x (prender + apagar) son 18 cambios, y tu programa hizo ${x.trans}. Fijate que apagues cada LED antes de prender el siguiente.`};
-   return{ok:true,msg:"La luz corre. Eso es un for con una secuencia adentro."}}},
+   return{ok:true,msg:"La luz recorre los tres LEDs. Probá invertir el orden, o sacar los esperar( ) y ver qué pasa."}}},
 
 {t:"La barra de nivel",c:"if / elif que se acumulan",
  g:"Mostrá la humedad como una barra: menos de 33% prendé solo el 4. Entre 33 y 66 prendé el 4 y el 5. Más de 66 prendé los tres (4, 5 y 6).",
@@ -4259,7 +4274,7 @@ const MIS=[
      if(x.err)return{ok:false,msg:""};
      const got=[4,5,6].map(p=>x.pins[p]===1?1:0);
      if(got.join()!==e.join())return{ok:false,msg:`Al ${mpct(v).toFixed(0)}% tendrían que estar prendidos ${e.reduce((a,b)=>a+b,0)} LED(s) y tenés ${got.reduce((a,b)=>a+b,0)}.`}}
-   return{ok:true,msg:"Una barra de nivel hecha con tres if. Así funciona la señal del celular."}}},
+   return{ok:true,msg:"Los LEDs se suman en vez de reemplazarse. Movés el sensor despacio y la barra sube."}}},
 
 {t:"Cuenta regresiva",c:"for + mostrar",
  g:"Mostrá 5, 4, 3, 2, 1 (uno por vez, en ese orden) y recién ahí prendé el LED del pin 13.",
@@ -4275,7 +4290,7 @@ const MIS=[
    const u=n.slice(-5);
    if(u.join()!=="5,4,3,2,1")return{ok:false,msg:`Mostraste ${u.join(", ")} y tendría que ser 5, 4, 3, 2, 1.`};
    if(x.pins[13]!==1)return{ok:false,msg:"La cuenta está bien, pero al final falta prender el LED del pin 13."};
-   return{ok:true,msg:"Contaste para atrás usando la variable del for. Ese es el truco."}}},
+   return{ok:true,msg:"La cuenta baja aunque el for suba. La variable i sigue yendo de 0 a 4: lo que cambiaste es qué hacés con ella."}}},
 
 {t:"El servo sigue al sensor",c:"escalar a otro rango",
  g:"Movés el sensor y el servo acompaña. El sensor va de 0 a 1023 y el servo de 0 a 180 grados. Convertí y mandá: servo(9, angulo).",
@@ -4291,7 +4306,7 @@ const MIS=[
      if(x.servo===null)return{ok:false,msg:"Todavía no moviste el servo."};
      const esp=v*180/1023;
      if(Math.abs(x.servo-esp)>1.5)return{ok:false,msg:`Con el sensor en ${v} el servo tendría que ir a ${esp.toFixed(0)} grados y fue a ${x.servo}.`}}
-   return{ok:true,msg:"La misma función lineal, otra pendiente. El servo ahora sigue al sensor."}}},
+   return{ok:true,msg:"El servo acompaña al sensor de punta a punta. Es la misma cuenta del porcentaje con otro número de llegada."}}},
 
 {t:"El aparato completo",c:"integrador",
  g:"Juntá todo. Leé el sensor y pasalo a porcentaje. Si está por debajo de 30 prendé la bomba (8) y el rojo (4). Si está entre 30 y 70 prendé solo el verde (6). Si pasa de 70 prendé el amarillo (5) y el buzzer (9) porque se está encharcando. Un solo estado a la vez, y mostrá el porcentaje.",
@@ -4310,7 +4325,7 @@ const MIS=[
      const nums=x.out.map(parseFloat).filter(n=>!isNaN(n));
      if(!nums.length)return{ok:false,msg:"Te falta mostrar el porcentaje."};
      if(Math.abs(nums[nums.length-1]-mpct(v))>1.5)return{ok:false,msg:`Estás mostrando ${nums[nums.length-1]} y el porcentaje es ${mpct(v).toFixed(1)}.`}}
-   return{ok:true,msg:"Está completo: sensa, decide entre tres casos, actúa sobre cuatro salidas y avisa. Eso es el aparato."}}}
+   return{ok:true,msg:"Esto que escribiste es un aparato entero: se entera, decide y actúa. Con este mismo esqueleto se programan los cuatro que diseñaron el 5 de agosto."}}}
 ];
 
 /* ---------- pantallas del track ---------- */
@@ -4329,13 +4344,14 @@ function misHome(){
     <div class="card">
       <div class="concepto big">Programá la placa</div>
       <h2 style="margin-top:0">Misiones</h2>
-      <p class="muted" style="margin:0 0 4px;line-height:1.6">Escribís código de verdad y la placa de abajo
-      reacciona: se prenden las luces, se mueve el servo, el sensor te da un número.
-      Cada misión se abre cuando terminás la anterior.</p>
+      <p class="muted" style="margin:0 0 4px;line-height:1.6">Abajo hay una placa con luces, un buzzer,
+      un servo y un sensor que podés mover con el mouse. Vos escribís las órdenes; ella hace lo que dice
+      el programa, no lo que vos querías que dijera.<br>
+      Cada misión deja abierta la siguiente. Podés volver a cualquiera que ya hayas hecho y cambiarla.</p>
     </div>
     <div class="card">
       <div class="mgrid">${rows}</div>
-      <button class="btn ghost" onclick="misGo(-1)" style="margin-top:14px">Modo libre — probar sin consigna</button>
+      <button class="btn ghost" onclick="misGo(-1)" style="margin-top:14px">Modo libre — sin consigna y sin corrección</button>
     </div>`;
   window.scrollTo(0,0);
 }

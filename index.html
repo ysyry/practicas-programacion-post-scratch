@@ -4355,7 +4355,7 @@ function misHome(){
     return `<div class="mrow ${done?"done":""} ${lock?"lock":""}" ${lock?"":`onclick="misGo(${i})"`}>
       <div class="mnum">${done?"✓":i+1}</div>
       <div class="mt">${m.t}<div class="mc">${m.c}</div></div>
-      <div class="muted">${lock?"cerrada":"→"}</div></div>`}).join("");
+      <div class="muted">${lock?"más adelante":"→"}</div></div>`}).join("");
   const hechas=RDONE.length;
   app.innerHTML=`
     <div class="topbar"><button class="backb" onclick="menu()">← Menú</button>
@@ -4467,11 +4467,15 @@ async function misCheck(){
   if(firstErr){misFb(misErrHTML(firstErr));return}
   if(res.ok){
     if(!RDONE.includes(RM)){RDONE.push(RM);rsave()}
-    misFb(`<div class="mverdict ok">¡Listo! ${res.msg}</div>
-        ${RM+1<MIS.length?`<button class="btn" onclick="misGo(${RM+1})">Siguiente misión →</button>`
-          :`<button class="btn" onclick="misHome()">Terminaste todas las misiones. Volver</button>`}`);
+    misFb(`<div class="mverdict ok">${res.msg}</div>
+      <div class="runbar" style="margin-top:12px">
+        ${RM+1<MIS.length?`<button class="btn" onclick="misGo(${RM+1})">Ir a la siguiente →</button>`:``}
+        <button class="btn ghost" onclick="misHome()">Volver a las misiones</button>
+      </div>
+      <p class="muted" style="font-size:.84rem;margin:10px 0 0">Podés quedarte acá y seguir probando
+      cambios en este programa. Queda guardado.</p>`);
   }else{
-    misFb(`<div class="mverdict no">Todavía no. ${res.msg}</div>`);
+    misFb(`<div class="mverdict no">${res.msg}</div>`);
   }
   simReset(true);misPaint();
 }

@@ -1152,7 +1152,7 @@ const SALAS = [
         consigna:'Vas a conectar un LED a un pin de la placa. ¿Qué le agregás?',
         opts:['Una resistencia en serie','Otro LED en paralelo','Un capacitor','Nada, va directo'],
         correcta:0,
-        explica:'Un LED solo toma toda la corriente que puede y se quema en segundos. La resistencia es el caño angosto que lo cuida. Es el componente más barato de la caja y el que más aparatos salva.' },
+        explica:'Un LED solo toma toda la corriente que puede y se quema en segundos. La resistencia funciona como un caño angosto: deja pasar lo que el LED aguanta.' },
       { type:'mc',
         consigna:'El sensor de humedad de suelo devuelve un valor que va cambiando dentro de un rango, no solo prendido o apagado. ¿A qué pin lo conectás?',
         opts:['A un pin digital','A un pin analógico','Al pin de 5V','Directo al GND'],
@@ -2057,18 +2057,27 @@ const TALLERES = {
   /* ---------------- UNIDAD 2 · 26/08 y 02/09 ---------------- */
   { t:'Del programa al aparato', d:'Qué es un microcontrolador y por qué el mismo programa se escribe distinto en cada lugar.',
     slides:[
+    {k:'Para empezar',t:'Cuatro preguntas sobre las cosas que ya funcionan solas',h:`
+      <div class="ipreg">
+        <p>La caldera de la escuela arranca y para sola. ¿Cómo sabe cuándo?</p>
+        <p>Los semáforos del centro, ¿son todos iguales o alguno se entera de algo?</p>
+        <p>Un colectivo, un auto y una moto tienen computadoras adentro. ¿Cuántas, y para qué?</p>
+        <p>¿Qué aparato de tu casa te parece que tiene el programa más complicado?</p>
+      </div>
+      <div class="ib">Ninguna de esas computadoras tiene pantalla ni teclado. De eso se trata esta unidad.</div>`},
+
     {k:'El salto',t:'Del simulador a una placa de verdad',h:`
-      <div class="ib">Todo lo que escribieron corrió en una placa <b>dibujada</b>.
-      Sirvió para aprender sin pelearse con cables, pero el aparato de la huerta va a ser real.<br><br>
-      La buena noticia: <b>la lógica no cambia nada.</b> Sensar, decidir, actuar y repetir es igual
-      en el simulador y en el aparato. Lo que cambia son <b>los nombres de las órdenes</b>.</div>`},
+      <div class="ib">Todo lo que escribieron hasta ahora corrió en una placa <b>dibujada</b>.
+      Sirvió para escribir código sin pelearse con cables. El aparato de la huerta va a ser real.<br><br>
+      La lógica no cambia: sensar, decidir, actuar y repetir es igual en los dos lados.
+      Lo que cambia son <b>los nombres de las órdenes</b>.</div>`},
 
     {k:'La placa',t:'Un microcontrolador es una computadora desnuda',h:`
       <div class="ib">No tiene pantalla, ni teclado, ni sistema operativo, ni ventanas.
       Tiene lo mínimo para correr <b>un</b> programa: procesador, memoria, y patitas para
       entrar y salir al mundo.<br><br>
-      Y eso lo vuelve la mejor forma de ver qué hay adentro de <b>cualquier</b> computadora,
-      porque acá no hay nada tapando.</div>
+      Las mismas tres cosas están adentro de la computadora que tenés adelante, con muchas capas
+      de software encima. Acá no hay nada tapando.</div>
       <div class="i3">
         <div class="n a"><div class="t">CPU</div><div class="d">ejecuta tu programa, una orden por vez</div></div>
         <div class="n b"><div class="t">MEMORIA</div><div class="d">ahí vive el programa y las variables</div></div>
@@ -2082,10 +2091,10 @@ const TALLERES = {
       <b>Pseudocódigo:</b> prender la luz · esperar 1 segundo · apagar la luz<br>
       <b>Acá:</b> prender(13) · esperar(1) · apagar(13)<br>
       <b>MicroPython:</b> led.value(1) · time.sleep(1) · led.value(0)</div>
-      <div class="ib">Los cuatro dicen exactamente lo mismo. Cambia la <b>sintaxis</b>, o sea cómo se
-      escribe. No cambia la <b>semántica</b>, o sea qué significa.<br><br>
-      Por eso aprender a programar no es aprender un lenguaje: cuando entendés bucle, variable
-      y condicional, el lenguaje siguiente se aprende leyendo.</div>`},
+      <div class="ib">Los cuatro dicen lo mismo. Cambia la <b>sintaxis</b>, o sea cómo se escribe.
+      No cambia la <b>semántica</b>, o sea qué significa.<br><br>
+      Mirá los cuatro un rato y buscá qué es lo que se repite en todos. Eso que queda igual
+      es lo que en realidad estuviste aprendiendo.</div>`},
 
     {k:'Los pines',t:'Digital y analógico',h:`
       <div class="idos">
@@ -2157,11 +2166,17 @@ const TALLERES = {
   /* ---------------- UNIDAD 3 · 09/09 ---------------- */
   { t:'Preguntarle al cliente', d:'De dónde salen los números y las reglas que programás. El trabajo que viene antes del código.',
     slides:[
-    {k:'La pregunta',t:'¿Quién decide qué tiene que hacer el aparato?',h:`
-      <div class="ib">Veníamos inventando los números: 30, 40, 70. Estaban bien para aprender,
-      pero no salieron de ningún lado.<br><br>
-      En cualquier proyecto real, <b>quien decide qué tiene que hacer el sistema no es quien lo programa.</b>
-      Es quien lo va a usar. Y averiguar eso es la primera etapa del trabajo, no un trámite previo.</div>`},
+    {k:'Para empezar',t:'Quién sabe lo que hace falta',h:`
+      <div class="ipreg">
+        <p>Un guardaparque, una bombera y alguien que produce frambuesa. Si cada uno pudiera medir
+           una cosa que hoy no mide, ¿qué te parece que elegiría?</p>
+        <p>¿Alguna vez usaste algo que estaba claramente diseñado por alguien que nunca lo usó?</p>
+        <p>¿Qué sabe de la huerta quien la cuida todos los días que no está escrito en ningún lado?</p>
+      </div>
+      <div class="ib">Veníamos inventando los números: 30, 40, 70. Servían para que el programa
+      anduviera, pero no salieron de ningún lado.<br><br>
+      En cualquier proyecto real, quien decide qué tiene que hacer el sistema no es quien lo programa:
+      es quien lo va a usar. Averiguar eso es la primera etapa del trabajo.</div>`},
 
     {k:'El nombre',t:'Eso se llama requerimiento',h:`
       <div class="ib">Un <b>requerimiento</b> es una cosa que el sistema tiene que lograr, escrita
@@ -2182,8 +2197,9 @@ const TALLERES = {
         <li>"Lo tiene que poder usar alguien que no sabe de esto"</li>
         <li>"Tiene que durar todo el día con una batería"</li></ul></div>
       </div>
-      <div class="ib">Los no funcionales son los que se olvidan y los que hunden proyectos.
-      Un aparato perfecto que se moja y muere el primer día no sirve para nada.</div>`},
+      <div class="ib">Los no funcionales son los que más se olvidan, porque nadie los dice en voz alta:
+      se dan por supuestos. Un aparato que hace todo lo que tiene que hacer y se moja el primer día
+      igual queda fuera de servicio.</div>`},
 
     {k:'Cómo',t:'Cómo se averigua lo que alguien necesita',h:`
       <div class="i3">
@@ -4098,10 +4114,11 @@ const MIS=[
 
 {t:"De número raro a porcentaje",c:"cuenta · función lineal",
  g:"El sensor da un número entre 0 y 1023. Mostralo como un porcentaje entre 0 y 100.",
- th:`Nadie entiende "el sensor marca 743". Hay que <b>convertirlo</b>.<br>
-     Si 1023 es el 100%, entonces: <code>porcentaje = crudo * 100 / 1023</code><br>
-     Esto que acabás de escribir es una <b>función lineal</b>: la misma de Matemática, con su pendiente.
-     En programación se le dice <i>escalar</i> o <i>mapear</i> un valor.`,
+ th:`El sensor entrega 743 y eso no le dice nada a nadie. Para que sirva hay que llevarlo a una
+     escala que la gente ya conozca.<br>
+     Si 1023 es el 100%, entonces <code>porcentaje = crudo * 100 / 1023</code><br>
+     En programación a esto se le dice <b>escalar</b> o <b>mapear</b> un valor.
+     Es posible que la cuenta te resulte conocida de otra materia.`,
  s:"crudo = leer(A0)\n",
  chk:async r=>{
    for(const v of [150,700]){const x=await r({an:{A0:v}});
@@ -4213,13 +4230,15 @@ const MIS=[
 
 {t:"Que no titile",c:"banda de seguridad (histéresis)",
  g:"Prendé la bomba (pin 8) cuando la humedad baje de 28%. Apagala cuando pase de 32%. Entre 28 y 32 no la toques: dejala como está.",
- th:`Este es un problema real. Si prendés a menos de 30 y apagás a más de 30, cuando el valor queda
-     justo en el borde el aparato se <b>prende y apaga sin parar</b> y se rompe.<br>
-     La solución es usar <b>dos números</b> en vez de uno y dejar una zona muerta en el medio:<br>
+ th:`Si prendés por debajo de 30 y apagás por encima de 30, cuando el valor queda temblando en el
+     borde la bomba se prende y se apaga muchas veces por minuto.<br>
+     Una salida es usar <b>dos números</b> en vez de uno y dejar un hueco en el medio:<br>
      <code>if porcentaje < 28:</code> prender<br>
      <code>elif porcentaje > 32:</code> apagar<br>
-     Sin <code>else</code>: si está en el medio, el programa no hace nada.<br>
-     Esto se llama <b>histéresis</b>, y lo tiene adentro cualquier termostato del mundo.`,
+     Sin <code>else</code>. Si el valor cae en el hueco, el programa no hace nada y la bomba queda
+     como estaba.<br>
+     Ese hueco se llama <b>histéresis</b>. El de una heladera se puede escuchar: por eso arranca
+     cada tanto y no todo el tiempo.`,
  s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\n",
  chk:async r=>{
    for(const [v,debe] of [[250,1],[500,0]]){const x=await r({an:{A0:v}});
@@ -4233,10 +4252,10 @@ const MIS=[
 
 {t:"Abrí la compuerta",c:"servo · mover algo",
  g:"Si la temperatura pasa de 60%, abrí la compuerta del invernadero: servo(9, 90). Si no, cerrala: servo(9, 0).",
- th:`Un <b>servo</b> es un motor que va a un ángulo exacto y se queda ahí. Es la forma más barata
-     de que un aparato <b>mueva</b> algo sin volverse un robot con ruedas.<br>
+ th:`Un <b>servo</b> va a un ángulo exacto y se queda ahí hasta que le mandes otro.<br>
      <code>servo(9, 90)</code> lo lleva a 90 grados. <code>servo(9, 0)</code> lo vuelve a cero.<br>
-     Con esto ya podés hacer una compuerta, un dispensador o un cartel que gira.`,
+     Un motor común gira mientras tenga corriente y no sabés dónde quedó. Esa diferencia es la que
+     decide cuál de los dos sirve para una tapa que abre y cierra.`,
  s:"crudo = leer(A0)\ntemperatura = crudo * 100 / 1023\n",
  chk:async r=>{
    const casos=[[900,90],[200,0],[700,90]];
@@ -4250,9 +4269,10 @@ const MIS=[
 
 {t:"La luz que corre",c:"for + secuencia",
  g:"Hacé que la luz recorra los tres LEDs: prendé el 4 y apagalo, después el 5 y apagalo, después el 6 y apagalo. Y que todo eso se repita 3 veces con un for.",
- th:`Acá no aprendés nada nuevo: <b>combinás</b> lo que ya sabés y se ve lindo.<br>
+ th:`Todo lo que hace falta acá ya lo usaste antes. Lo que cambia es cómo se combina.<br>
      <code>for i in range(3):</code> y adentro, los seis pasos del recorrido.<br>
-     Poné un <code>esperar(0.15)</code> entre medio o va tan rápido que no lo ves.`,
+     Probá primero sin ningún <code>esperar( )</code> y mirá qué se ve. Después poné
+     <code>esperar(0.15)</code> entre paso y paso.`,
  s:"for i in range(3):\n",
  chk:async r=>{
    const x=await r({an:{A0:512}});
@@ -4263,10 +4283,9 @@ const MIS=[
 
 {t:"La barra de nivel",c:"if / elif que se acumulan",
  g:"Mostrá la humedad como una barra: menos de 33% prendé solo el 4. Entre 33 y 66 prendé el 4 y el 5. Más de 66 prendé los tres (4, 5 y 6).",
- th:`Es como las rayitas de la señal del celular. Fijate que los LEDs se van <b>sumando</b>,
-     no se reemplazan.<br>
-     El truco de siempre: <b>apagá los tres al principio</b> y después prendé los que correspondan.
-     Si no, te quedan encendidos los de la vuelta anterior.`,
+ th:`Los LEDs se van <b>sumando</b> en vez de reemplazarse, como las rayitas de la señal del celular.<br>
+     Conviene apagar los tres al principio. Si querés ver por qué, no los apagues: mové el sensor de
+     mucho a poco y fijate si la barra baja.`,
  s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\napagar(4)\napagar(5)\napagar(6)\n",
  chk:async r=>{
    const casos=[[200,[1,0,0]],[500,[1,1,0]],[900,[1,1,1]]];
@@ -4294,11 +4313,11 @@ const MIS=[
 
 {t:"El servo sigue al sensor",c:"escalar a otro rango",
  g:"Movés el sensor y el servo acompaña. El sensor va de 0 a 1023 y el servo de 0 a 180 grados. Convertí y mandá: servo(9, angulo).",
- th:`Ya escalaste de 0-1023 a 0-100 para el porcentaje. Ahora el destino es otro: <b>0 a 180</b>.<br>
+ th:`Ya llevaste el valor del sensor de 0-1023 a 0-100. Ahora el destino es 0 a 180.<br>
      <code>angulo = crudo * 180 / 1023</code><br>
-     Es <b>la misma función lineal</b> con otra pendiente: antes 100/1023, ahora 180/1023.
-     Cambiar el rango de llegada es cambiar la pendiente, nada más.<br>
-     Usá <code>redondear( )</code> para que quede un ángulo entero.`,
+     Es la misma cuenta con otro número arriba: antes 100, ahora 180.
+     Si dibujaras las dos en un gráfico, ¿en qué se parecerían y en qué no?<br>
+     <code>redondear( )</code> te deja un ángulo entero.`,
  s:"crudo = leer(A0)\n",
  chk:async r=>{
    for(const v of [0,512,1023,300]){const x=await r({an:{A0:v}});
@@ -4310,10 +4329,10 @@ const MIS=[
 
 {t:"El aparato completo",c:"integrador",
  g:"Juntá todo. Leé el sensor y pasalo a porcentaje. Si está por debajo de 30 prendé la bomba (8) y el rojo (4). Si está entre 30 y 70 prendé solo el verde (6). Si pasa de 70 prendé el amarillo (5) y el buzzer (9) porque se está encharcando. Un solo estado a la vez, y mostrá el porcentaje.",
- th:`No hay nada nuevo acá: es <b>tu aparato</b>, con todo lo que aprendiste.<br>
-     Variable, cuenta, <code>if / elif / else</code>, y varias órdenes adentro de cada rama.<br>
-     Empezá apagando todo, así no te quedan luces de la vuelta anterior.<br>
-     Cuando esto ande, ya sabés programar cualquiera de los aparatos que diseñaron.`,
+ th:`Nada de esto es nuevo por separado: variable, cuenta, <code>if / elif / else</code>, y varias
+     órdenes adentro de cada rama.<br>
+     Conviene empezar apagando todo, para que no queden luces de la vuelta anterior.<br>
+     Este esqueleto es el mismo que van a necesitar los cuatro aparatos que diseñaron el 5 de agosto.`,
  s:"crudo = leer(A0)\nporcentaje = crudo * 100 / 1023\napagar(4)\napagar(5)\napagar(6)\napagar(8)\napagar(9)\n",
  chk:async r=>{
    const casos=[[200,{8:1,4:1,6:0,5:0,9:0}],[500,{6:1,8:0,4:0,5:0,9:0}],[900,{5:1,9:1,8:0,4:0,6:0}]];

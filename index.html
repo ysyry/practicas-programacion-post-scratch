@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tecnologías para el territorio</title>
+<title>Tecnología para el territorio</title>
 <style>
   :root{
     --bg:#0a0c11; --surface:#121620; --surface2:#182030; --raise:#1d2434;
@@ -343,7 +343,7 @@
 <body>
 <header>
   <div class="esc">Don Jaime de Nevares · Villa La Angostura</div>
-  <h1>Tecnologías para el territorio</h1>
+  <h1>Tecnología para el territorio</h1>
   <p>Programación y robótica · 1ro a 3ro</p>
 </header>
 <div class="sesbar" id="sesbar"></div>
@@ -2866,6 +2866,7 @@ function menu(){
   });
   h += `<button class="tolink" onclick="pedirDocente()">· panel docente ·</button>`;
   app.innerHTML = h;
+  dibujarSendero();
 }
 
 /* -------------------- ARRANCAR SALA -------------------- */
@@ -4547,38 +4548,69 @@ async function misCheck(){
 
 
 
-/* ===== MAPA DEL RECORRIDO (3ro) ===== */
+/* ===== MAPA DEL RECORRIDO (3ro) — un camino, no una lista ===== */
 (function(){const s=document.createElement("style");s.textContent=`
-  .mapa{background:var(--surface);border:1px solid var(--line);border-radius:var(--r2);
-    padding:18px 18px 14px;margin-bottom:18px}
-  .mapa .mh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:4px}
-  .mapa .mh b{font-size:1.02rem;color:var(--txt)}
-  .mapa .mh span{font-size:.84rem;color:var(--muted)}
-  .mapa .scroll{overflow-x:auto;padding:14px 2px 6px;margin:0 -4px}
-  .via{display:flex;align-items:stretch;gap:0;min-width:min-content}
-  .tramo{display:flex;flex-direction:column;gap:8px;padding:0 14px;border-left:1px dashed var(--line2)}
-  .tramo:first-child{border-left:none;padding-left:2px}
-  .tramo .tn{font-size:.63rem;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);
-    font-weight:700;white-space:nowrap}
-  .est{display:flex;gap:9px;align-items:flex-start;background:none;border:0;padding:5px 7px;
-    border-radius:9px;text-align:left;color:inherit;font:inherit;cursor:default;min-width:172px;
-    max-width:210px;transition:.13s}
+  .mapa{background:linear-gradient(180deg,var(--surface),var(--surface2));
+    border:1px solid var(--line);border-radius:var(--r2);padding:24px 22px 18px;margin-bottom:20px}
+  .mapa .mh{margin-bottom:2px}
+  .mapa .mh b{display:block;font-size:1.22rem;color:var(--txt);letter-spacing:-.01em}
+  .mapa .mh span{font-size:.87rem;color:var(--muted)}
+
+  .sendero{position:relative;display:grid;gap:30px 26px;padding:26px 6px 10px;
+    grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media(max-width:1040px){.sendero{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:740px){.sendero{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}}
+  @media(max-width:440px){.sendero{grid-template-columns:1fr;gap:18px}}
+  .ruta{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+
+  .est{position:relative;z-index:1;display:block;width:100%;text-align:left;
+    background:var(--surface);border:1px solid var(--line2);border-radius:14px;
+    padding:12px 13px 11px;color:inherit;font:inherit;cursor:default;transition:.15s}
   .est.link{cursor:pointer}
-  .est.link:hover{background:var(--surface2)}
-  .est .pt{width:11px;height:11px;border-radius:50%;flex:none;margin-top:5px;
-    border:2px solid var(--line2);background:transparent}
-  .est .tx{font-size:.83rem;line-height:1.35;color:var(--muted)}
-  .est .tx i{display:block;font-style:normal;font-size:.68rem;color:var(--faint);margin-top:1px}
-  .est.pas .pt{background:var(--line2);border-color:var(--line2)}
-  .est.pas .tx{color:var(--muted)}
-  .est.hoy{background:var(--accent-dim)}
-  .est.hoy .pt{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-dim)}
-  .est.hoy .tx{color:var(--txt);font-weight:650}
-  .est.hoy .tx i{color:var(--accent)}
-  .est.vie .pt{border-style:dashed}
-  .est.vie .tx{color:var(--faint)}
-  .mapa .pie{font-size:.78rem;color:var(--faint);margin:8px 0 0;line-height:1.5}
+  .est.link:hover{transform:translateY(-2px);border-color:var(--accent);
+    box-shadow:0 6px 18px rgba(0,0,0,.22)}
+  .est .tr{display:block;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;
+    font-weight:800;color:var(--faint);margin-bottom:5px}
+  .est .tt{display:block;font-size:.9rem;line-height:1.3;font-weight:640;color:var(--muted)}
+  .est .sb{display:block;font-size:.7rem;color:var(--faint);margin-top:3px;line-height:1.35}
+  .est .num{position:absolute;top:-9px;left:13px;width:22px;height:22px;border-radius:50%;
+    display:grid;place-items:center;font-size:.66rem;font-weight:800;
+    background:var(--surface2);color:var(--faint);border:1px solid var(--line2)}
+
+  .est.pas{border-color:var(--line2)}
+  .est.pas .num{background:var(--good);color:#06281d;border-color:var(--good)}
+  .est.pas .tt{color:var(--txt)}
+
+  .est.hoy{border-color:var(--accent);background:var(--accent-dim);
+    box-shadow:0 0 0 4px var(--accent-dim)}
+  .est.hoy .num{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+  .est.hoy .tt{color:var(--txt);font-weight:720}
+  .est.hoy .tr{color:var(--accent)}
+  .est.hoy::after{content:"acá van";position:absolute;right:11px;top:-11px;
+    font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+    background:var(--accent);color:var(--bg);padding:2px 7px;border-radius:20px}
+
+  .est.vie{border-style:dashed;background:transparent}
+  .est.vie .tt{color:var(--faint)}
+
+  .mapa .pie{font-size:.83rem;color:var(--muted);margin:16px 0 0;line-height:1.6;
+    border-top:1px solid var(--line);padding-top:13px;max-width:70ch}
+  @media (prefers-reduced-motion: reduce){ .est.link:hover{transform:none} }
 `;document.head.appendChild(s)})();
+
+/* clave del progreso de misiones: una por alumno y año.
+   Va como funcion para que exista desde el arranque del script. */
+function rkeyMisiones(){
+  const s=(typeof SES!=='undefined' && SES)
+    ? SES.anio+'|'+String(SES.nombre||'').trim().toLowerCase() : 'anon';
+  return 'vla_robotica_v1.'+s;
+}
+/* misiones resueltas, leidas directo del navegador. No usa RDONE a proposito:
+   se declara mas abajo y todavia no existe cuando boot() dibuja el menu. */
+function misionesHechas(){
+  try{ const a=JSON.parse(localStorage.getItem(rkeyMisiones())); return Array.isArray(a)?a:[] }
+  catch(e){ return [] }
+}
 
 /* Estaciones del recorrido de 3ro. `ok` decide si ya esta recorrida.
    Las del primer cuatrimestre pasaron fuera de la app, asi que van fijas.
@@ -4592,8 +4624,7 @@ function via3(){ return [
    {t:'Mapear el territorio', i:'mayo · dron y OpenStreetMap', ok:()=>true},
  ]},
  {tn:'La bisagra', es:[
-   {t:'Un sensor es una máquina de producir datos', i:'5 de agosto',
-    ok:()=>true, fn:"verUnidad(0)"},
+   {t:'Un sensor es una máquina de producir datos', i:'5 de agosto', ok:()=>true, fn:"verUnidad(0)"},
  ]},
  {tn:'Ahora · el aparato', es:[
    {t:'Sensar, decidir, actuar', i:'qué es un robot y qué no', ok:()=>true, fn:"verUnidad(0)"},
@@ -4614,48 +4645,108 @@ function via3(){ return [
  ]},
 ]; }
 
-/* clave del progreso de misiones: una por alumno y año.
-   Va como funcion para que exista desde el arranque del script. */
-function rkeyMisiones(){
-  const s=(typeof SES!=='undefined' && SES)
-    ? SES.anio+'|'+String(SES.nombre||'').trim().toLowerCase() : 'anon';
-  return 'vla_robotica_v1.'+s;
-}
+/* ---- el camino: acomoda las estaciones en serpentina y dibuja la curva ---- */
+function dibujarSendero(){
+  const cont=document.getElementById('sendero'); if(!cont) return;
+  const lista = cont.querySelectorAll ? cont.querySelectorAll('.est') : null;
+  const nodos = lista ? Array.prototype.slice.call(lista) : [];
+  if(nodos.length<2) return;
+  let cols=1;
+  try{ cols=(getComputedStyle(cont).gridTemplateColumns||'').split(' ').filter(Boolean).length||1; }catch(e){}
 
-/* misiones resueltas, leidas directo del navegador.
-   No usa RDONE a proposito: se declara mas abajo y todavia no existe
-   cuando boot() dibuja el menu por primera vez. */
-function misionesHechas(){
-  try{ const a=JSON.parse(localStorage.getItem(rkeyMisiones())); return Array.isArray(a)?a:[] }
-  catch(e){ return [] }
+  /* serpentina: la fila 1 va de izquierda a derecha, la 2 al revés, y así */
+  nodos.forEach((n,i)=>{
+    const fila=Math.floor(i/cols), enFila=i%cols;
+    const col=(fila%2===0) ? enFila : (cols-1-enFila);
+    n.style.gridColumn=String(col+1);
+    n.style.gridRow=String(fila+1);
+  });
+  if(cols<2) { const sv=document.getElementById('rutaSvg'); if(sv) sv.innerHTML=''; return; }
+
+  const pintar=()=>{
+    const svg=document.getElementById('rutaSvg'); if(!svg) return;
+    const cr=cont.getBoundingClientRect();
+    if(!cr.width || !cr.height){ svg.innerHTML=''; return; }
+    const pts=nodos.map(n=>{
+      const r=n.getBoundingClientRect();
+      return {x:r.left-cr.left+r.width/2, y:r.top-cr.top+r.height/2,
+              hecho:n.classList.contains('pas')};
+    });
+    let ultimoHecho=0;
+    pts.forEach((p,i)=>{ if(p.hecho) ultimoHecho=i; });
+
+    const curva=(p)=>{
+      if(p.length<2) return '';
+      let d='M '+p[0].x+' '+p[0].y;
+      for(let i=0;i<p.length-1;i++){
+        const p0=p[i-1]||p[i], p1=p[i], p2=p[i+1], p3=p[i+2]||p[i+1], t=.32;
+        d+=' C '+(p1.x+(p2.x-p0.x)*t)+' '+(p1.y+(p2.y-p0.y)*t)+', '+
+               (p2.x-(p3.x-p1.x)*t)+' '+(p2.y-(p3.y-p1.y)*t)+', '+p2.x+' '+p2.y;
+      }
+      return d;
+    };
+    const dHecho = curva(pts.slice(0, ultimoHecho+1));
+    const dFalta = curva(pts.slice(ultimoHecho));
+
+    svg.setAttribute('viewBox','0 0 '+cr.width+' '+cr.height);
+    svg.innerHTML =
+      (dFalta?`<path d="${dFalta}" fill="none" stroke="var(--line2)" stroke-width="2.5"
+                 stroke-linecap="round" stroke-dasharray="2 11"/>`:'')+
+      (dHecho?`<path id="rutaHecha" d="${dHecho}" fill="none" stroke="var(--accent)"
+                 stroke-width="2.5" stroke-linecap="round" opacity=".55"/>`:'');
+
+    /* flechitas cada tanto, para que se lea el sentido del recorrido */
+    const ph=document.getElementById('rutaHecha');
+    if(ph && ph.getTotalLength){
+      const L=ph.getTotalLength(); let marcas='';
+      for(let d=64; d<L-24; d+=132){
+        const a=ph.getPointAtLength(d), b=ph.getPointAtLength(Math.min(L,d+9));
+        const g=Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI;
+        marcas+=`<path d="M -5 -4.5 L 3 0 L -5 4.5" fill="none" stroke="var(--accent)"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                   opacity=".8" transform="translate(${a.x} ${a.y}) rotate(${g})"/>`;
+      }
+      svg.innerHTML += marcas;
+    }
+  };
+  if(typeof requestAnimationFrame==='function') requestAnimationFrame(pintar); else pintar();
+}
+let _redibujo=null;
+if(typeof window!=='undefined' && window.addEventListener){
+  window.addEventListener('resize',()=>{ clearTimeout(_redibujo); _redibujo=setTimeout(dibujarSendero,140); });
 }
 
 function mapaHTML(){
   if(!SES || SES.anio!=='3ro') return '';
   const hechas = misionesHechas();
-  let primeraPendiente=true;
-  const tramos = via3().map(tr=>{
-    const es = tr.es.map(e=>{
+  let primeraPendiente=true, n=0;
+  const casillas = via3().map(tr=>{
+    let primeraDelTramo=true;
+    return tr.es.map(e=>{
+      n++;
       const hecho = !!e.ok(hechas);
       let cls='pas';
       if(!hecho){
         if(primeraPendiente && tr.tn.indexOf('viene')<0){ cls='hoy'; primeraPendiente=false; }
         else cls='vie';
       }
-      const cuerpo = `<span class="pt"></span><span class="tx">${e.t}<i>${e.i}</i></span>`;
+      const eyebrow = primeraDelTramo ? `<span class="tr">${tr.tn}</span>` : '';
+      primeraDelTramo=false;
+      const cuerpo = `<span class="num">${n}</span>${eyebrow}
+        <span class="tt">${e.t}</span><span class="sb">${e.i}</span>`;
       return e.fn
         ? `<button class="est ${cls} link" onclick="${e.fn}">${cuerpo}</button>`
         : `<div class="est ${cls}">${cuerpo}</div>`;
     }).join('');
-    return `<div class="tramo"><div class="tn">${tr.tn}</div>${es}</div>`;
   }).join('');
   return `<div class="mapa">
-    <div class="mh"><b>Por dónde vienen</b>
-      <span>Lo que está lleno ya lo recorriste. Podés volver a cualquier estación.</span></div>
-    <div class="scroll"><div class="via">${tramos}</div></div>
-    <p class="pie">Cada cosa que aprendieron apareció porque hacía falta para la siguiente.
-    Si mirás el recorrido de punta a punta, el hilo es el mismo: primero miraron datos que había
-    medido otro, y ahora están construyendo la máquina que los produce.</p>
+    <div class="mh"><b>El camino que vienen haciendo</b>
+      <span>Empezó en marzo mirando datos que había medido otro. Cada casilla que ya
+      recorrieron está llena; podés volver a cualquiera.</span></div>
+    <div class="sendero" id="sendero"><svg class="ruta" id="rutaSvg" aria-hidden="true"></svg>${casillas}</div>
+    <p class="pie">Nada de esto se dio suelto: cada cosa apareció porque hacía falta para la
+    siguiente. Si mirás el recorrido de punta a punta, el hilo es uno solo — primero miraron
+    datos que había medido otro, y ahora están construyendo la máquina que los produce.</p>
   </div>`;
 }
 
